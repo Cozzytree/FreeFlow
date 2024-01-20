@@ -7,7 +7,7 @@ import { useState } from "react";
 import Button from "./Button";
 
 function Nav() {
-  const [isNav, setIsNav] = useState(true);
+  const [isNav, setIsNav] = useState(false);
   return (
     <>
       <FaBars

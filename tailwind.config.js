@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        Concert: "Concert One, sans-serif",
+        Changa: "Changa, sans-serif",
       },
     },
   },
