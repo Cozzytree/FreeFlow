@@ -4,14 +4,14 @@ import { useQuery } from "@tanstack/react-query";
 
 export function useGetUser() {
      const params = useParams();
-     const { getUser } = authservices;
+     const { getUserProfile } = authservices;
 
      const {
           data: currentUser,
           isLoading: loadingUser,
           error,
      } = useQuery({
-          queryFn: () => getUser(params?.username),
+          queryFn: () => getUserProfile(params?.username),
           queryKey: ["getUser"],
      });
      return { currentUser, loadingUser, error };

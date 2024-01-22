@@ -1,4 +1,4 @@
-function Button({ children, type }) {
+function Button({ children, type, onClick }) {
      let styles;
      if (type === "danger") {
           styles = "text-zinc-100 w-[100%]  text-center bg-red-700 p-2";
@@ -11,7 +11,11 @@ function Button({ children, type }) {
           styles =
                "bg-sky-700/10 px-2 md:px-4 py-2 rounded-md border-[1px] border-sky-400/50";
      }
-     return <button className={styles}>{children}</button>;
+     return (
+          <button onClick={onClick} className={styles}>
+               {children}
+          </button>
+     );
 }
 
 export default Button;

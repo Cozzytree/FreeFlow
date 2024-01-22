@@ -26,15 +26,25 @@ class Auth {
 
      async logout() {
           try {
-               const response = await fetch(`${import.meta.env.API_URL}`);
+               const response = await fetch(
+                    `http://localhost:8000/api/v1/users/logout`,
+                    {
+                         method: "POST",
+                         credentials: "include",
+                    }
+               );
                const data = await response.json();
+               console.log(data);
+               if (data?.success === false) {
+                    throw new Error(data?.message);
+               }
                return data;
           } catch (error) {
                throw error;
           }
      }
 
-     async getUser(username) {
+     async getUserProfile(username) {
           try {
                const response = await fetch(
                     `http://localhost:8000/api/v1/users/${username}`,
@@ -48,6 +58,44 @@ class Auth {
                     throw new Error(data?.message);
                }
 
+               return data;
+          } catch (error) {
+               throw error;
+          }
+     }
+
+     async getCurrentUser() {
+          try {
+               const response = await fetch(
+                    "http://localhost:8000/api/v1/users/getcurrentUser",
+                    {
+                         method: "GET",
+                         credentials: "include",
+                    }
+               );
+               const data = await response.json();
+               if (data?.success === false) {
+                    throw new Error(data?.message);
+               }
+               return data;
+          } catch (error) {
+               throw error;
+          }
+     }
+
+     async signUp(formData) {
+          try {
+               const response = await fetch(
+                    "http://localhost:8000/api/v1/users/registerUser",
+                    {
+                         method: "POST",
+                         headers: {
+                              "Content-Type": "application/json",
+                         },
+                         body: formData,
+                    }
+               );
+               const data = await response.json();
                return data;
           } catch (error) {
                throw error;

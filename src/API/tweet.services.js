@@ -17,6 +17,11 @@ class Tweet {
                const response = await fetch(
                     `http://localhost:8000/api/vi/dt/${tweetId}`
                );
+               const data = await response.json();
+               if (data?.success === false) {
+                    throw new Error(data?.message);
+               }
+               return data;
           } catch (error) {
                throw error;
           }
@@ -32,12 +37,13 @@ class Tweet {
           }
      }
 
-     async addTweet(tweetId, data) {
+     async addTweet(data) {
           try {
                const response = await fetch(
-                    `http://localhost:8000/api/vi/at/${tweetId}`,
+                    `http://localhost:8000/api/v1/tweet/addTweet`,
                     {
                          method: "POST",
+                         credentials: "include",
                          headers: {
                               "Content-Type": "application/json",
                          },
@@ -45,6 +51,9 @@ class Tweet {
                     }
                );
                const dataArrive = await response.json();
+               if (dataArrive?.success === false) {
+                    throw new Error(dataArrive?.message);
+               }
                return dataArrive;
           } catch (error) {
                throw error;

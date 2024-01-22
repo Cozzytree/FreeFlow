@@ -2,16 +2,18 @@ import { NavLink } from "react-router-dom";
 import Button from "../Component/Button";
 import { useForm } from "react-hook-form";
 import { useLogin } from "../Hooks/authHooks/useLogin";
+import Loader from "../Component/loader";
 
 function Login() {
      const { handleSubmit, register } = useForm();
-     const { isLogging, loginUser, userData } = useLogin();
+     const { isLogging, loginUser } = useLogin();
 
      function onSubmit(data) {
           loginUser(data);
      }
      return (
           <div className="h-[100%] px-3 py-1 flex flex-col justify-center items-center">
+               {isLogging && <Loader />}
                <h1 className="w-[100%] text-center text-2xl">Login</h1>
                <form
                     onSubmit={handleSubmit(onSubmit)}

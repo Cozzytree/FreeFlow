@@ -8,8 +8,8 @@ function User() {
      const { data } = userVideos || [];
      return (
           <>
-               {loadingUser && <Loader />}
-               <div className="w-[80vw] flex gap-4 py-7">
+               {(loadingUser || loadingVideos) && <Loader />}
+               <div className="w-[80vw] flex gap-4 py-9">
                     <img
                          className="w-[100px] md:w-[150px] h-[100px] md:h-[150px] rounded-[100%]"
                          src={currentUser?.data?.avatar}
@@ -28,7 +28,7 @@ function User() {
                     </div>
                </div>
 
-               <div className="grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] h-[100%]">
+               <div className="w-[60vw] grid grid-cols-[1fr] md:grid-cols-[1fr_1fr] h-[100%]">
                     {data?.map((v) => (
                          <VideoItems v={v} key={v._id} />
                     ))}
