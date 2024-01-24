@@ -16,6 +16,7 @@ export function useLogout() {
           onSuccess: () => {
                navigate("/");
                queryClient.setQueryData(["currentUser"], {});
+               queryClient.removeQueries();
           },
           onError: () => {
                toast.error(error.message);

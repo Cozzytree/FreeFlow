@@ -86,18 +86,19 @@ class Auth {
      async signUp(formData) {
           try {
                const response = await fetch(
-                    "http://localhost:8000/api/v1/users/registerUser",
+                    "http://localhost:8000/api/v1/users/register",
                     {
                          method: "POST",
-                         headers: {
-                              "Content-Type": "application/json",
-                         },
+                         credentials: "include",
                          body: formData,
                     }
                );
-               const data = await response.json();
-               return data;
+
+               const Userdata = await response.json();
+               console.log(Userdata);
+               return Userdata;
           } catch (error) {
+               console.log(error);
                throw error;
           }
      }

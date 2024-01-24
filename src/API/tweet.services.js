@@ -15,7 +15,11 @@ class Tweet {
      async deleteTweet(tweetId) {
           try {
                const response = await fetch(
-                    `http://localhost:8000/api/vi/dt/${tweetId}`
+                    `http://localhost:8000/api/vi/dt/${tweetId}`,
+                    {
+                         method: "DELETE",
+                         credentials: "include",
+                    }
                );
                const data = await response.json();
                if (data?.success === false) {
@@ -30,8 +34,18 @@ class Tweet {
      async editTweet(tweetId) {
           try {
                const response = await fetch(
-                    `http://localhost:8000/api/vi/et/${tweetId}`
+                    `http://localhost:8000/api/vi/et/${tweetId}`,
+                    {
+                         method: "PATCH",
+                         credentials: "include",
+                    }
                );
+
+               const data = await response.json();
+               if (data?.success === false) {
+                    throw new Error(data?.message);
+               }
+               return data;
           } catch (error) {
                throw error;
           }

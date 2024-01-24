@@ -20,11 +20,11 @@ function Nav({ user, isNav, setIsNav }) {
                     onClick={() => setIsNav()}
                     className={`${
                          isNav ? "rotate-90" : "rotate-0"
-                    } absolute left-2 top-1 z-[20] transition-all duration-200 size-6`}
+                    } fixed left-2 top-1 z-[20] transition-all duration-200 size-6`}
                     cursor="pointer"
                />
                <nav
-                    className={`absolute top-0 left-0 bg-zinc-700 z-10 flex flex-col items- justify-between px-5 py-[50px] gap-3 origin-left transition-all duration-250 border-[1px] border-zinc-600 rounded-md w-[170px] md:w-[250px] h-[100%] ${
+                    className={`fixed top-0 left-0 bg-zinc-700 z-10 flex flex-col items- justify-between px-5 py-[50px] gap-3 origin-left transition-all duration-250 border-[1px] border-zinc-600 rounded-md w-[170px] md:w-[250px] h-[100%] ${
                          isNav ? "translate-x-[0px]" : "translate-x-[-300px]"
                     }`}
                >

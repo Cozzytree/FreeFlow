@@ -9,16 +9,16 @@ export function useAddTweet() {
           mutate: useraddTweet,
           isPending: loadingaddTweet,
           data,
-          error,
      } = useMutation({
           mutationFn: (data) => addTweet(data),
           onSuccess: () => {
                toast.success("tweet success");
                queryClient.invalidateQueries(["tweets"]);
           },
-          onError: () => {
-               toast.error(error.message);
+          onError: (error) => {
+               toast.error(error?.message);
           },
      });
+
      return { data, useraddTweet, loadingaddTweet };
 }

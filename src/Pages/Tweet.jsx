@@ -6,12 +6,13 @@ import { useAddTweet } from "../Hooks/tweetsHooks/useAddTweet";
 import { useGetTweet } from "../Hooks/tweetsHooks/useGetTweets";
 
 function Tweet() {
-     const { register, handleSubmit } = useForm();
+     const { register, handleSubmit, reset } = useForm();
      const { loadingTweets, allTweets } = useGetTweet();
      const { useraddTweet, loadingaddTweet } = useAddTweet();
 
      function onSubmit(data) {
           useraddTweet(data);
+          reset();
      }
 
      return (

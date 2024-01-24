@@ -11,7 +11,6 @@ export function useLogin() {
           mutate: loginUser,
           data: userData,
           isPending: isLogging,
-          error,
      } = useMutation({
           mutationFn: login,
           onSuccess: (data) => {
@@ -21,7 +20,7 @@ export function useLogin() {
                queryClient.setQueryData(["currentUser"], data?.data);
                navigate(`/`);
           },
-          onError: () => {
+          onError: (error) => {
                toast.error(error?.message);
           },
      });

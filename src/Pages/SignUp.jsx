@@ -1,26 +1,31 @@
 import { useForm } from "react-hook-form";
 import Button from "../Component/Button";
 import { NavLink } from "react-router-dom";
+import { useSignUp } from "../Hooks/authHooks/useSignUp";
+import { useState } from "react";
+import Loader from "../Component/loader";
 
 const inputStyle =
      "bg-transparent outline-none border-[1px] border-zinc-600 w-[250px] px-3 py-1 rounded-md focus:ring-[1px] ring-sky-700 transition-all duration-200";
 
 function SignUp() {
-     const { handleSubmit, register } = useForm();
+     const { handleSubmit, register, getValues } = useForm();
+     const { userSignUp, loadingSignUp } = useSignUp();
+     const [avatar, setAvatar] = useState(null);
+     const [coverImage, setCoverImage] = useState(null);
      function onSubmit(data) {
           const formData = new FormData();
-          for (const key in data) {
-               if (Array.isArray(data[key])) {
-                    formData.append(key, data[key][0]);
-               } else {
-                    formData.append(key, data[key]);
-               }
+          for (const item in data) {
+               formData.append(item, data[item]);
           }
+          formData.append("avatar", avatar);
+          formData.append("coverImage", coverImage || "");
 
-          console.log(formData);
+          userSignUp(formData);
      }
      return (
           <div className="h-[100%] px-3 py-1 flex flex-col justify-center items-center animate-slow">
+               {loadingSignUp && <Loader />}
                <h1 className="w-[100%] text-center text-2xl">Sign Up</h1>
                <form
                     onSubmit={handleSubmit(onSubmit)}
@@ -69,6 +74,9 @@ function SignUp() {
                          placeholder="confirm password..."
                          {...register("confirm", {
                               required: "confirm is required",
+                              validate: (value) => {
+                                   value === getValues().password || "";
+                              },
                          })}
                     />
                     <label htmlFor="">avatar</label>
@@ -76,7 +84,9 @@ function SignUp() {
                          className={inputStyle}
                          type="file"
                          id="avatar"
-                         {...register("avatar", { required: true })}
+                         onChange={(e) => {
+                              setAvatar(e.target.files[0]);
+                         }}
                     />
 
                     <label htmlFor="">cover image</label>
@@ -84,7 +94,9 @@ function SignUp() {
                          className={inputStyle}
                          id="coverImage"
                          type="file"
-                         {...register("coverImage", { required: true })}
+                         onChange={(e) => {
+                              setCoverImage(e.target.files[0]);
+                         }}
                     />
                     <span className="text-end cursor-pointer text-zinc-300">
                          forgot password?
