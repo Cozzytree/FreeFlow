@@ -10,6 +10,7 @@ import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import User from "./Pages/User";
 import VideoView from "./Pages/VideoView";
+import { VideoProvider } from "./Component/VideoPlayer";
 
 const route = createBrowserRouter([
      {
@@ -60,21 +61,23 @@ const client = new QueryClient({
 
 function App() {
      return (
-          <QueryClientProvider client={client}>
-               <RouterProvider router={route} />
-               <Toaster
-                    position="top-right"
-                    reverseOrder={true}
-                    toastOptions={{
-                         duration: 4000,
-                         style: {
-                              background: "#1a1a1a",
-                              color: "#d9d9d9",
-                              width: "200px",
-                         },
-                    }}
-               />
-          </QueryClientProvider>
+          <VideoProvider>
+               <QueryClientProvider client={client}>
+                    <RouterProvider router={route} />
+                    <Toaster
+                         position="top-right"
+                         reverseOrder={true}
+                         toastOptions={{
+                              duration: 4000,
+                              style: {
+                                   background: "#1a1a1a",
+                                   color: "#d9d9d9",
+                                   width: "200px",
+                              },
+                         }}
+                    />
+               </QueryClientProvider>
+          </VideoProvider>
      );
 }
 

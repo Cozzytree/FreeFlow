@@ -15,7 +15,7 @@ class Tweet {
      async deleteTweet(tweetId) {
           try {
                const response = await fetch(
-                    `http://localhost:8000/api/vi/dt/${tweetId}`,
+                    `http://localhost:8000/api/v1/tweet/d/${tweetId}`,
                     {
                          method: "DELETE",
                          credentials: "include",

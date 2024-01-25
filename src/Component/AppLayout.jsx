@@ -3,19 +3,17 @@ import Nav from "./Nav";
 import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
 import { useState } from "react";
 import Loader from "./loader";
+import { useVideo } from "./VideoPlayer";
+import Button from "./Button";
 
 function AppLayout() {
+     const { removeVideo, video } = useVideo();
      const { currentUser, loadingCurrentUser } = useCurrentUser();
      const [isNav, setIsNav] = useState(false);
 
      function handleNav() {
           setIsNav((op) => !op);
      }
-     //  useEffect(() => {
-     //       if (currentUser && !loadingCurrentUser) {
-     //            navigate("/");
-     //       }
-     //  }, [navigate, loadingCurrentUser, currentUser]);
      return (
           <>
                {loadingCurrentUser && <Loader />}
@@ -27,10 +25,27 @@ function AppLayout() {
                          isNav={isNav}
                          setIsNav={handleNav}
                     />
-
                     <main className="w-[60vw] flex flex-col items-center">
                          <Outlet />
                     </main>
+                    {/* //Portable videoPlayer */}
+                    {video && (
+                         <div className="absolute bottom-2 right-2 w-[500px bg-zinc-900 h-[250px] flex justify-center items-center rounded-lg shadow-lg shadow-zinc-700/50 p-2">
+                              <video
+                                   controlsList="nodownload"
+                                   src={video}
+                                   className="bottom-1 right-1 relative"
+                                   width="400px"
+                                   controls
+                              ></video>{" "}
+                              <Button
+                                   extrastyles="z-[999] w-[20px absolute top-1 right-5 font-bold text-md"
+                                   onClick={removeVideo}
+                              >
+                                   X
+                              </Button>
+                         </div>
+                    )}
                </div>
           </>
      );

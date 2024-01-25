@@ -8,7 +8,7 @@ export function useDeleteTweet() {
      const { mutate: userDeleteTweet, isPending: deletingTweet } = useMutation({
           mutationFn: (tweeId) => deleteTweet(tweeId),
           onSuccess: () => {
-               toast.success("tweeted");
+               toast.success("successfully deleted");
                queryClient.invalidateQueries(["tweets"]);
           },
           onError: (error) => {
