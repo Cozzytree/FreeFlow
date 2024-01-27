@@ -35,6 +35,21 @@ class Video {
                throw error;
           }
      }
+
+     async getAllVideos() {
+          try {
+               const response = await fetch(
+                    "http://localhost:8000/api/v1/videos"
+               );
+               const data = await response.json();
+               if (data?.success === false) {
+                    throw new Error(data?.message);
+               }
+               return data;
+          } catch (error) {
+               throw error;
+          }
+     }
 }
 const videoservices = new Video();
 export default videoservices;

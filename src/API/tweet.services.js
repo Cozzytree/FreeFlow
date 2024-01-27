@@ -3,7 +3,11 @@ class Tweet {
      async getAllTweets() {
           try {
                const response = await fetch(
-                    "http://localhost:8000/api/v1/tweet/at"
+                    `http://localhost:8000/api/v1/tweet/at`,
+                    {
+                         method: "GET",
+                         credentials: "include",
+                    }
                );
                const data = await response.json();
                return data;

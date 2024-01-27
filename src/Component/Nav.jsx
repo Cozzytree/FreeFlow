@@ -30,7 +30,7 @@ function Nav({ user, isNav, setIsNav }) {
                >
                     <div className=" animate-slow ">
                          {user?.username && (
-                              <Link to={`/u/${user?.username}`}>
+                              <Link to={`/u/${user?.username}/videos`}>
                                    <img
                                         className="w-[30px] h-[30px] object-cover rounded-[100%]"
                                         src={user?.avatar}
@@ -44,7 +44,7 @@ function Nav({ user, isNav, setIsNav }) {
                               <FaHome className="" />
                               Home
                          </Link>
-                         <Link to="/tweets">
+                         <Link to={`tweets`}>
                               <FaPencilAlt className="" />
                               Tweet
                          </Link>

@@ -25,9 +25,10 @@ function AppLayout() {
                          isNav={isNav}
                          setIsNav={handleNav}
                     />
-                    <main className="w-[60vw] flex flex-col items-center">
+                    <main className="w-[95vw] flex flex-col items-center animate-slow p-2 pb-[100px]">
                          <Outlet />
                     </main>
+
                     {/* //Portable videoPlayer */}
                     {video && (
                          <div className="absolute bottom-2 right-2 w-[500px bg-zinc-900 h-[250px] flex justify-center items-center rounded-lg shadow-lg shadow-zinc-700/50 p-2">

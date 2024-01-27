@@ -17,38 +17,15 @@ const route = createBrowserRouter([
           path: "/",
           element: <AppLayout />,
           children: [
-               {
-                    path: "/",
-                    element: <Videos />,
-               },
-               {
-                    path: "/u/:username",
-                    element: <User />,
-               },
-               {
-                    path: "/tweets",
-                    element: <Tweet />,
-               },
-               {
-                    path: "/settings",
-                    element: <Settings />,
-               },
-               {
-                    path: "/watch_history",
-                    element: <WatchHistory />,
-               },
-               {
-                    path: "/login",
-                    element: <Login />,
-               },
-               {
-                    path: "/signUp",
-                    element: <SignUp />,
-               },
-               {
-                    path: "/v/:videoId",
-                    element: <VideoView />,
-               },
+               { path: "/", element: <Videos /> },
+               { path: "/u/:username/videos", element: <User /> },
+               { path: "/u/:username/videos" },
+               { path: "/tweets", element: <Tweet /> },
+               { path: "/settings", element: <Settings /> },
+               { path: "/watch_history", element: <WatchHistory /> },
+               { path: "/login", element: <Login /> },
+               { path: "/signUp", element: <SignUp /> },
+               { path: "/v/:videoId", element: <VideoView /> },
           ],
      },
 ]);

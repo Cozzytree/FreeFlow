@@ -6,6 +6,7 @@ const VideoContext = createContext();
 function VideoProvider({ children }) {
      const [video, setVideo] = useState("");
      function setVideoUrl(url) {
+          console.log(url);
           setVideo(url);
      }
 
@@ -25,11 +26,19 @@ function useVideo() {
 
 export { VideoProvider, useVideo };
 
-function VideoPlayer({ src }) {
+function VideoPlayer({ src, poster, controlsList }) {
      return (
-          <video src={src} className="relative" controls controlsList="">
-               <MdOutlineRectangle />
-          </video>
+          <div className="bg-zinc-900 p-5" style={{ background: poster }}>
+               <video
+                    poster={poster}
+                    src={src}
+                    className="relative w-[800px]"
+                    controls
+                    controlsList={controlsList}
+               >
+                    <MdOutlineRectangle />
+               </video>
+          </div>
      );
 }
 

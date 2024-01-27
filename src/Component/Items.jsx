@@ -4,13 +4,12 @@ import Options from "./Options";
 import { useDeleteTweet } from "../Hooks/tweetsHooks/useDeleteTweet";
 import { useLikeTweet } from "../Hooks/likeHooks/useTweetLike";
 
-function Items({ videoTumbnail, title, tweet }) {
+function Items({ tweet }) {
      const { deletingTweet, userDeleteTweet } = useDeleteTweet();
-     const { toggleTweet, tweetLikeData, loadingTweetlike } = useLikeTweet();
+     const { toggleTweet, loadingTweetlike } = useLikeTweet();
      function handleDeleteTweet(tweetId) {
           userDeleteTweet(tweetId);
      }
-     console.log(tweet);
      function handleTweetLike(tweetId) {
           toggleTweet(tweetId);
      }
@@ -21,12 +20,17 @@ function Items({ videoTumbnail, title, tweet }) {
                     deletingTweet && "animate-pulse"
                }`}
           >
-               {videoTumbnail && (
+               {/* {video && (
                     <>
-                         <img src={videoTumbnail} alt="" />
-                         <p>{title}</p>
+                         <img
+                              src={video?.thumbnail}
+                              alt=""
+                              className="w-[150px]"
+                         />
+                         <p>{video?.title}</p>
                     </>
-               )}
+               )} */}
+
                {/* {for tweet} */}
                {tweet && (
                     <article className="grid grid-cols-[auto_1fr] w-[80%] md:w-[60%] min-h-[125px] items-start gap-10 p-3 bg-zinc-700/20 rounded-md relative">

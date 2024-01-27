@@ -7,12 +7,12 @@ function Button({ children, type, onClick, extrastyles, disabled = false }) {
 
      if (type === "primary") {
           styles =
-               "bg-sky-600 text-zinc-900 h-[20px] text-sm md:text-md flex items-center md:h-[30px] rounded-md p-2 hover:bg-sky-500 hover:text-zinc-800 transition-all duration-200 outline-none";
+               "bg-sky-900 text-zinc-100 h-[20px] w-fit flex justify-center items-center text-sm md:text-md md:h-[30px] rounded-md p-2 hover:bg-sky-500 hover:text-zinc-800 transition-all duration-200 outline-none";
      }
 
      if (type === "like") {
           styles =
-               "relative bg-sky-700/10 px-2 md:px-4 py-2 rounded-md border-[1px] border-sky-400/50";
+               "w-[20px] h-[20px] flex justify-center items-center relative bg-sky-700/10 px-1 py-2 rounded-md border-[1px] border-sky-400/50";
      }
 
      return (
