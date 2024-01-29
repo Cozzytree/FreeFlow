@@ -77,6 +77,25 @@ class Tweet {
                throw error;
           }
      }
+
+     async getUserTweets(userId) {
+          try {
+               const response = await fetch(
+                    `http://localhost:8000/api/v1/tweet/user_t/${userId}`,
+                    {
+                         method: "GET",
+                         credentials: "include",
+                    }
+               );
+               const data = await response.json();
+               if (data?.success === false) {
+                    throw new Error(data?.message);
+               }
+               return data;
+          } catch (error) {
+               throw error;
+          }
+     }
 }
 
 const tweetServices = new Tweet();

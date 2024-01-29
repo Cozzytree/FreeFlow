@@ -20,17 +20,6 @@ function Items({ tweet }) {
                     deletingTweet && "animate-pulse"
                }`}
           >
-               {/* {video && (
-                    <>
-                         <img
-                              src={video?.thumbnail}
-                              alt=""
-                              className="w-[150px]"
-                         />
-                         <p>{video?.title}</p>
-                    </>
-               )} */}
-
                {/* {for tweet} */}
                {tweet && (
                     <article className="grid grid-cols-[auto_1fr] w-[80%] md:w-[60%] min-h-[125px] items-start gap-10 p-3 bg-zinc-700/20 rounded-md relative">
@@ -39,20 +28,25 @@ function Items({ tweet }) {
                               deleteHandler={handleDeleteTweet}
                               currentTweet={tweet?._id}
                          />
+                         {tweet?.ownerInfo && (
+                              <img
+                                   className="w-[50px] h-[50px] object-cover rounded-[100%]"
+                                   src={tweet?.ownerInfo?.avatar}
+                                   alt=""
+                              />
+                         )}
 
-                         <img
-                              className="w-[50px] h-[50px] object-cover rounded-[100%]"
-                              src={tweet?.ownerInfo.avatar}
-                              alt=""
-                         />
                          <section className="grid grid-rows-[1fr_auto] h-[100%] p-1 w-[100%]">
                               <div className="flex flex-col gap-1">
                                    <span className="flex items-end gap-2">
-                                        <h2 className="text-sm md:text-[1.3em] text-sky-500 cursor-pointer">
-                                             {tweet?.ownerInfo.username}
-                                        </h2>
+                                        {tweet?.ownerInfo && (
+                                             <h2 className="text-sm md:text-[1.3em] text-sky-500 cursor-pointer">
+                                                  {tweet?.ownerInfo?.username}
+                                             </h2>
+                                        )}
+
                                         <p className="text-[0.65em] md:text-[0.85em]">
-                                             {formatTime(tweet?.createdAt)}
+                                             {tweet?.createdAt}
                                         </p>
                                    </span>
                                    <p className="text-sm md:text-[1.1em]">

@@ -14,16 +14,20 @@ function AppLayout() {
      function handleNav() {
           setIsNav((op) => !op);
      }
+     function handleCloseNav() {
+          setIsNav(false);
+     }
      return (
           <>
                {loadingCurrentUser && <Loader />}
                <div
-                    className={`w-full min-h-[100vh] flex justify-center gap-3 font-Changa relative bg-zinc-800 text-zinc-100 text-md`}
+                    className={`w-full min-h-[100vh] flex flex-col items-center gap-3 font-Changa relative bg-zinc-800 text-zinc-100 text-md`}
                >
                     <Nav
                          user={currentUser?.data}
                          isNav={isNav}
                          setIsNav={handleNav}
+                         handleCloseNav={handleCloseNav}
                     />
                     <main className="w-[95vw] flex flex-col items-center animate-slow p-2 pb-[100px]">
                          <Outlet />

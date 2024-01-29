@@ -98,9 +98,6 @@ function SignUp() {
                               setCoverImage(e.target.files[0]);
                          }}
                     />
-                    <span className="text-end cursor-pointer text-zinc-300">
-                         forgot password?
-                    </span>
 
                     <Button type="primary">Login</Button>
                     <NavLink to="/login">

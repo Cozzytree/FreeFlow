@@ -2,11 +2,12 @@ import {
      cloneElement,
      createContext,
      useContext,
-     useEffect,
      useRef,
      useState,
 } from "react";
 import { createPortal } from "react-dom";
+import { useClickOutside } from "../Hooks/uiHooks/useClickOutside";
+import { useEscapeClose } from "../Hooks/uiHooks/useEscapeClose";
 
 const ModalContext = createContext();
 
@@ -30,33 +31,9 @@ function ModalWindow({ children, window }) {
      const { close, isModal } = useContext(ModalContext);
      const ref = useRef();
 
-     useEffect(() => {
-          function cModal(e) {
-               if (e.code == "Escape") {
-                    close();
-               }
-          }
+     useEscapeClose(close);
+     useClickOutside(ref, close);
 
-          document.addEventListener("keydown", cModal);
-          return () => document.removeEventListener("keydown", cModal);
-     }, [ref, close]);
-
-     useEffect(() => {
-          function handleOutsideClick(e) {
-               const isSVG =
-                    e.target instanceof SVGElement ||
-                    e.target.tagName.toLowerCase() === "svg";
-               if (ref.current && !ref.current.contains(e.target) && !isSVG) {
-                    close();
-               }
-          }
-
-          document.addEventListener("click", handleOutsideClick, false);
-
-          return () => {
-               document.removeEventListener("click", handleOutsideClick, false);
-          };
-     }, [close]);
      if (isModal !== window) return;
 
      return createPortal(

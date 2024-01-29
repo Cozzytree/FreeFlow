@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import Options from "./Options";
 
-function VideoItems({ v }) {
+function VideoItems({ v, type }) {
      const [isVideo, setVideo] = useState(false);
      const navigate = useNavigate();
      function handlePlayV() {
@@ -11,7 +12,8 @@ function VideoItems({ v }) {
           setVideo(false);
      }
      return (
-          <div className="flex flex-col p-2 gap-2 items-start">
+          <div className="flex flex-col p-5 gap-2 items-start relative">
+               {type === "user" && <Options userId={v?.owner} />}
                <video
                     onClick={() => {
                          navigate(`/v/${v?._id}`);
@@ -25,17 +27,24 @@ function VideoItems({ v }) {
                     autoPlay
                     muted
                ></video>
-               <div className="flex">
-                    <img
-                         src={v?.user?.avatar}
-                         alt=""
-                         className="w-[30px] h-[30px] rounded-[100%] gap-3"
-                    />
+
+               <div className="flex gap-3">
+                    {v?.user?.avatar && (
+                         <img
+                              src={v?.user?.avatar}
+                              alt="user img"
+                              className="w-[30px] h-[30px] rounded-[100%] gap-3"
+                         />
+                    )}
+
                     <div>
-                         <p className="text-zinc-400 text-sm">{v.title}</p>
-                         <h2 className="text-sm text-zinc-200 cursor-pointer">
-                              {v?.user?.username}
-                         </h2>
+                         <p className="text-zinc-400 text-sm">{v?.title}</p>
+
+                         {v?.user?.username && (
+                              <h2 className="text-sm text-zinc-200 cursor-pointer">
+                                   {v?.user?.username}
+                              </h2>
+                         )}
                     </div>
                </div>
           </div>

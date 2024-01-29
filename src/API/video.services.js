@@ -1,9 +1,9 @@
 /* eslint-disable no-useless-catch */
 class Video {
-     async getUserVideo() {
+     async getUserVideo(userId) {
           try {
                const response = await fetch(
-                    "http://localhost:8000/api/v1/videos/user_v",
+                    `http://localhost:8000/api/v1/videos/user_v/${userId}`,
                     {
                          method: "GET",
                          credentials: "include",
