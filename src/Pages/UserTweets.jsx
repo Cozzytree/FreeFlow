@@ -17,6 +17,7 @@ function UserTweets() {
             subcribersCount={currentUser?.data?.subcribersCount}
             totalVideos={currentUser?.data?.totalVideos}
             isSubscribed={currentUser?.data?.isSubscribed}
+            type="owner"
          />
          <TweetsVideoToggle />
 

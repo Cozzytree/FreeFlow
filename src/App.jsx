@@ -14,50 +14,50 @@ import UserVideos from "./Pages/UserVideos";
 import UserTweets from "./Pages/UserTweets";
 
 const route = createBrowserRouter([
-     {
-          path: "/",
-          element: <AppLayout />,
-          children: [
-               { path: "/", element: <Videos /> },
-               { path: "/u/:userId/videos", element: <UserVideos /> },
-               { path: "/u/:userId/tweets", element: <UserTweets /> },
-               { path: "/tweets", element: <Tweet /> },
-               { path: "/settings", element: <Settings /> },
-               { path: "/watch_history", element: <WatchHistory /> },
-               { path: "/login", element: <Login /> },
-               { path: "/signUp", element: <SignUp /> },
-               { path: "/v/:videoId", element: <VideoView /> },
-          ],
-     },
+   {
+      path: "/",
+      element: <AppLayout />,
+      children: [
+         { path: "/", element: <Videos /> },
+         { path: "/u/:userId/videos", element: <UserVideos /> },
+         { path: "/u/:userId/tweets", element: <UserTweets /> },
+         { path: "/tweets", element: <Tweet /> },
+         { path: "/settings", element: <Settings /> },
+         { path: "/watch_history", element: <WatchHistory /> },
+         { path: "/login", element: <Login /> },
+         { path: "/signUp", element: <SignUp /> },
+         { path: "/v/:videoId", element: <VideoView /> },
+      ],
+   },
 ]);
 
 const client = new QueryClient({
-     defaultOptions: {
-          queries: { staleTime: 0 },
-     },
+   defaultOptions: {
+      queries: { staleTime: 0 },
+   },
 });
 
 function App() {
-     return (
-          <VideoProvider>
-               <QueryClientProvider client={client}>
-                    <RouterProvider router={route} />
-                    <Toaster
-                         position="top-right"
-                         reverseOrder={true}
-                         toastOptions={{
-                              duration: 4000,
-                              style: {
-                                   background: "#1a1a1a",
-                                   color: "#d9d9d9",
-                                   width: "200px",
-                                   backdropFilter: blur("2px"),
-                              },
-                         }}
-                    />
-               </QueryClientProvider>
-          </VideoProvider>
-     );
+   return (
+      <VideoProvider>
+         <QueryClientProvider client={client}>
+            <RouterProvider router={route} />
+            <Toaster
+               position="top-right"
+               reverseOrder={true}
+               toastOptions={{
+                  duration: 4000,
+                  style: {
+                     background: "#1a1a1a",
+                     color: "#d9d9d9",
+                     width: "200px",
+                     backdropFilter: blur("2px"),
+                  },
+               }}
+            />
+         </QueryClientProvider>
+      </VideoProvider>
+   );
 }
 
 export default App;

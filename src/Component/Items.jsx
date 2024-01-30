@@ -1,5 +1,5 @@
 import Like from "./Like";
-import { formatTime } from "../utils/time";
+import { time } from "../utils/time";
 import Options from "./Options";
 import { useDeleteTweet } from "../Hooks/tweetsHooks/useDeleteTweet";
 import { useLikeTweet } from "../Hooks/likeHooks/useTweetLike";
@@ -46,7 +46,7 @@ function Items({ tweet }) {
                         )}
 
                         <p className="text-[0.65em] md:text-[0.85em]">
-                           {tweet?.createdAt}
+                           {time(tweet?.createdAt)}
                         </p>
                      </span>
                      <p className="text-sm md:text-[1.1em]">{tweet?.content}</p>

@@ -1,8 +1,12 @@
 import { useParams } from "react-router";
 import { useSubscribe } from "../Hooks/subscribeHooks/useSubscribeHooks";
+import { AiOutlineUpload } from "react-icons/ai";
 import Button from "./Button";
+import InputFile from "./InputFile";
+import ModalProvider from "./Modal";
 
 function UserView({
+   type = "non_owner",
    username,
    avatar,
    subcribersCount,
@@ -16,7 +20,7 @@ function UserView({
       userSubscribe(params?.userId);
    }
    return (
-      <div className="w-[80vw] grid grid-cols-[auto_1fr] items-center gap-3">
+      <div className="w-[80vw] grid grid-cols-[auto_1fr] items-center gap-3 relative">
          <img
             className="w-[100px] md:w-[150px] h-[100px] md:h-[150px] rounded-[100%]"
             src={avatar}
@@ -41,6 +45,27 @@ function UserView({
                {isSubscribed ? "Subscribed" : "Suscribe"}
             </Button>
          </div>
+         {type === "owner" && (
+            <>
+               <ModalProvider>
+                  <ModalProvider.ModalOpen opens="upload">
+                     <Button>
+                        <AiOutlineUpload
+                           size={20}
+                           fill="#212121"
+                           className="absolute right-0 bottom-0 w-[25px] h-[25px] bg-lime-600 rounded-[100%] p-1 hover:bg-lime-800 transition-all duration-200"
+                        />
+                     </Button>
+                  </ModalProvider.ModalOpen>
+                  <ModalProvider.ModalWindow
+                     window="upload"
+                     clickOutside={false}
+                  >
+                     <InputFile />
+                  </ModalProvider.ModalWindow>
+               </ModalProvider>
+            </>
+         )}
       </div>
    );
 }

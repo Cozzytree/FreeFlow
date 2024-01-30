@@ -14,6 +14,7 @@ function UserVideos() {
       <>
          {(loadingUser || loadingVideos) && <Loader />}
          <UserView
+            type="owner"
             username={currentUser?.data?.username}
             avatar={currentUser?.data?.avatar}
             subcribersCount={currentUser?.data?.subcribersCount}

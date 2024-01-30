@@ -3,9 +3,13 @@
 @tailwind utilities;
 
 body::-webkit-scrollbar {
-     width: 5px;
+   width: 5px;
 }
 
 body::-webkit-scrollbar-thumb {
-     background: rgb(45, 0, 43);
+   background: rgb(45, 0, 43);
+}
+
+input[type="file"] {
+   color: #b8b8b8;
 }

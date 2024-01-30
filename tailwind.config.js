@@ -1,25 +1,25 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-     content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-     theme: {
-          extend: {
-               fontFamily: {
-                    Changa: "Changa, sans-serif",
+   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+   theme: {
+      extend: {
+         fontFamily: {
+            Changa: "Changa, sans-serif",
+         },
+         animation: {
+            slow: "slow 1s ease linear",
+         },
+         keyframes: {
+            slow: {
+               from: {
+                  opacity: 0,
                },
-               animation: {
-                    slow: "slow 1s ease linear",
+               to: {
+                  opacity: 1,
                },
-               keyframes: {
-                    slow: {
-                         "0%": {
-                              opacity: "0",
-                         },
-                         "100%": {
-                              opacity: "1",
-                         },
-                    },
-               },
-          },
-     },
-     plugins: [],
+            },
+         },
+      },
+   },
+   plugins: [],
 };
