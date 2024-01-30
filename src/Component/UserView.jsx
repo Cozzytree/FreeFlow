@@ -10,7 +10,7 @@ function UserView({
    isSubscribed,
 }) {
    const params = useParams();
-   const { userSubscribe } = useSubscribe();
+   const { userSubscribe, loadingSubscribe } = useSubscribe();
 
    function handleSubscribe() {
       userSubscribe(params?.userId);
@@ -33,6 +33,7 @@ function UserView({
                </span>
             </div>
             <Button
+               disabled={loadingSubscribe}
                onClick={handleSubscribe}
                extrastyles="rounded-md"
                type="primary"

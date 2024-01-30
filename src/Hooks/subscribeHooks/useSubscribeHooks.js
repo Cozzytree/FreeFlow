@@ -8,14 +8,14 @@ export function useSubscribe() {
       mutate: userSubscribe,
       data,
       isPending: loadingSubscribe,
-      error,
    } = useMutation({
       mutationFn: subscribe,
       onSuccess: () => {
-         toast.success("subbed");
          queryClient.invalidateQueries(["getUser"]);
       },
+      onError: (error) => {
+         toast.error(error.message);
+      },
    });
-   console.log(data);
    return { userSubscribe, data, loadingSubscribe };
 }
