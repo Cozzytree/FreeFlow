@@ -1,22 +1,36 @@
-import { useForm } from "react-hook-form";
 import { AiOutlineUpload } from "react-icons/ai";
 import Button from "./Button";
+import { useUpload } from "../Hooks/videoHooks/useUpload";
+import MiniSpinner from "./MiniSpinner";
+import { useState } from "react";
 
 function InputFile() {
-   const { register, handleSubmit, getValues } = useForm();
+   const { userUploadVideo, isUploading } = useUpload();
+   const [videoFile, setVideoFile] = useState(null);
+   const [cover, setCover] = useState(null);
+   const [title, setTitle] = useState("");
 
-   function onSubmit(data) {
+   function handleSubmit(e) {
+      e.preventDefault();
       const formData = new FormData();
-      formData.append("videoFile", data?.videoFile);
-      formData.append("thumbnail", data?.thumbnail);
-      console.log(getValues().videoFile);
+      formData.append("videoFile", videoFile);
+      formData.append("thumbnail", cover);
+      formData.append("title", title);
+
+      userUploadVideo(formData);
    }
 
    return (
       <form
-         onSubmit={handleSubmit(onSubmit)}
+         encType="multipart/form-data"
+         onSubmit={handleSubmit}
          className="flex flex-col items-center gap-2 p-2 rounded-lg"
       >
+         <input
+            type="text"
+            placeholder="title"
+            onChange={(e) => setTitle(e.target.value)}
+         />
          <label
             htmlFor="videoFile"
             className="w-fit p-[4px] md:h-[30px] rounded-[100%] flex justify-center items-center cursor-pointer text-zinc-50 gap-3"
@@ -31,9 +45,10 @@ function InputFile() {
          <input
             id="videoFile"
             type="file"
+            name="videoFile"
             className="hidden"
             accept="video/mp4"
-            {...register("videoFile", { required: true })}
+            onChange={(e) => setVideoFile(e.target.files[0])}
          />
          <label
             htmlFor="thumbnail"
@@ -42,14 +57,15 @@ function InputFile() {
             <p className="w-[100px] text-center">choose a thumbnail</p>
          </label>
          <input
+            name="thumbnail"
             id="thumbnail"
             type="file"
             className="hidden"
             accept="image/jpeg, image/png"
-            {...register("thumbnail", { required: true })}
+            onChange={(e) => setCover(e.target.files[0])}
          />
-         <Button extrastyles="rounded-md" type="primary">
-            Upload
+         <Button disabled={isUploading} extrastyles="rounded-md" type="primary">
+            {isUploading ? <MiniSpinner /> : "Upload"}
          </Button>
       </form>
    );

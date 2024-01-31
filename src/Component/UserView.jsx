@@ -6,12 +6,12 @@ import InputFile from "./InputFile";
 import ModalProvider from "./Modal";
 
 function UserView({
-   type = "non_owner",
    username,
    avatar,
    subcribersCount,
    totalVideos,
    isSubscribed,
+   userId,
 }) {
    const params = useParams();
    const { userSubscribe, loadingSubscribe } = useSubscribe();
@@ -45,8 +45,9 @@ function UserView({
                {isSubscribed ? "Subscribed" : "Suscribe"}
             </Button>
          </div>
-         {type === "owner" && (
-            <>
+
+         <>
+            {params?.userId === userId && (
                <ModalProvider>
                   <ModalProvider.ModalOpen opens="upload">
                      <Button>
@@ -64,8 +65,8 @@ function UserView({
                      <InputFile />
                   </ModalProvider.ModalWindow>
                </ModalProvider>
-            </>
-         )}
+            )}
+         </>
       </div>
    );
 }

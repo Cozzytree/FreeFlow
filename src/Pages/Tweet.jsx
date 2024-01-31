@@ -33,7 +33,11 @@ function Tweet() {
                placeholder="write something..."
                {...register("content", { required: true })}
             ></textarea>
-            <Button extrastyles="rounded-md" type="primary">
+            <Button
+               ariaLabel="like button"
+               extrastyles="rounded-md"
+               type="primary"
+            >
                Tweet
             </Button>
          </form>

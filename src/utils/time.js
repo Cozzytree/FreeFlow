@@ -1,16 +1,24 @@
 export function time(t) {
    const locale = navigator.language;
-   const hours = new Date().getHours(t);
-   const day = new Date().getDay(t);
+   const currentTime = new Date();
+   const targetTime = new Date(t);
 
-   if (day < 1 && hours < 24) {
-      return `${hours} hours ago`;
-   } else if (day > 7) {
+   const timeDifference = currentTime - targetTime;
+   const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+   const dayDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+   if (hoursDifference < 24) {
+      return `${hoursDifference} hours ago`;
+   } else if (dayDifference < 1) {
+      return "today";
+   } else if (dayDifference === 1) {
+      return "yesterday";
+   } else if (dayDifference <= 7) {
+      return `${dayDifference} days ago`;
+   } else {
       return new Intl.DateTimeFormat(locale, {
          dateStyle: "short",
          timeStyle: "short",
-      }).format(new Date(t));
-   } else {
-      return `${day} days ago`;
+      }).format(targetTime);
    }
 }

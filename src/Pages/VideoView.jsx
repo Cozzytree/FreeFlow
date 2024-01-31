@@ -2,7 +2,6 @@ import VideoPlayer, { useVideo } from "../Component/VideoPlayer";
 import Loader from "../Component/loader";
 import { useGetaVideo } from "../Hooks/videoHooks/useGetaVideo";
 import { time } from "../utils/time";
-// import { formatTime } from "../utils/time";
 
 function VideoView() {
    const { video, loadingVideo } = useGetaVideo();
@@ -22,7 +21,11 @@ function VideoView() {
             <h2>{video?.data?.title}</h2>
             <p className="text-zinc-400 flex gap-3 text-sm items-center">
                <span>{video?.data?.views} views</span>
-               <span className="text-xs">{time(video?.data?.createdAt)}</span>
+               {video?.data?.createdAt && (
+                  <span className="text-xs">
+                     {time(video?.data?.createdAt)}
+                  </span>
+               )}
             </p>
             <p>Comments</p>
          </div>

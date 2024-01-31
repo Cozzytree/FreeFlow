@@ -69,7 +69,6 @@ class Auth {
          const response = await fetch(
             "http://localhost:8000/api/v1/users/getcurrentUser",
             {
-               method: "GET",
                credentials: "include",
             }
          );

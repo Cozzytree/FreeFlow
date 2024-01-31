@@ -22,11 +22,11 @@ function Items({ tweet }) {
       >
          {/* {for tweet} */}
          {tweet && (
-            <article className="grid grid-cols-[auto_1fr] w-[80%] md:w-[60%] min-h-[125px] items-start gap-10 p-3 bg-zinc-700/20 rounded-md relative">
+            <article className="grid grid-cols-[auto_1fr] w-[80%] md:w-[60%] min-h-[125px] items-start gap-5 p-3 bg-zinc-700/20 rounded-md relative">
                <Options
                   userId={tweet?.ownerInfo?._id}
                   deleteHandler={handleDeleteTweet}
-                  currentTweet={tweet?._id}
+                  currentItem={tweet?._id}
                />
                {tweet?.ownerInfo && (
                   <img

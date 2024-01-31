@@ -4,17 +4,18 @@ import Loader from "../Component/loader";
 import { useGetUser } from "../Hooks/authHooks/useGetUser";
 import { useUserVideo } from "../Hooks/videoHooks/useUserVideo";
 import TweetsVideoToggle from "../Component/TweetsVideoToggle";
+import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
 
 function UserVideos() {
+   const { currentUser: cu, loadingCurrentUser } = useCurrentUser();
    const { loadingUser, currentUser } = useGetUser();
    const { userVideos, loadingVideos } = useUserVideo();
-
    const { data } = userVideos || [];
    return (
       <>
-         {(loadingUser || loadingVideos) && <Loader />}
+         {(loadingUser || loadingVideos || loadingCurrentUser) && <Loader />}
          <UserView
-            type="owner"
+            userId={cu?.data?._id}
             username={currentUser?.data?.username}
             avatar={currentUser?.data?.avatar}
             subcribersCount={currentUser?.data?.subcribersCount}

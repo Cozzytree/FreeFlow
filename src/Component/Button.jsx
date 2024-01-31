@@ -1,4 +1,11 @@
-function Button({ children, type, onClick, extrastyles, disabled = false }) {
+function Button({
+   children,
+   type,
+   onClick,
+   extrastyles,
+   disabled = false,
+   ariaLabel,
+}) {
    let styles;
    if (type === "danger") {
       styles =
@@ -17,6 +24,7 @@ function Button({ children, type, onClick, extrastyles, disabled = false }) {
 
    return (
       <button
+         aria-label={ariaLabel}
          onClick={onClick}
          disabled={disabled}
          className={`${styles} ${extrastyles}`}
