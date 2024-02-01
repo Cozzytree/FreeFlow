@@ -19,7 +19,6 @@ function VideoItems({ v, type }) {
    function handleDeleteVideo(videoId) {
       userDeleteVideo(videoId);
    }
-
    return (
       <div className="flex flex-col p-5 gap-2 items-start relative">
          {isDeleting && <Loader />}
@@ -30,20 +29,24 @@ function VideoItems({ v, type }) {
                currentItem={v?._id}
             />
          )}
-         <video
-            onClick={() => {
-               navigate(`/v/${v?._id}`);
-            }}
-            poster={v?.thumbnail}
-            controlsList="nodownload nofullscreen nodocumentfile"
-            className="w-[250px] h-[150px] object-cover rounded-md animate-slow cursor-pointer"
-            onMouseLeave={handleStopv}
-            onMouseEnter={handlePlayV}
-            src={isVideo ? v?.videoFile : ""}
-            autoPlay
-            muted
-         ></video>
-
+         <div className="relative">
+            <video
+               onClick={() => {
+                  navigate(`/v/${v?._id}`);
+               }}
+               poster={v?.thumbnail}
+               controlsList="nodownload nofullscreen nodocumentfile"
+               className="w-[300px] h-[200px] object-cover rounded-md animate-slow cursor-pointer"
+               onMouseLeave={handleStopv}
+               onMouseEnter={handlePlayV}
+               src={isVideo ? v?.videoFile : ""}
+               autoPlay
+               muted
+            ></video>
+            <span className="text-sm absolute bottom-1 right-2">
+               {(v?.duration / 60).toFixed(2)}
+            </span>
+         </div>
          <div
             className="flex gap-3"
             onClick={() => navigate(`/u/${v?.user?.id}/videos`)}
