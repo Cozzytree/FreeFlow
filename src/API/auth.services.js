@@ -101,6 +101,22 @@ class Auth {
          throw error;
       }
    }
+
+   async updateWatchHistory(videoId) {
+      try {
+         const response = await fetch(
+            `http://localhost:8000/api/v1/users/wh/${videoId}`,
+            {
+               method: "PATCH",
+               credentials: "include",
+            }
+         );
+         const data = await response.json();
+         return data;
+      } catch (error) {
+         throw error;
+      }
+   }
 }
 const authservices = new Auth();
 export default authservices;

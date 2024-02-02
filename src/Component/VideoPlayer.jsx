@@ -28,11 +28,11 @@ export { VideoProvider, useVideo };
 
 function VideoPlayer({ src, poster, controlsList }) {
    return (
-      <div className="bg-zinc-900 p-5" style={{ background: poster }}>
+      <div className="bg-zinc-900 p-2" style={{ background: poster }}>
          <video
             poster={poster}
             src={src}
-            className="relative w-[800px] h-[200px] md:h-[300px]"
+            className="videoPlayer relative w-[800px] h-[200px] md:h-[300px]"
             controls
             controlsList={controlsList}
          >

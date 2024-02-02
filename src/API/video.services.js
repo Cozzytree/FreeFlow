@@ -22,7 +22,11 @@ class Video {
    async getAvideo(videoId) {
       try {
          const response = await fetch(
-            `http://localhost:8000/api/v1/videos/${videoId}`
+            `http://localhost:8000/api/v1/videos/${videoId}`,
+            {
+               method: "GET",
+               credentials: "include",
+            }
          );
          const data = await response.json();
 
@@ -83,6 +87,24 @@ class Video {
             throw new Error(data?.message);
          }
          return data;
+      } catch (error) {
+         throw error;
+      }
+   }
+
+   async addView(videoId) {
+      try {
+         const response = await fetch(
+            `http://localhost:8000/api/v1/videos/addView/${videoId}`,
+            {
+               method: "PATCH",
+               credentials: "include",
+            }
+         );
+         const data = await response.json();
+         if (data?.success === false) {
+            throw new Error(data?.message);
+         }
       } catch (error) {
          throw error;
       }

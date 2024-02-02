@@ -5,6 +5,7 @@ import { useState } from "react";
 import Loader from "./loader";
 import { useVideo } from "./VideoPlayer";
 import Button from "./Button";
+import { useEscapeClose } from "../Hooks/uiHooks/useEscapeClose";
 
 function AppLayout() {
    const { removeVideo, video } = useVideo();
@@ -17,6 +18,7 @@ function AppLayout() {
    function handleCloseNav() {
       setIsNav(false);
    }
+   useEscapeClose(handleCloseNav);
    return (
       <>
          {loadingCurrentUser && <Loader />}

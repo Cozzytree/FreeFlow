@@ -17,11 +17,18 @@ class Comment {
       }
    }
 
-   async addVideoComment(videoId) {
+   async addVideoComment(videoId, content) {
       try {
          const response = await fetch(
             `http://localhost:8000/api/v1/comments/ac/${videoId}`,
-            { method: "POST", credentials: "include" }
+            {
+               method: "POST",
+               credentials: "include",
+               headers: {
+                  "Content-Type": "application/json",
+               },
+               body: JSON.stringify(content),
+            }
          );
          const data = await response.json();
          if (data?.success === false) {
