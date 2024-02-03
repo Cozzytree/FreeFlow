@@ -7,6 +7,7 @@ import ModalProvider from "./Modal";
 import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
 import Button from "./Button";
 import { useState } from "react";
+import MiniSpinner from "./MiniSpinner";
 
 function Options({
     handleOptions,
@@ -14,9 +15,14 @@ function Options({
     deleteHandler,
     currentItem,
     tweetEdit,
+    videoEdit,
 }) {
     const { currentUser } = useCurrentUser();
     const [content, setContent] = useState(tweetEdit?.tweet);
+    const [title, setTitle] = useState(videoEdit?.title);
+    const [description, setDescription] = useState(
+        videoEdit?.description || ""
+    );
 
     return (
         <div className="absolute right-2 top-1 flex flex-col justify-end items-end text-sm rotate-90">
@@ -79,7 +85,56 @@ function Options({
                                                     extrastyles="rounded-sm h-[30px]"
                                                     type="primary"
                                                 >
-                                                    SAVE
+                                                    {tweetEdit?.loading ? (
+                                                        <MiniSpinner />
+                                                    ) : (
+                                                        "SAVE"
+                                                    )}
+                                                </Button>
+                                            </form>
+                                        )}
+
+                                        {/* {video edit window} */}
+                                        {videoEdit && (
+                                            <form
+                                                onSubmit={(e) => {
+                                                    videoEdit?.handler(
+                                                        e,
+                                                        videoEdit?.videoId,
+                                                        { title, description }
+                                                    );
+                                                }}
+                                                className="flex flex-col items-center gap-3"
+                                            >
+                                                <input
+                                                    className="bg-transparent outline-none border-[0.5px] border-zinc-400 rounded-md p-2 text-zinc-100"
+                                                    type="text"
+                                                    onChange={(e) =>
+                                                        setTitle(e.target.value)
+                                                    }
+                                                    defaultValue={title}
+                                                />
+                                                <textarea
+                                                    onChange={(e) =>
+                                                        setDescription(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                    className="bg-transparent outline-none border-[0.5px] border-zinc-400 rounded-md p-2 text-zinc-100"
+                                                    defaultValue={description}
+                                                    cols="30"
+                                                    placeholder="description..."
+                                                ></textarea>
+                                                <Button
+                                                    disabled={videoEdit?.loader}
+                                                    type="primary"
+                                                    extrastyles="rounded-sm"
+                                                >
+                                                    {videoEdit?.loader ? (
+                                                        <MiniSpinner />
+                                                    ) : (
+                                                        "SAVE"
+                                                    )}
                                                 </Button>
                                             </form>
                                         )}
