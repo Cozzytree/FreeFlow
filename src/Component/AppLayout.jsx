@@ -19,6 +19,7 @@ function AppLayout() {
       setIsNav(false);
    }
    useEscapeClose(handleCloseNav);
+
    return (
       <>
          {loadingCurrentUser && <Loader />}

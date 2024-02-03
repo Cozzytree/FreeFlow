@@ -66,6 +66,7 @@ function VideoView() {
                   </span>
                )}
             </p>
+
             <Like
                totalLikes={video?.data?.totalLikes}
                liked={video?.data?.isLiked}

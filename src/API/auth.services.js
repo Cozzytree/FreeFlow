@@ -117,6 +117,24 @@ class Auth {
          throw error;
       }
    }
+
+   async getUserWatchHistory() {
+      try {
+         const response = await fetch(
+            "http://localhost:8000/api/v1/users/wh/watch_history",
+            {
+               credentials: "include",
+            }
+         );
+         const data = await response.json();
+         if (data?.success === false) {
+            throw new Error("none");
+         }
+         return data;
+      } catch (error) {
+         throw error;
+      }
+   }
 }
 const authservices = new Auth();
 export default authservices;

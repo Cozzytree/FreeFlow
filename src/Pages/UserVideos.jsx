@@ -11,6 +11,7 @@ function UserVideos() {
    const { loadingUser, currentUser } = useGetUser();
    const { userVideos, loadingVideos } = useUserVideo();
    const { data } = userVideos || [];
+
    return (
       <>
          {(loadingUser || loadingVideos || loadingCurrentUser) && <Loader />}

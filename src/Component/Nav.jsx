@@ -8,6 +8,7 @@ import Loader from "./loader";
 import Link from "./Link";
 import { useRef } from "react";
 import { useClickOutside } from "../Hooks/uiHooks/useClickOutside";
+import { PiTelevisionSimpleFill } from "react-icons/pi";
 
 function Nav({ user, isNav, setIsNav, handleCloseNav }) {
    const { userLogout, isPending } = useLogout();
@@ -40,14 +41,20 @@ function Nav({ user, isNav, setIsNav, handleCloseNav }) {
             >
                <div className=" animate-slow ">
                   {user?.username && (
-                     <Link to={`/u/${user?._id}/videos`}>
-                        <img
-                           className="w-[30px] h-[30px] object-cover rounded-[100%]"
-                           src={user?.avatar}
-                           alt=""
-                        />
-                        <h1 className="text-sm">{user?.username}</h1>
-                     </Link>
+                     <>
+                        <Link to={`/u/${user?._id}/videos`}>
+                           <img
+                              className="w-[30px] h-[30px] object-cover rounded-[100%]"
+                              src={user?.avatar}
+                              alt=""
+                           />
+                           <h1 className="text-sm">{user?.username}</h1>
+                        </Link>
+                        <Link to={`/${user?._id}/watch_history`}>
+                           <PiTelevisionSimpleFill />
+                           <h2 className="text-sm md:text-md">Watch history</h2>
+                        </Link>
+                     </>
                   )}
 
                   <Link to="/">

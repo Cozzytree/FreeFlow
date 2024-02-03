@@ -3,10 +3,14 @@ import { time } from "../utils/time";
 import Options from "./Options";
 import { useDeleteTweet } from "../Hooks/tweetsHooks/useDeleteTweet";
 import { useLikeTweet } from "../Hooks/likeHooks/useTweetLike";
+import TweetComments from "./tweetComments";
+import { useState } from "react";
+import { MdMessage } from "react-icons/md";
 
 function Items({ tweet }) {
    const { deletingTweet, userDeleteTweet } = useDeleteTweet();
    const { toggleTweet, loadingTweetlike } = useLikeTweet();
+   const [isComment, setComment] = useState(false);
    function handleDeleteTweet(tweetId) {
       userDeleteTweet(tweetId);
    }
@@ -22,7 +26,7 @@ function Items({ tweet }) {
       >
          {/* {for tweet} */}
          {tweet && (
-            <article className="grid grid-cols-[auto_1fr] w-[80%] md:w-[60%] min-h-[125px] items-start gap-5 p-3 bg-zinc-700/20 rounded-md relative">
+            <article className="flex flex-cols w-[80%] md:w-[60%] min-h-[125px] items-start gap-5 p-3 bg-zinc-700/20 rounded-md relative">
                <Options
                   userId={tweet?.ownerInfo?._id}
                   deleteHandler={handleDeleteTweet}
@@ -36,8 +40,8 @@ function Items({ tweet }) {
                   />
                )}
 
-               <section className="grid grid-rows-[1fr_auto] h-[100%] p-1 w-[100%]">
-                  <div className="flex flex-col gap-1">
+               <section className="grid grid-rows-[auto_1fr] h-[100%] p-1 w-[100%]">
+                  <div className="flex flex-col gap-1 h-[50px]">
                      <span className="flex items-end gap-2">
                         {tweet?.ownerInfo && (
                            <h2 className="text-sm md:text-[1.3em] text-sky-500 cursor-pointer">
@@ -51,14 +55,30 @@ function Items({ tweet }) {
                      </span>
                      <p className="text-sm md:text-[1.1em]">{tweet?.content}</p>
                   </div>
-                  <Like
-                     liked={tweet?.isLiked}
-                     loader={loadingTweetlike}
-                     handler={() => {
-                        handleTweetLike(tweet?._id);
-                     }}
-                     totalLikes={tweet?.totalLikesCount}
-                  />
+
+                  <div className="grid grid-rows-[auto_1fr] gap-4">
+                     <div className="flex items-center gap-4">
+                        <Like
+                           liked={tweet?.isLiked}
+                           loader={loadingTweetlike}
+                           handler={() => {
+                              handleTweetLike(tweet?._id);
+                           }}
+                           totalLikes={tweet?.totalLikesCount}
+                        />
+                        <p className="flex items-center gap-1">
+                           <MdMessage
+                              cursor="pointer"
+                              onClick={() => setComment((cur) => !cur)}
+                           />
+                           <span className="text-sm">
+                              {tweet?.totalCommentsCount}
+                           </span>
+                        </p>
+                     </div>
+
+                     {isComment && <TweetComments tweetId={tweet?._id} />}
+                  </div>
                </section>
             </article>
          )}

@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useGetVideoComments } from "../Hooks/commentHooks/getVideoComments";
 import MiniSpinner from "./MiniSpinner";
 import { time } from "../utils/time";
-import Button from "./Button";
 import { useAddVideoComment } from "../Hooks/commentHooks/useAddComment";
 import { useParams } from "react-router";
 import Options from "./Options";
 import { useDeleteVideoComment } from "../Hooks/commentHooks/useDeleteVideoComment";
+import CommentForm from "./CommentForm";
 
 function Comments({ totalComments }) {
    const { videoComments, isLoading } = useGetVideoComments();
@@ -40,26 +40,14 @@ function Comments({ totalComments }) {
             } origin-top transition-all duration-200 space-y-2 flex flex-col items-center`}
          >
             {/* {form for commrnt} */}
-            <form
-               onSubmit={(e) =>
+
+            <CommentForm
+               handler={(e) =>
                   handleaddComment(e, params?.videoId, { content })
                }
-               className="w-[100%] flex relative"
-            >
-               <textarea
-                  onChange={(e) => setContent(e.target.value)}
-                  type="text"
-                  className="rounded-md w-[100%] bg-transparent border-b-[1px] outline-none px-3 py-1"
-                  placeholder="write a comment..."
-               />
-               <Button
-                  disabled={isComenting}
-                  extrastyles="rounded-md h-[40px] text-sm"
-                  type="primary"
-               >
-                  Add comment
-               </Button>
-            </form>
+               setContent={setContent}
+               isLoading={isComenting}
+            />
 
             {/* {comments} */}
             {(isComenting || isDeleting) && <MiniSpinner />}
