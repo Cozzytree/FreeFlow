@@ -13,7 +13,6 @@ function WatchHistory() {
 
    const { userWatchHistory, loadingHistory } = useGetWatchHistory();
 
-   console.log(userWatchHistory);
    return (
       <>
          <h1 className="w-[100%] text-left text-lg md:text-4xl font-medium tracking-wide">

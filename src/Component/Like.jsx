@@ -11,21 +11,23 @@ function Like({ totalLikes, handler, loader, liked }) {
          {!loader && (
             <>
                {currentUser && (
-                  <Button disabled={loader} onClick={handler} type="like">
+                  <Button
+                     disabled={loader}
+                     onClick={handler}
+                     extrastyles="w-fit gap-3 p-2"
+                     type="like"
+                  >
                      {liked ? (
                         <AiFillLike size={10} />
                      ) : (
                         <GrLike size={10} fill="white" />
                      )}
+                     <p className="text-xs md:text-[0.9em]">{totalLikes}</p>
                   </Button>
                )}
             </>
          )}
          {loader && <MiniSpinner />}
-
-         <p className="text-xs md:text-[0.9em]">
-            {totalLikes === 0 ? "No Likes yet" : `${totalLikes} likes`}
-         </p>
       </div>
    );
 }

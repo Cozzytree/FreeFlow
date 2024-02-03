@@ -1,16 +1,18 @@
 import videoservices from "../../API/video.services";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 export function useAllVideos() {
-     const { getAllVideos } = videoservices;
-     const {
-          data: allVideos,
-          isLoading: loadingVideos,
-          error,
-     } = useQuery({
-          queryFn: getAllVideos,
-          queryKey: ["videos"],
-     });
+   const { getAllVideos } = videoservices;
+   const {
+      data: allVideos,
+      isLoading: loadingVideos,
+      fetchNextPage,
+      error,
+   } = useInfiniteQuery({
+      queryFn: getAllVideos,
+      queryKey: ["videos"],
+      getNextPageParam: (lastpage) => {},
+   });
 
-     return { allVideos, loadingVideos, error };
+   return { allVideos, loadingVideos, error, fetchNextPage };
 }

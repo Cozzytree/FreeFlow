@@ -40,14 +40,17 @@ class Video {
       }
    }
 
-   async getAllVideos() {
+   async getAllVideos({ pageparam = 1 }) {
       try {
-         const response = await fetch("http://localhost:8000/api/v1/videos");
+         const response = await fetch(
+            `http://localhost:8000/api/v1/videos?page=${pageparam}&limit=10`,
+            { method: "GET" }
+         );
          const data = await response.json();
          if (data?.success === false) {
             throw new Error(data?.message);
          }
-         return data;
+         return { data, pageparam };
       } catch (error) {
          throw error;
       }

@@ -8,9 +8,8 @@ import Options from "./Options";
 import { useDeleteVideoComment } from "../Hooks/commentHooks/useDeleteVideoComment";
 import CommentForm from "./CommentForm";
 
-function Comments({ totalComments }) {
+function Comments() {
    const { videoComments, isLoading } = useGetVideoComments();
-   const [isComments, setComments] = useState(false);
    const { addComment, isComenting } = useAddVideoComment();
    const { deleteComment, isDeleting } = useDeleteVideoComment();
    const params = useParams();
@@ -30,14 +29,8 @@ function Comments({ totalComments }) {
       <div className="overflow-y-auto max-h-[200px] px-2 overflow-hidden">
          {isLoading && <MiniSpinner />}
 
-         {!isComments && (
-            <button onClick={() => setComments(true)}>&darr; comments</button>
-         )}
-         {totalComments && <span>{totalComments}</span>}
          <div
-            className={`${
-               isComments ? "translate-y-[0px]" : "translate-y-[-500px]"
-            } origin-top transition-all duration-200 space-y-2 flex flex-col items-center`}
+            className={`transition-all duration-200 space-y-2 flex flex-col items-center`}
          >
             {/* {form for commrnt} */}
 
@@ -79,7 +72,6 @@ function Comments({ totalComments }) {
                   </div>
                </div>
             ))}
-            <button onClick={() => setComments(false)}>&uarr; collapse</button>
          </div>
       </div>
    );

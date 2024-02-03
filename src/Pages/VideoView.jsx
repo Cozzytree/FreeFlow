@@ -12,13 +12,16 @@ import Like from "../Component/Like";
 import { useVideoLike } from "../Hooks/likeHooks/useVideoLike";
 
 function VideoView() {
+   const [isView, setIsView] = useState(false);
+   const [extra, setExtra] = useState(false);
+   const [isComments, setComments] = useState(false);
+
    const params = useParams();
    const { video, loadingVideo } = useGetaVideo();
    const { addToWatchHistory } = useUpdateWatchHistory();
    const { isLiking, likeVideo } = useVideoLike();
    const { videoAddView } = useAddView();
    const { setVideoUrl } = useVideo();
-   const [isView, setIsView] = useState(false);
 
    useEffect(() => {
       const videoElement = document.querySelector(".videoPlayer");
@@ -65,8 +68,15 @@ function VideoView() {
                      {time(video?.data?.createdAt)}
                   </span>
                )}
-            </p>
 
+               {/* {extras info toggle} */}
+               <span
+                  onClick={() => setExtra((extras) => !extras)}
+                  className="cursor-pointer"
+               >
+                  more &darr;
+               </span>
+            </p>
             <Like
                totalLikes={video?.data?.totalLikes}
                liked={video?.data?.isLiked}
@@ -76,8 +86,24 @@ function VideoView() {
                }}
             />
 
-            <Comments totalComments={video?.data?.totalComments} />
+            {/* {extras information} */}
+            {extra && (
+               <div className="bg-zinc-900/30 p-1 rounded-md">
+                  {video?.data?.description
+                     ? video?.data?.description
+                     : "no additional info!"}
+               </div>
+            )}
+
+            {/* {commenst toggle} */}
+            <button onClick={() => setComments((comment) => !comment)}>
+               comments &darr; {video?.data?.totalComments}
+            </button>
+            {isComments && (
+               <Comments totalComments={video?.data?.totalComments} />
+            )}
          </div>
+
          <p className="">recommendations</p>
       </div>
    );
