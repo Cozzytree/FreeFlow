@@ -30,6 +30,7 @@ const route = createBrowserRouter([
          { path: "/login", element: <Login /> },
          { path: "/signUp", element: <SignUp /> },
          { path: "/v/:videoId", element: <VideoView /> },
+         { path: "/pl/:playlistId" },
       ],
    },
 ]);

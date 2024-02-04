@@ -80,7 +80,7 @@ function InputFile() {
          />
          <Button
             disabled={isUploading}
-            extrastyles="h-10 rounded-md"
+            extrastyles="h-10 rounded-md h-[40px]"
             type="primary"
          >
             {isUploading ? <MiniSpinner /> : "Upload"}

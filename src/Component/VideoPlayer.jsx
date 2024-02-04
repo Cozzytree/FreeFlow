@@ -32,7 +32,7 @@ function VideoPlayer({ src, poster, controlsList }) {
          <video
             poster={poster}
             src={src}
-            className="videoPlayer relative w-[800px] h-[200px] md:h-[300px]"
+            className="videoPlayer relative w-[800px] h-[250px] md:h-[350px]"
             controls
             controlsList={controlsList}
          >
