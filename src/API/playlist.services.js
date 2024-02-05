@@ -88,7 +88,7 @@ class Playlist {
          const response = await fetch(
             `${
                import.meta.env.VITE_API_URL
-            }/removeVideo/${playlistId}/${videoId}`,
+            }/playlist/removeVideo/${playlistId}/${videoId}`,
             {
                method: "PATCH",
                credentials: "include",
@@ -118,6 +118,7 @@ class Playlist {
          if (data?.success === false) {
             throw new Error(data?.message);
          }
+         return data;
       } catch (error) {
          throw error;
       }

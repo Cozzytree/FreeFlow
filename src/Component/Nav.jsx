@@ -6,12 +6,18 @@ import Button from "./Button";
 import { useLogout } from "../Hooks/authHooks/useLogout";
 import Loader from "./loader";
 import Link from "./Link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useClickOutside } from "../Hooks/uiHooks/useClickOutside";
 import { PiTelevisionSimpleFill } from "react-icons/pi";
+import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
+import MiniSpinner from "./MiniSpinner";
+import { useUserPlaylists } from "../Hooks/playlistHooks/useGetPlaylists";
 
-function Nav({ user, isNav, setIsNav, handleCloseNav }) {
+function Nav({ isNav, setIsNav, handleCloseNav }) {
+   const [isPlaylist, setPlaylist] = useState(false);
    const { userLogout, isPending } = useLogout();
+   const { currentUser, loadingCurrentUser } = useCurrentUser();
+   const { userPlaylists } = useUserPlaylists();
    const ref = useRef();
    useClickOutside(ref, handleCloseNav);
    const handleLogout = () => {
@@ -25,7 +31,7 @@ function Nav({ user, isNav, setIsNav, handleCloseNav }) {
             onClick={() => setIsNav()}
             className={`${
                isNav ? "rotate-90" : "rotate-0"
-            } fixed left-2 top-1 z-[999] transition-all duration-200 size-6`}
+            } fixed left-2 top-1 z-[999] transition-all duration-200 size-4 md:size-5`}
             cursor="pointer"
          />
          <div
@@ -40,17 +46,20 @@ function Nav({ user, isNav, setIsNav, handleCloseNav }) {
                }`}
             >
                <div className=" animate-slow ">
-                  {user?.username && (
+                  {currentUser?.data?.username && (
                      <>
-                        <Link to={`/u/${user?._id}/videos`}>
+                        {loadingCurrentUser && <MiniSpinner />}
+                        <Link to={`/u/${currentUser?.data?._id}/videos`}>
                            <img
                               className="w-[30px] h-[30px] object-cover rounded-[100%]"
-                              src={user?.avatar}
+                              src={currentUser?.data?.avatar}
                               alt=""
                            />
-                           <h1 className="text-sm">{user?.username}</h1>
+                           <h1 className="text-sm">
+                              {currentUser?.data?.username}
+                           </h1>
                         </Link>
-                        <Link to={`/${user?._id}/watch_history`}>
+                        <Link to={`/${currentUser?.data?._id}/watch_history`}>
                            <PiTelevisionSimpleFill />
                            <h2 className="text-sm md:text-md">Watch history</h2>
                         </Link>
@@ -66,14 +75,35 @@ function Nav({ user, isNav, setIsNav, handleCloseNav }) {
                      Tweet
                   </Link>
 
-                  {user && (
-                     <Link to="/settings">
-                        <IoMdSettings />
-                        Settings
-                     </Link>
+                  {currentUser && (
+                     <>
+                        <Button
+                           onClick={() => setPlaylist((e) => !e)}
+                           extrastyles="h-[30px] w-[100%]"
+                        >
+                           playlists &darr;
+                        </Button>
+                        {isPlaylist && (
+                           <ul>
+                              {userPlaylists?.data?.map((playlist) => (
+                                 <Link
+                                    to={`/pl/${playlist?._id}`}
+                                    key={playlist?._id}
+                                 >
+                                    {playlist?.name}
+                                 </Link>
+                              ))}
+                           </ul>
+                        )}
+                        <Link to="/settings">
+                           <IoMdSettings />
+                           Settings
+                        </Link>
+                     </>
                   )}
                </div>
-               {user ? (
+
+               {currentUser ? (
                   <Button onClick={handleLogout} type="danger">
                      LogOut
                   </Button>

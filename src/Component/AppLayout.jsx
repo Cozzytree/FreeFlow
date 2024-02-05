@@ -1,15 +1,12 @@
 import { Outlet } from "react-router";
 import Nav from "./Nav";
-import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
 import { useState } from "react";
-import Loader from "./loader";
 import { useVideo } from "./VideoPlayer";
 import Button from "./Button";
 import { useEscapeClose } from "../Hooks/uiHooks/useEscapeClose";
 
 function AppLayout() {
    const { removeVideo, video } = useVideo();
-   const { currentUser, loadingCurrentUser } = useCurrentUser();
    const [isNav, setIsNav] = useState(false);
 
    function handleNav() {
@@ -18,16 +15,14 @@ function AppLayout() {
    function handleCloseNav() {
       setIsNav(false);
    }
-   useEscapeClose(handleCloseNav);
+   useEscapeClose(handleCloseNav, true);
 
    return (
       <>
-         {loadingCurrentUser && <Loader />}
          <div
             className={`w-full min-h-[100vh] flex flex-col items-center gap-3 font-Changa relative bg-zinc-800 text-zinc-100 text-md`}
          >
             <Nav
-               user={currentUser?.data}
                isNav={isNav}
                setIsNav={handleNav}
                handleCloseNav={handleCloseNav}
@@ -45,7 +40,7 @@ function AppLayout() {
                      className="bottom-1 right-1 relative"
                      width="400px"
                      controls
-                  ></video>{" "}
+                  ></video>
                   <Button
                      extrastyles="z-[999] w-[20px absolute top-1 right-5 font-bold text-md"
                      onClick={removeVideo}

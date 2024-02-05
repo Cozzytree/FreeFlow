@@ -13,6 +13,7 @@ import AreYouSure from "./AreYouSure";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
 import Input from "./Input";
 import PlaylistItem from "./PlaylistItem";
+import { share } from "../utils/share";
 
 function Options({
    handleOptions,
@@ -22,6 +23,7 @@ function Options({
    tweetEdit,
    videoEdit,
    type,
+   deleteBtnLabel,
 }) {
    const { currentUser } = useCurrentUser();
    const [content, setContent] = useState(tweetEdit?.tweet);
@@ -39,7 +41,16 @@ function Options({
             </ModalProvider.ModalOpen>
             <ModalProvider.ModalWindow window="options" clickOutside={false}>
                <OptionsItem>
-                  <FaShare /> Share
+                  <FaShare
+                     onClick={() =>
+                        share({
+                           title: document.title,
+                           text: "Check out this amazing content!",
+                           url: document.URL,
+                        })
+                     }
+                  />
+                  Share
                </OptionsItem>
 
                {currentUser?.data?._id === userId && userId !== undefined && (
@@ -187,21 +198,22 @@ function Options({
                         <ModalProvider>
                            <ModalProvider.ModalOpen opens="delete">
                               <Button type="danger">
-                                 <MdDelete /> Delete
+                                 <MdDelete />
+                                 {deleteBtnLabel ? deleteBtnLabel : "Delete"}
                               </Button>
                            </ModalProvider.ModalOpen>
                            <ModalProvider.ModalWindow
                               window="delete"
                               clickOutside={false}
                            >
-                              <AreYouSure label="Are you syre you want to delete this video?">
+                              <AreYouSure label="Are you sure you want to remove?">
                                  <Button
                                     onClick={() => {
                                        deleteHandler(currentItem);
                                     }}
                                     type="danger"
                                  >
-                                    Delete
+                                    {deleteBtnLabel ? deleteBtnLabel : "Delete"}
                                  </Button>
                               </AreYouSure>
                            </ModalProvider.ModalWindow>
@@ -209,6 +221,7 @@ function Options({
                      </OptionsItem>
                   </>
                )}
+
                {currentUser && type === "video" && (
                   <OptionsItem>
                      <ModalProvider>
