@@ -3,12 +3,23 @@ import Loader from "../Component/loader";
 import { useGetAplaylist } from "../Hooks/playlistHooks/useGetAplaylist";
 import Options from "../Component/Options";
 import { useDeleteVfromPL } from "../Hooks/playlistHooks/useDelVfromPL";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import Button from "../Component/Button";
+import ModalProvider from "../Component/Modal";
+import AreYouSure from "../Component/AreYouSure";
+import { useEffect } from "react";
+import { useDeletePlaylist } from "../Hooks/playlistHooks/useDeletePlaylist";
 
 function Playlist() {
+   const params = useParams();
    const navigate = useNavigate();
-   const { aPlaylist, loadingPlaylist } = useGetAplaylist();
+   const { aPlaylist, loadingPlaylist, refetch } = useGetAplaylist();
+   const { isDeleting, userDeletePlaylist } = useDeletePlaylist();
    const { removeV, isRemoving } = useDeleteVfromPL();
+
+   useEffect(() => {
+      refetch();
+   }, [params?.playlistId, refetch]);
 
    function handleRemoveV(playlistId, videoId) {
       removeV({ playlistId, videoId });
@@ -16,6 +27,28 @@ function Playlist() {
 
    return (
       <>
+         {(isDeleting || isRemoving) && <Loader />}
+         <ModalProvider>
+            <ModalProvider.ModalOpen opens="play">
+               <Button
+                  type="primary"
+                  extrastyles="absolute h-[20px] right-10 top-2 text-xs rounded-sm"
+               >
+                  Delete playlist
+               </Button>
+            </ModalProvider.ModalOpen>
+            <ModalProvider.ModalWindow window="play" clickOutside={false}>
+               <AreYouSure label="Are you sure you want to delete the playlist?">
+                  <Button
+                     onClick={() => userDeletePlaylist(aPlaylist?.data[0]?._id)}
+                     type="danger"
+                  >
+                     Delete
+                  </Button>
+               </AreYouSure>
+            </ModalProvider.ModalWindow>
+         </ModalProvider>
+
          <div className="w-[100%] px-10">
             <h1 className="border-b-[1px] text-xl md:text-2xl border-zinc-500">
                {aPlaylist?.data[0]?.name}

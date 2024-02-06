@@ -9,10 +9,12 @@ export function useGetAplaylist() {
       data: aPlaylist,
       isLoading: loadingPlaylist,
       error,
+      refetch,
    } = useQuery({
       queryFn: () => getAplaylist(params?.playlistId),
       queryKey: ["Aplaylist"],
+      enabled: false,
    });
 
-   return { aPlaylist, loadingPlaylist, error };
+   return { refetch, aPlaylist, loadingPlaylist, error };
 }
