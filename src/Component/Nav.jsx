@@ -12,9 +12,11 @@ import { PiTelevisionSimpleFill } from "react-icons/pi";
 import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
 import MiniSpinner from "./MiniSpinner";
 import { useUserPlaylists } from "../Hooks/playlistHooks/useGetPlaylists";
+import Subscription from "./Subscription";
 
 function Nav({ isNav, setIsNav, handleCloseNav }) {
    const [isPlaylist, setPlaylist] = useState(false);
+   const [isSubscription, setisSubscription] = useState(false);
    const { userLogout, isPending } = useLogout();
    const { currentUser, loadingCurrentUser } = useCurrentUser();
    const { userPlaylists } = useUserPlaylists();
@@ -41,7 +43,7 @@ function Nav({ isNav, setIsNav, handleCloseNav }) {
          >
             <nav
                ref={ref}
-               className={`bg-zinc-700 z-10 flex flex-col items- justify-between px-5 py-[50px] gap-3 origin-left transition-all duration-1000 border-[1px] border-zinc-600 rounded-md w-[170px] md:w-[250px] h-[100vh] ${
+               className={`bg-zinc-700 z-10 overflow-y-auto flex flex-col justify-between px-5 py-[50px] gap-3 origin-left transition-all duration-1000 border-[1px] border-zinc-600 rounded-md w-[170px] md:w-[250px] h-[100vh] ${
                   isNav ? "translate-x-[0]" : "translate-x-[-300px]"
                }`}
             >
@@ -77,6 +79,13 @@ function Nav({ isNav, setIsNav, handleCloseNav }) {
 
                   {currentUser && (
                      <>
+                        <Button
+                           extrastyles="h-[30px] w-[100%]"
+                           onClick={() => setisSubscription((e) => !e)}
+                        >
+                           Subscription &darr;
+                        </Button>
+                        {isSubscription && <Subscription setIsNav={setIsNav} />}
                         <Button
                            onClick={() => setPlaylist((e) => !e)}
                            extrastyles="h-[30px] w-[100%]"

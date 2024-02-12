@@ -3,7 +3,7 @@ class Auth {
    async login(data) {
       try {
          const response = await fetch(
-            `http://localhost:8000/api/v1/users/login`,
+            `${import.meta.env.VITE_API_URL}/users/login`,
             {
                method: "POST",
                credentials: "include",
@@ -27,7 +27,7 @@ class Auth {
    async logout() {
       try {
          const response = await fetch(
-            `http://localhost:8000/api/v1/users/logout`,
+            `${import.meta.env.VITE_API_URL}/users/logout`,
             {
                method: "POST",
                credentials: "include",
@@ -47,7 +47,7 @@ class Auth {
    async getUserProfile(userId) {
       try {
          const response = await fetch(
-            `http://localhost:8000/api/v1/users/${userId}`,
+            `${import.meta.env.VITE_API_URL}/users/${userId}`,
             {
                method: "GET",
                credentials: "include",
@@ -67,7 +67,7 @@ class Auth {
    async getCurrentUser() {
       try {
          const response = await fetch(
-            "http://localhost:8000/api/v1/users/getcurrentUser",
+            `${import.meta.env.VITE_API_URL}/users/getcurrentUser`,
             {
                credentials: "include",
             }
@@ -85,7 +85,7 @@ class Auth {
    async signUp(formData) {
       try {
          const response = await fetch(
-            "http://localhost:8000/api/v1/users/register",
+            `${import.meta.env.VITE_API_URL}/v1/users/register`,
             {
                method: "POST",
                credentials: "include",
@@ -105,7 +105,7 @@ class Auth {
    async updateWatchHistory(videoId) {
       try {
          const response = await fetch(
-            `http://localhost:8000/api/v1/users/wh/${videoId}`,
+            `${import.meta.env.VITE_API_URL}/users/wh/${videoId}`,
             {
                method: "PATCH",
                credentials: "include",
@@ -121,7 +121,7 @@ class Auth {
    async getUserWatchHistory() {
       try {
          const response = await fetch(
-            "http://localhost:8000/api/v1/users/wh/watch_history",
+            `${import.meta.env.VITE_API_URL}/users/wh/watch_history`,
             {
                credentials: "include",
             }

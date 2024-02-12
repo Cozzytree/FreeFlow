@@ -1,5 +1,7 @@
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { MdOutlineRectangle } from "react-icons/md";
+import VideoControls from "./VideoControls";
+import ReactPlayer from "react-player";
 
 const VideoContext = createContext();
 
@@ -28,47 +30,99 @@ export { VideoProvider, useVideo };
 
 function VideoPlayer({ src, poster, controlsList }) {
    const videoRef = useRef(null);
-   // const [isPlaying, setIsPlaying] = useState(false);
-   // const [isMuted, setIsMuted] = useState(false);
+   const [controlsVisible, setControlsVisible] = useState(false);
+   const [volume, setVolume] = useState(1.0);
+   const [progress, setProgress] = useState(0);
 
-   // const togglePlay = () => {
-   //    console.log(videoRef?.current);
-   //    if (videoRef?.current?.paused) {
-   //       videoRef?.current?.play();
-   //       setIsPlaying(true);
-   //    } else {
-   //       videoRef?.current?.pause();
-   //       setIsPlaying(false);
-   //    }
-   // };
+   useEffect(() => {
+      let videoRefrerence = videoRef?.current;
+      function handlePlay(e) {
+         if (e.code === "Space") {
+            if (videoRef?.current?.paused) {
+               videoRef.current.play();
+            } else {
+               videoRef?.current?.pause();
+            }
+         }
+      }
+      const updateProgress = () => {
+         const currentTime = videoRef.current.currentTime;
+         const duration = videoRef.current.duration;
+         const progress = (currentTime / duration) * 100;
+         setProgress(progress);
+      };
+      videoRefrerence.addEventListener("timeupdate", updateProgress);
+      document.addEventListener("keydown", handlePlay);
+      return () => {
+         document.removeEventListener("keydown", handlePlay);
+         videoRefrerence.removeEventListener("timeupdate", updateProgress);
+      };
+   }, []);
 
-   // function skip() {
-   //    if (videoRef.current) {
-   //       videoRef.current.currentTime += 10;
-   //    }
-   // }
+   function handlePlayPause() {
+      if (videoRef.current.paused) {
+         videoRef.current.play();
+      } else {
+         videoRef.current.pause();
+      }
+   }
 
-   // const toggleMute = () => {
-   //    videoRef.current.muted = !videoRef.current.muted;
-   //    setIsMuted(videoRef.current.muted);
-   // };
+   function toggleControls() {
+      setControlsVisible((prevState) => !prevState);
+      setTimeout(() => {
+         setControlsVisible(false);
+      }, 10000);
+   }
+   const debouncedHandleMouseMove = () => {
+      setControlsVisible(true);
+      setTimeout(() => {
+         setControlsVisible(false);
+      }, 10000);
+   };
+
+   function handleVolumeChange(event) {
+      const newVolume = parseFloat(event.target.value);
+      setVolume(newVolume / 100);
+      videoRef.current.volume = newVolume / 100;
+   }
+
    return (
-      <div className="bg-zinc-900 p-2" style={{ background: poster }}>
+      <div
+         onMouseEnter={toggleControls}
+         onMouseMove={debouncedHandleMouseMove}
+         className="bg-zinc-900 p-2 relative"
+         style={{ background: poster }}
+      >
+         {/* <ReactPlayer
+            url={src}
+            controls
+            light={poster}
+            width={700}
+            height={250}
+            progressInterval={1000}
+            playbackRate={1000}
+         /> */}
+
+         {controlsVisible && (
+            <VideoControls
+               videoRef={videoRef}
+               handlePlayPause={handlePlayPause}
+               handleVolumeChange={handleVolumeChange}
+               progress={progress}
+               volume={volume}
+            />
+         )}
+
          <video
+            // onMouseMove={debouncedHandleMouseMove}
             ref={videoRef}
             poster={poster}
             src={src}
-            className="videoPlayer relative w-[800px] h-[250px] md:h-[350px]"
-            controls
+            className="videoPlayer w-[800px] h-[250px] md:h-[350px]"
             controlsList={controlsList}
          >
             <MdOutlineRectangle />
          </video>
-         {/* <div className="custom-controls">
-            <button onClick={togglePlay}>{isPlaying ? "Pause" : "Play"}</button>
-            <button onClick={toggleMute}>{isMuted ? "Unmute" : "Mute"}</button>
-            <button onClick={skip}>{isMuted ? "Unmute" : "Mute"}</button>
-         </div> */}
       </div>
    );
 }

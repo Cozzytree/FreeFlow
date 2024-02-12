@@ -8,10 +8,11 @@ function Settings() {
    const { currentUser, loadingCurrentUser } = useCurrentUser();
    if (!currentUser && !loadingCurrentUser) navigate("/");
 
+   console.log(currentUser);
    return (
       <div className="w-[100%] px-8 flex flex-col gap-4 items-center py-10">
          <Convenience field="Username" name={currentUser?.data?.username} />
-         <Convenience field="Fullname" name={currentUser?.data?.fullName} />
+         <Convenience field="Fullname" name={currentUser?.data?.fullname} />
          <Convenience field="Email" name={currentUser?.data?.email} />
          <span className="text-zinc-400 underline cursor-pointer flex gap-2 items-center">
             update <FaEdit />

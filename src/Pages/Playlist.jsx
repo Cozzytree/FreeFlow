@@ -23,6 +23,7 @@ function Playlist() {
 
    function handleRemoveV(playlistId, videoId) {
       removeV({ playlistId, videoId });
+      refetch();
    }
 
    return (
