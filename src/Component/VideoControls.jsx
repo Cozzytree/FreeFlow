@@ -1,4 +1,5 @@
 import { FaPause, FaPlay } from "react-icons/fa";
+import { MdFullscreen } from "react-icons/md";
 
 function VideoControls({
    handlePlayPause,
@@ -6,6 +7,9 @@ function VideoControls({
    handleVolumeChange,
    volume,
    progress,
+   videoTime,
+   handleVideoTime,
+   toggleFullscreen,
 }) {
    return (
       <div className="absolute w-[100%] h-[100%] flex justify-center items-center">
@@ -28,10 +32,21 @@ function VideoControls({
             onChange={handleVolumeChange}
          />
          {Number(progress).toFixed(0)}
-         <progress
-            value={videoRef?.current?.currentTime}
+         <input
+            className="absolute w-[60%] bottom-4 cursor-pointer z-10"
+            type="range"
+            value={videoTime}
+            onChange={(e) => handleVideoTime(e)}
             max={videoRef?.current?.duration || 0}
-         ></progress>
+         />
+
+         <MdFullscreen
+            cursor="pointer"
+            className="z-10 absolute right-4 bottom-4"
+            size={20}
+            onClick={toggleFullscreen}
+         />
+
          {Number(videoRef?.current?.duration / 60).toFixed(2)}
       </div>
    );

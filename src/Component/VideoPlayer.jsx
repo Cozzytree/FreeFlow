@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { MdOutlineRectangle } from "react-icons/md";
 import VideoControls from "./VideoControls";
-import ReactPlayer from "react-player";
 
 const VideoContext = createContext();
 
@@ -31,6 +30,7 @@ export { VideoProvider, useVideo };
 function VideoPlayer({ src, poster, controlsList }) {
    const videoRef = useRef(null);
    const [controlsVisible, setControlsVisible] = useState(false);
+   const [videoTime, setVideoTime] = useState(0);
    const [volume, setVolume] = useState(1.0);
    const [progress, setProgress] = useState(0);
 
@@ -59,8 +59,28 @@ function VideoPlayer({ src, poster, controlsList }) {
       };
    }, []);
 
+   function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+         if (videoRef?.current.requestFullscreen) {
+            videoRef?.current.requestFullscreen();
+         } else if (videoRef?.current?.mozRequestFullScreen) {
+            videoRef?.current.msRequestFullscreen();
+         }
+      } else {
+         if (document.exitFullscreen) {
+            document.exitFullscreen();
+         } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+         } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+         } else if (document.msExitFullscreen) {
+            document.msExitFullscreen();
+         }
+      }
+   }
+
    function handlePlayPause() {
-      if (videoRef.current.paused) {
+      if (videoRef?.current.paused) {
          videoRef.current.play();
       } else {
          videoRef.current.pause();
@@ -73,12 +93,6 @@ function VideoPlayer({ src, poster, controlsList }) {
          setControlsVisible(false);
       }, 10000);
    }
-   const debouncedHandleMouseMove = () => {
-      setControlsVisible(true);
-      setTimeout(() => {
-         setControlsVisible(false);
-      }, 10000);
-   };
 
    function handleVolumeChange(event) {
       const newVolume = parseFloat(event.target.value);
@@ -86,23 +100,18 @@ function VideoPlayer({ src, poster, controlsList }) {
       videoRef.current.volume = newVolume / 100;
    }
 
+   function handleVideoTime(e) {
+      const value = e.target.value;
+      setVideoTime(value);
+      videoRef.current.currentTime = value;
+   }
+
    return (
       <div
          onMouseEnter={toggleControls}
-         onMouseMove={debouncedHandleMouseMove}
          className="bg-zinc-900 p-2 relative"
          style={{ background: poster }}
       >
-         {/* <ReactPlayer
-            url={src}
-            controls
-            light={poster}
-            width={700}
-            height={250}
-            progressInterval={1000}
-            playbackRate={1000}
-         /> */}
-
          {controlsVisible && (
             <VideoControls
                videoRef={videoRef}
@@ -110,11 +119,13 @@ function VideoPlayer({ src, poster, controlsList }) {
                handleVolumeChange={handleVolumeChange}
                progress={progress}
                volume={volume}
+               videoTime={videoTime}
+               handleVideoTime={handleVideoTime}
+               toggleFullscreen={toggleFullscreen}
             />
          )}
 
          <video
-            // onMouseMove={debouncedHandleMouseMove}
             ref={videoRef}
             poster={poster}
             src={src}

@@ -3,16 +3,18 @@ import videoservices from "../../API/video.services";
 import { useQuery } from "@tanstack/react-query";
 
 export function useGetaVideo() {
-     const params = useParams();
+   const params = useParams();
 
-     const { getAvideo } = videoservices;
-     const {
-          data: video,
-          isLoading: loadingVideo,
-          error,
-     } = useQuery({
-          queryFn: () => getAvideo(params?.videoId),
-          queryKey: ["Avideo"],
-     });
-     return { video, loadingVideo, error };
+   const { getAvideo } = videoservices;
+   const {
+      data: video,
+      isLoading: loadingVideo,
+      error,
+      refetch: refetchGetAvideo,
+   } = useQuery({
+      queryFn: () => getAvideo(params?.videoId),
+      queryKey: ["Avideo"],
+      enabled: false,
+   });
+   return { video, loadingVideo, error, refetchGetAvideo };
 }

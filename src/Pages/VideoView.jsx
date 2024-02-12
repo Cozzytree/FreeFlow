@@ -10,22 +10,24 @@ import { useParams } from "react-router";
 import { useUpdateWatchHistory } from "../Hooks/authHooks/useUpdateWatchHistory";
 import Like from "../Component/Like";
 import { useVideoLike } from "../Hooks/likeHooks/useVideoLike";
+import { useRecommend } from "../Hooks/videoHooks/useRecommend";
+import VideoItems from "../Component/VideoItems";
+import MiniSpinner from "../Component/MiniSpinner";
 
 function VideoView() {
    const [isView, setIsView] = useState(false);
    const [extra, setExtra] = useState(false);
    const [isComments, setComments] = useState(false);
-
    const params = useParams();
-   const { video, loadingVideo } = useGetaVideo();
+   const { video, loadingVideo, refetchGetAvideo } = useGetaVideo();
    const { addToWatchHistory } = useUpdateWatchHistory();
    const { isLiking, likeVideo } = useVideoLike();
+   const { recommendV, isLoading, refetch } = useRecommend();
    const { videoAddView } = useAddView();
    const { setVideoUrl } = useVideo();
 
    useEffect(() => {
       const videoElement = document.querySelector(".videoPlayer");
-
       const handleTimeUpdate = () => {
          const videoDuration = videoElement.duration;
          const watchedPercentage =
@@ -44,17 +46,22 @@ function VideoView() {
       return () => {
          videoElement.removeEventListener("timeupdate", handleTimeUpdate);
       };
-   }, [isView, setIsView, params, addToWatchHistory, videoAddView]);
+   }, [isView, setIsView, params?.videoId, addToWatchHistory, videoAddView]);
+
+   useEffect(() => {
+      refetch();
+      refetchGetAvideo();
+   }, [params?.videoId, refetch, refetchGetAvideo]);
 
    function handleVideoLike(videoId) {
       likeVideo(videoId);
    }
 
    return (
-      <div className="flex flex-col md:grid md:grid-cols-[1fr_0.5fr] gap-5 animate-slow">
+      <div className="flex flex-col md:grid md:grid-cols-[1fr_auto] gap-5 animate-slow">
          {loadingVideo && <Loader />}
          <div className="space-y-2">
-            <div onClick={() => setVideoUrl(video?.data?.videoFile)}>
+            <div>
                <VideoPlayer
                   controlsList="nodownload"
                   src={video?.data?.videoFile}
@@ -105,7 +112,12 @@ function VideoView() {
             )}
          </div>
 
-         <p className="">recommendations</p>
+         <div className="flex flex-col items-center justify-start gap-1">
+            {isLoading && <MiniSpinner />}
+            {recommendV?.data?.map((v) => (
+               <VideoItems v={v} key={v?._id} />
+            ))}
+         </div>
       </div>
    );
 }
