@@ -1,3 +1,5 @@
+import axios from "axios";
+
 /* eslint-disable no-useless-catch */
 class Video {
    async getUserVideo(userId) {
@@ -174,6 +176,13 @@ class Video {
       } catch (error) {
          throw error;
       }
+   }
+
+   async searchVideo(q) {
+      return await axios
+         .get(`${import.meta.env.VITE_API_URL}/videos/s/query?q=${q}`)
+         .then((data) => data?.data)
+         .catch((err) => err?.response?.data?.message);
    }
 }
 const videoservices = new Video();

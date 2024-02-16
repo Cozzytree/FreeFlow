@@ -1,27 +1,24 @@
 /* eslint-disable no-useless-catch */
+import axios from "axios";
+
 class Auth {
    async login(data) {
-      try {
-         const response = await fetch(
+      return await axios
+         .post(
             `${import.meta.env.VITE_API_URL}/users/login`,
+            { email: data?.email, password: data?.password },
             {
-               method: "POST",
-               credentials: "include",
-               headers: {
-                  "Content-Type": "application/json",
-               },
-               body: JSON.stringify(data),
+               headers: { "Content-Type": "application/json" },
+               withCredentials: true,
+               timeout: 1000 * 10,
             }
-         );
-         const userdata = await response.json();
-         if (userdata?.success === false) {
-            throw new Error(userdata?.message);
-         }
-         return userdata;
-      } catch (err) {
-         console.log(err);
-         throw err;
-      }
+         )
+         .then((user) => {
+            return user?.data;
+         })
+         .catch((err) => {
+            throw new Error(err?.response?.data?.message);
+         });
    }
 
    async logout() {
@@ -134,6 +131,38 @@ class Auth {
       } catch (error) {
          throw error;
       }
+   }
+
+   async loginWithOtp(email) {
+      return await axios
+         .post(
+            `${import.meta.env.VITE_API_URL}/users/login/send-otp`,
+            {
+               email,
+            },
+            {
+               headers: { "Content-Type": "application/json" },
+            }
+         )
+         .then((data) => data?.data)
+         .catch((err) => {
+            throw new Error(err?.response?.data?.message);
+         });
+   }
+
+   async sendOtp(email, otp) {
+      return await axios
+         .post(
+            `${import.meta.env.VITE_API_URL}/users/login/verifyOtp`,
+            { email, otp },
+            {
+               headers: { "Content-Type": "application/json" },
+            }
+         )
+         .then((data) => data?.data)
+         .catch((err) => {
+            throw new Error(err?.response?.data?.message);
+         });
    }
 }
 const authservices = new Auth();

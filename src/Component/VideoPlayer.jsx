@@ -30,11 +30,18 @@ export { VideoProvider, useVideo };
 function VideoPlayer({ src, poster, controlsList }) {
    const videoRef = useRef(null);
    const [controlsVisible, setControlsVisible] = useState(false);
-   const [videoTime, setVideoTime] = useState(0);
+   const [videoTime, setVideoTime] = useState(
+      videoRef?.current?.currentTime || 0
+   );
+
    const [volume, setVolume] = useState(1.0);
    const [progress, setProgress] = useState(0);
 
    useEffect(() => {
+      if (videoRef?.current) {
+         videoRef?.current?.play();
+      }
+
       let videoRefrerence = videoRef?.current;
       function handlePlay(e) {
          if (e.code === "Space") {
@@ -46,10 +53,7 @@ function VideoPlayer({ src, poster, controlsList }) {
          }
       }
       const updateProgress = () => {
-         const currentTime = videoRef.current.currentTime;
-         const duration = videoRef.current.duration;
-         const progress = (currentTime / duration) * 100;
-         setProgress(progress);
+         setProgress(videoRef.current.currentTime);
       };
       videoRefrerence.addEventListener("timeupdate", updateProgress);
       document.addEventListener("keydown", handlePlay);
@@ -58,6 +62,10 @@ function VideoPlayer({ src, poster, controlsList }) {
          videoRefrerence.removeEventListener("timeupdate", updateProgress);
       };
    }, []);
+
+   useEffect(() => {
+      setVideoTime(videoRef?.current?.currentTime);
+   }, [videoRef?.current?.currentTime]);
 
    function toggleFullscreen() {
       if (!document.fullscreenElement) {
@@ -89,9 +97,9 @@ function VideoPlayer({ src, poster, controlsList }) {
 
    function toggleControls() {
       setControlsVisible((prevState) => !prevState);
-      setTimeout(() => {
-         setControlsVisible(false);
-      }, 10000);
+      // setTimeout(() => {
+      //    setControlsVisible(false);
+      // }, 10000);
    }
 
    function handleVolumeChange(event) {
@@ -109,7 +117,8 @@ function VideoPlayer({ src, poster, controlsList }) {
    return (
       <div
          onMouseEnter={toggleControls}
-         className="bg-zinc-900 p-2 relative"
+         onMouseLeave={() => setControlsVisible(false)}
+         className="bg-zinc-900 p-2 relative videoPlayer"
          style={{ background: poster }}
       >
          {controlsVisible && (

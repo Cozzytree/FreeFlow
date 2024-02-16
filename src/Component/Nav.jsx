@@ -11,15 +11,14 @@ import { useClickOutside } from "../Hooks/uiHooks/useClickOutside";
 import { PiTelevisionSimpleFill } from "react-icons/pi";
 import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
 import MiniSpinner from "./MiniSpinner";
-import { useUserPlaylists } from "../Hooks/playlistHooks/useGetPlaylists";
 import Subscription from "./Subscription";
+import Playlists from "./Playlists";
 
 function Nav({ isNav, setIsNav, handleCloseNav }) {
    const [isPlaylist, setPlaylist] = useState(false);
    const [isSubscription, setisSubscription] = useState(false);
    const { userLogout, isPending } = useLogout();
    const { currentUser, loadingCurrentUser } = useCurrentUser();
-   const { userPlaylists } = useUserPlaylists();
    const ref = useRef();
    useClickOutside(ref, handleCloseNav);
    const handleLogout = () => {
@@ -92,18 +91,7 @@ function Nav({ isNav, setIsNav, handleCloseNav }) {
                         >
                            playlists &darr;
                         </Button>
-                        {isPlaylist && (
-                           <ul>
-                              {userPlaylists?.data?.map((playlist) => (
-                                 <Link
-                                    to={`/pl/${playlist?._id}`}
-                                    key={playlist?._id}
-                                 >
-                                    {playlist?.name}
-                                 </Link>
-                              ))}
-                           </ul>
-                        )}
+                        {isPlaylist && <Playlists />}
                         <Link to="/settings">
                            <IoMdSettings />
                            Settings

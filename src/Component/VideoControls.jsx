@@ -11,6 +11,8 @@ function VideoControls({
    handleVideoTime,
    toggleFullscreen,
 }) {
+   const minute = Math.floor(progress / 60);
+   const seconds = Math.floor(progress % 60);
    return (
       <div className="absolute w-[100%] h-[100%] flex justify-center items-center">
          <button
@@ -25,13 +27,18 @@ function VideoControls({
          </button>
 
          <input
-            className="absolute bottom-5 left-60 cursor-pointer z-10"
+            className="absolute bottom-[40%] w-[80px] right-3 rotate-[270deg] cursor-pointer z-10"
             type="range"
             max={100}
             value={volume * 100}
             onChange={handleVolumeChange}
          />
-         {Number(progress).toFixed(0)}
+         <span className="absolute left-2 bottom-4 text-xs">
+            {minute} : {seconds > 10 ? seconds : `0${seconds} `} /
+            {` ${Math.floor(Number(videoRef?.current?.duration / 60))}`} :
+            {Math.floor(Number(videoRef?.current?.duration % 60))}
+         </span>
+
          <input
             className="absolute w-[60%] bottom-4 cursor-pointer z-10"
             type="range"
@@ -46,8 +53,6 @@ function VideoControls({
             size={20}
             onClick={toggleFullscreen}
          />
-
-         {Number(videoRef?.current?.duration / 60).toFixed(2)}
       </div>
    );
 }

@@ -6,7 +6,7 @@ import { useGetaVideo } from "../Hooks/videoHooks/useGetaVideo";
 import { time } from "../utils/time";
 import { useState } from "react";
 import { useAddView } from "../Hooks/videoHooks/useAddView";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useUpdateWatchHistory } from "../Hooks/authHooks/useUpdateWatchHistory";
 import Like from "../Component/Like";
 import { useVideoLike } from "../Hooks/likeHooks/useVideoLike";
@@ -15,6 +15,7 @@ import VideoItems from "../Component/VideoItems";
 import MiniSpinner from "../Component/MiniSpinner";
 
 function VideoView() {
+   const navigate = useNavigate();
    const [isView, setIsView] = useState(false);
    const [extra, setExtra] = useState(false);
    const [isComments, setComments] = useState(false);
@@ -51,7 +52,17 @@ function VideoView() {
    useEffect(() => {
       refetch();
       refetchGetAvideo();
-   }, [params?.videoId, refetch, refetchGetAvideo]);
+      const videoPlayerElement = document.querySelector(".videoPlayer");
+      if (videoPlayerElement) {
+         videoPlayerElement.scrollIntoView({ behavior: "smooth" });
+      }
+      const videoTag = videoPlayerElement?.children[0];
+      console.log(videoPlayerElement?.children[0].currentTime);
+      if (videoTag && videoTag?.currentTime === videoTag?.duration) {
+         navigate(`/v/${recommendV?.data?.[0]?._id}`);
+         videoTag.currentTime = 0;
+      }
+   }, [params?.videoId, refetch, refetchGetAvideo, navigate, recommendV]);
 
    function handleVideoLike(videoId) {
       likeVideo(videoId);
