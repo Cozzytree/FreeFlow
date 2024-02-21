@@ -8,6 +8,7 @@ import { useState } from "react";
 import { MdMessage } from "react-icons/md";
 import { useEditTweet } from "../Hooks/tweetsHooks/useEditTweet";
 import { useNavigate } from "react-router";
+import { useLazyImage } from "../Hooks/uiHooks/useLazyImage";
 
 function Items({ tweet }) {
    const navigate = useNavigate();
@@ -15,6 +16,8 @@ function Items({ tweet }) {
    const { deletingTweet, userDeleteTweet } = useDeleteTweet();
    const { toggleTweet, loadingTweetlike } = useLikeTweet();
    const { isEditing, userEditTweet } = useEditTweet();
+   useLazyImage(".tweets", "data-src", tweet, "src");
+
    function handleDeleteTweet(tweetId) {
       userDeleteTweet(tweetId);
    }
@@ -33,7 +36,6 @@ function Items({ tweet }) {
             deletingTweet && "animate-pulse"
          }`}
       >
-         {/* {for tweet} */}
          {tweet && (
             <article className="flex flex-cols w-[80%] md:w-[60%] min-h-[125px] items-start gap-5 p-3 bg-zinc-700/20 rounded-md relative">
                <Options
@@ -49,8 +51,9 @@ function Items({ tweet }) {
                />
                {tweet?.ownerInfo && (
                   <img
-                     className="w-[50px] h-[50px] object-cover rounded-[100%]"
-                     src={tweet?.ownerInfo?.avatar}
+                     className="w-[50px] transition-all duration-200 h-[50px] object-cover rounded-[100%] tweets"
+                     data-src={tweet?.ownerInfo?.avatar}
+                     src=""
                      alt=""
                   />
                )}

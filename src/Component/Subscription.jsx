@@ -5,7 +5,6 @@ import MiniSpinner from "./MiniSpinner";
 function Subscription({ setIsNav }) {
    const navigate = useNavigate();
    const { isLoading, subbedTo } = useSubscription();
-   console.log(subbedTo);
    return (
       <ul className="flex justify-center flex-col items-center p-2 border-[1px] border-zinc-500/50 bg-zinc-900/20 rounded-sm">
          {isLoading && <MiniSpinner />}

@@ -3,7 +3,7 @@ class Like {
    async toggleLikeTweet(tweetId) {
       try {
          const response = await fetch(
-            `http://localhost:8000/api/v1/like/tl/${tweetId}`,
+            `${import.meta.env.VITE_API_URL}/like/tl/${tweetId}`,
             {
                method: "POST",
                credentials: "include",
@@ -22,7 +22,7 @@ class Like {
    async toggleLikeVideo(videoId) {
       try {
          const response = await fetch(
-            `http://localhost:8000/api/v1/like/vl/${videoId}`,
+            `${import.meta.env.VITE_API_URL}/like/vl/${videoId}`,
             {
                method: "POST",
                credentials: "include",

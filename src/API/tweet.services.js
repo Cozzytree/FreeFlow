@@ -1,106 +1,65 @@
+import axios from "axios";
+
 /* eslint-disable no-useless-catch */
 class Tweet {
-    async getAllTweets() {
-        try {
-            const response = await fetch(
-                `http://localhost:8000/api/v1/tweet/at`,
-                {
-                    method: "GET",
-                    credentials: "include",
-                }
-            );
-            const data = await response.json();
-            return data;
-        } catch (error) {
-            throw error;
-        }
-    }
+   async getAllTweets() {
+      return axios
+         .get(`${import.meta.env.VITE_API_URL}/tweet/at`, {
+            withCredentials: true,
+         })
+         .then((data) => data?.data)
+         .catch((err) => err?.response?.data?.message);
+   }
 
-    async deleteTweet(tweetId) {
-        try {
-            const response = await fetch(
-                `http://localhost:8000/api/v1/tweet/d/${tweetId}`,
-                {
-                    method: "DELETE",
-                    credentials: "include",
-                }
-            );
-            const data = await response.json();
-            if (data?.success === false) {
-                throw new Error(data?.message);
+   async deleteTweet(tweetId) {
+      return axios
+         .delete(`${import.meta.env.VITE_API_URL}/tweet/d/${tweetId}`, {
+            withCredentials: true,
+         })
+         .then((data) => data?.data)
+         .catch((err) => err?.response?.data?.message);
+   }
+
+   async editTweet(tweetId, { content }) {
+      return axios
+         .patch(
+            `${import.meta.env.VITE_API_URL}/tweet/editTweet/${tweetId}`,
+            {
+               content,
+            },
+            {
+               headers: { "Content-Type": "application/json" },
+               withCredentials: true,
             }
-            return data;
-        } catch (error) {
-            throw error;
-        }
-    }
+         )
+         .then((data) => data?.data)
+         .catch((err) => err?.response?.data?.message);
+   }
 
-    async editTweet(tweetId, content) {
-        try {
-            const response = await fetch(
-                `http://localhost:8000/api/v1/tweet/editTweet/${tweetId}`,
-                {
-                    method: "PATCH",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(content),
-                }
-            );
-
-            const data = await response.json();
-
-            if (data?.success === false) {
-                throw new Error(data?.message);
+   async addTweet({ content }) {
+      return axios
+         .post(
+            `${import.meta.env.VITE_API_URL}/tweet/addTweet`,
+            {
+               content,
+            },
+            {
+               headers: { "Content-Type": "application/json" },
+               withCredentials: true,
             }
-            return data;
-        } catch (error) {
-            throw error;
-        }
-    }
+         )
+         .then((data) => data?.data)
+         .catch((err) => err?.response?.data?.message);
+   }
 
-    async addTweet(data) {
-        try {
-            const response = await fetch(
-                `http://localhost:8000/api/v1/tweet/addTweet`,
-                {
-                    method: "POST",
-                    credentials: "include",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(data),
-                }
-            );
-            const dataArrive = await response.json();
-            if (dataArrive?.success === false) {
-                throw new Error(dataArrive?.message);
-            }
-            return dataArrive;
-        } catch (error) {
-            throw error;
-        }
-    }
-
-    async getUserTweets(userId) {
-        try {
-            const response = await fetch(
-                `http://localhost:8000/api/v1/tweet/user_t/${userId}`,
-                {
-                    method: "GET",
-                    credentials: "include",
-                }
-            );
-            const data = await response.json();
-            if (data?.success === false) {
-                throw new Error(data?.message);
-            }
-            return data;
-        } catch (error) {
-            throw error;
-        }
-    }
+   async getUserTweets(userId) {
+      return await axios
+         .get(`${import.meta.env.VITE_API_URL}/tweet/user_t/${userId}`, {
+            withCredentials: true,
+         })
+         .then((data) => data?.data)
+         .catch((err) => err?.response?.data?.message);
+   }
 }
 
 const tweetServices = new Tweet();

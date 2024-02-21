@@ -178,9 +178,13 @@ class Video {
       }
    }
 
-   async searchVideo(q) {
+   async searchVideo(q, filter = "videos", sort = "createdAt") {
       return await axios
-         .get(`${import.meta.env.VITE_API_URL}/videos/s/query?q=${q}`)
+         .get(
+            `${
+               import.meta.env.VITE_API_URL
+            }/videos/s/query?q=${q}&filter=${filter}&sort=${sort}`
+         )
          .then((data) => data?.data)
          .catch((err) => err?.response?.data?.message);
    }

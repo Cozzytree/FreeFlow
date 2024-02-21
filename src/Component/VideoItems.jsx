@@ -1,18 +1,22 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import Options from "./Options";
 import { useDeleteVideos } from "../Hooks/videoHooks/useDeleteVideo";
 import Loader from "./loader";
 import { useUpdateVideo } from "../Hooks/videoHooks/useUpdateVideo";
 import { useUpdateThumbnail } from "../Hooks/videoHooks/useUpdateThumbnail";
+import { useLazyImage } from "../Hooks/uiHooks/useLazyImage";
 
-function VideoItems({ v, options = true, children }) {
+function VideoItems({ v, options = true, children, index }) {
    const [isVideo, setVideo] = useState(false);
    const { userDeleteVideo, isDeleting } = useDeleteVideos();
    const { isUpdating, userUpdateVideo } = useUpdateVideo();
    const { userUpdateThumbnail, isUpdating: updatingThumbnail } =
       useUpdateThumbnail();
    const navigate = useNavigate();
+   const videoRef = useRef([]);
+
+   useLazyImage(".videos", "data-src", v, "poster");
 
    function handlePlayV() {
       setVideo(true);
@@ -35,7 +39,10 @@ function VideoItems({ v, options = true, children }) {
       userUpdateThumbnail({ videoId, formData });
    }
    return (
-      <div className="flex flex-col p-5 gap-2 bg-zinc-900/20 items-start relative">
+      <div
+         ref={(video) => (videoRef.current[+index] = video)}
+         className="transition-all duration-300 flex flex-col p-5 gap-2 bg-zinc-900/20 items-start relative"
+      >
          {isDeleting && <Loader />}
          {children && children}
          {options && (
@@ -62,9 +69,10 @@ function VideoItems({ v, options = true, children }) {
                onClick={() => {
                   navigate(`/v/${v?._id}`);
                }}
-               poster={v?.thumbnail}
+               data-src={v?.thumbnail}
+               poster=""
                controlsList="nodownload nofullscreen nodocumentfile"
-               className="w-[300px] h-[200px] object-scale-down rounded-md animate-slow cursor-pointer"
+               className="videos transition-all duration-200 w-[300px] h-[200px] object-scale-down rounded-md animate-slow cursor-pointer"
                onMouseLeave={handleStopv}
                onMouseEnter={handlePlayV}
                src={isVideo ? v?.videoFile : ""}

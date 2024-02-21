@@ -4,7 +4,9 @@ class Comment {
    async getVideoComments({ videoId, pageParam = 1 }) {
       try {
          const response = await fetch(
-            `http://localhost:8000/api/v1/comments/v/${videoId}?page=${pageParam}&limit=10`,
+            `${
+               import.meta.env.VITE_API_URL
+            }/comments/v/${videoId}?page=${pageParam}&limit=10`,
             { method: "GET" }
          );
          const data = await response.json();
@@ -20,7 +22,7 @@ class Comment {
    async addVideoComment(videoId, content) {
       try {
          const response = await fetch(
-            `http://localhost:8000/api/v1/comments/ac/${videoId}`,
+            `${import.meta.env.VITE_API_URL}/comments/ac/${videoId}`,
             {
                method: "POST",
                credentials: "include",
@@ -43,7 +45,7 @@ class Comment {
    async deleteVideoComment(commentId) {
       try {
          const response = await fetch(
-            `http://localhost:8000/api/v1/comments/dc/${commentId}`,
+            `${import.meta.env.VITE_API_URL}/comments/dc/${commentId}`,
             { method: "DELETE", credentials: "include" }
          );
          const data = await response.json();
@@ -59,7 +61,7 @@ class Comment {
    async updateVideoComment(commentId) {
       try {
          const response = await fetch(
-            `http://localhost:8000/api/v1/comments/uc/${commentId}`,
+            `${import.meta.env.VITE_API_URL}/comments/uc/${commentId}`,
             {
                method: "PATCH",
                credentials: "include",
@@ -78,7 +80,9 @@ class Comment {
    async getTweetComments({ tweetId, pageParam = 1 }) {
       try {
          const response = await fetch(
-            `http://localhost:8000/api/v1/comments/tc/${tweetId}?page=${pageParam}&limit=10`,
+            `${
+               import.meta.env.VITE_API_URL
+            }/comments/tc/${tweetId}?page=${pageParam}&limit=10`,
             { method: "GET" }
          );
          const data = await response.json();
@@ -94,7 +98,7 @@ class Comment {
    async addTweetComment(tweetId, content) {
       try {
          const response = await fetch(
-            `http://localhost:8000/api/v1/comments/atc/${tweetId}`,
+            `${import.meta.env.VITE_API_URL}/comments/atc/${tweetId}`,
             {
                method: "POST",
                credentials: "include",
@@ -117,7 +121,7 @@ class Comment {
    async deleteTweetComment(commentId) {
       try {
          const response = await fetch(
-            `http://localhost:8000/api/v1/comments/dtc/${commentId}`,
+            `${import.meta.env.VITE_API_URL}/comments/dtc/${commentId}`,
             { method: "DELETE", credentials: "include" }
          );
          const data = await response.json();
@@ -133,7 +137,7 @@ class Comment {
    async updateTweetComment(commentId) {
       try {
          const response = await fetch(
-            `http://localhost:8000/api/v1/comments/utc/${commentId}`,
+            `${import.meta.env.VITE_API_URL}/comments/utc/${commentId}`,
             {
                method: "PATCH",
                credentials: "include",

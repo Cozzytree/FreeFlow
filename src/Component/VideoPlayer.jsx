@@ -1,14 +1,12 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
-import { MdOutlineRectangle } from "react-icons/md";
 import VideoControls from "./VideoControls";
 
 const VideoContext = createContext();
 
 function VideoProvider({ children }) {
    const [video, setVideo] = useState("");
-   function setVideoUrl(url) {
-      console.log(url);
-      setVideo(url);
+   function setVideoUrl(video) {
+      setVideo(video);
    }
 
    function removeVideo() {
@@ -27,20 +25,21 @@ function useVideo() {
 
 export { VideoProvider, useVideo };
 
-function VideoPlayer({ src, poster, controlsList }) {
+function VideoPlayer({ src, poster, controlsList, videoId, ct }) {
    const videoRef = useRef(null);
    const [controlsVisible, setControlsVisible] = useState(false);
    const [videoTime, setVideoTime] = useState(
       videoRef?.current?.currentTime || 0
    );
+   const { setVideoUrl } = useVideo();
 
    const [volume, setVolume] = useState(1.0);
    const [progress, setProgress] = useState(0);
 
    useEffect(() => {
-      if (videoRef?.current) {
-         videoRef?.current?.play();
-      }
+      // if (videoRef?.current) {
+      //    videoRef?.current?.play();
+      // }
 
       let videoRefrerence = videoRef?.current;
       function handlePlay(e) {
@@ -53,6 +52,7 @@ function VideoPlayer({ src, poster, controlsList }) {
          }
       }
       const updateProgress = () => {
+         videoRef.current.currentTime = ct || 0;
          setProgress(videoRef.current.currentTime);
       };
       videoRefrerence.addEventListener("timeupdate", updateProgress);
@@ -61,7 +61,7 @@ function VideoPlayer({ src, poster, controlsList }) {
          document.removeEventListener("keydown", handlePlay);
          videoRefrerence.removeEventListener("timeupdate", updateProgress);
       };
-   }, []);
+   }, [ct]);
 
    useEffect(() => {
       setVideoTime(videoRef?.current?.currentTime);
@@ -95,11 +95,18 @@ function VideoPlayer({ src, poster, controlsList }) {
       }
    }
 
-   function toggleControls() {
-      setControlsVisible((prevState) => !prevState);
-      // setTimeout(() => {
-      //    setControlsVisible(false);
-      // }, 10000);
+   function toggleControls(e) {
+      const target = e.touches ? e.touches[0].target : e.target;
+
+      const isInput = target.tagName.toLowerCase() === "input";
+      const isSvg = target.tagName.toLowerCase() === "svg";
+      const isPath = target.tagName.toLowerCase() === "path";
+      const isButton = target.tagName.toLowerCase() === "button";
+      if (isInput || isSvg || isPath || isButton) {
+         return;
+      }
+
+      setControlsVisible((prev) => !prev);
    }
 
    function handleVolumeChange(event) {
@@ -114,15 +121,23 @@ function VideoPlayer({ src, poster, controlsList }) {
       videoRef.current.currentTime = value;
    }
 
+   function handleVideoUrl(video) {
+      setVideoUrl(video);
+   }
+
    return (
       <div
-         onMouseEnter={toggleControls}
+         onTouchStart={(e) => toggleControls(e)}
+         onMouseEnter={(e) => toggleControls(e)}
          onMouseLeave={() => setControlsVisible(false)}
-         className="bg-zinc-900 p-2 relative videoPlayer"
+         className="bg-zinc-900 relative videoPlayer flex justify-center max-h-[300px]"
          style={{ background: poster }}
       >
          {controlsVisible && (
             <VideoControls
+               handleVideoUrl={() =>
+                  handleVideoUrl({ src, videoId, progress, poster })
+               }
                videoRef={videoRef}
                handlePlayPause={handlePlayPause}
                handleVolumeChange={handleVolumeChange}
@@ -131,18 +146,16 @@ function VideoPlayer({ src, poster, controlsList }) {
                videoTime={videoTime}
                handleVideoTime={handleVideoTime}
                toggleFullscreen={toggleFullscreen}
-            />
+            ></VideoControls>
          )}
 
          <video
             ref={videoRef}
             poster={poster}
             src={src}
-            className="videoPlayer w-[800px] h-[250px] md:h-[350px]"
+            className="videoPlayer object-contain"
             controlsList={controlsList}
-         >
-            <MdOutlineRectangle />
-         </video>
+         />
       </div>
    );
 }

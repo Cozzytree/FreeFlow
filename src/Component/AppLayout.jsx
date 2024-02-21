@@ -1,12 +1,12 @@
 import { Outlet } from "react-router";
 import Nav from "./Nav";
 import { useState } from "react";
-import { useVideo } from "./VideoPlayer";
-import Button from "./Button";
+import VideoPlayer, { useVideo } from "./VideoPlayer";
 import { useEscapeClose } from "../Hooks/uiHooks/useEscapeClose";
+import Search from "./Search";
 
 function AppLayout() {
-   const { removeVideo, video } = useVideo();
+   const { video } = useVideo();
    const [isNav, setIsNav] = useState(false);
 
    function handleNav() {
@@ -22,31 +22,25 @@ function AppLayout() {
          <div
             className={`w-full min-h-[100vh] grid grid-rows-[auto_1fr] gap-3 font-Changa relative bg-zinc-800 text-zinc-100 text-md`}
          >
+            <Search />
             <Nav
                isNav={isNav}
                setIsNav={handleNav}
                handleCloseNav={handleCloseNav}
             />
-            <main className="w-[95vw] flex flex-col items-center animate-slow p-2 pl-8 pb-[100px]">
+            <main className="w-[95vw] flex flex-col items-center animate-slow p-2 pl-8 pb-[100px] main">
                <Outlet />
             </main>
-
             {/* //Portable videoPlayer */}
-            {video && (
-               <div className="absolute bottom-2 right-2 w-[500px bg-zinc-900 h-[250px] flex justify-center items-center rounded-lg shadow-lg shadow-zinc-700/50 p-2">
-                  <video
-                     controlsList="nodownload"
-                     src={video}
-                     className="bottom-1 right-1 relative"
-                     width="400px"
-                     controls
-                  ></video>
-                  <Button
-                     extrastyles="z-[999] w-[20px absolute top-1 right-5 font-bold text-md"
-                     onClick={removeVideo}
-                  >
-                     X
-                  </Button>
+            {video?.src && (
+               <div className="fixed bottom-0 w-[100%] right-0 md:w-[500px] p-0">
+                  <VideoPlayer
+                     src={video?.src}
+                     controlsList="no-download"
+                     videoId={video?._id}
+                     poster={video?.poster}
+                     ct={video?.progress}
+                  />
                </div>
             )}
          </div>

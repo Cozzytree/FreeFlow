@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import Comments from "../Component/Comments";
-import VideoPlayer, { useVideo } from "../Component/VideoPlayer";
+import VideoPlayer from "../Component/VideoPlayer";
 import Loader from "../Component/loader";
 import { useGetaVideo } from "../Hooks/videoHooks/useGetaVideo";
 import { time } from "../utils/time";
@@ -25,7 +25,6 @@ function VideoView() {
    const { isLiking, likeVideo } = useVideoLike();
    const { recommendV, isLoading, refetch } = useRecommend();
    const { videoAddView } = useAddView();
-   const { setVideoUrl } = useVideo();
 
    useEffect(() => {
       const videoElement = document.querySelector(".videoPlayer");
@@ -34,7 +33,7 @@ function VideoView() {
          const watchedPercentage =
             (videoElement.currentTime / videoDuration) * 100;
 
-         if (watchedPercentage >= 10 && !isView) {
+         if (watchedPercentage >= 15 && !isView) {
             videoAddView(params?.videoId);
             addToWatchHistory(params?.videoId);
             setIsView(true);
@@ -57,7 +56,7 @@ function VideoView() {
          videoPlayerElement.scrollIntoView({ behavior: "smooth" });
       }
       const videoTag = videoPlayerElement?.children[0];
-      console.log(videoPlayerElement?.children[0].currentTime);
+
       if (videoTag && videoTag?.currentTime === videoTag?.duration) {
          navigate(`/v/${recommendV?.data?.[0]?._id}`);
          videoTag.currentTime = 0;
@@ -69,11 +68,12 @@ function VideoView() {
    }
 
    return (
-      <div className="flex flex-col md:grid md:grid-cols-[1fr_auto] gap-5 animate-slow">
+      <div className="flex flex-col md:grid md:grid-cols-[1fr_0.5fr] gap-5 animate-slow">
          {loadingVideo && <Loader />}
          <div className="space-y-2">
             <div>
                <VideoPlayer
+                  videoId={video?.data?._id}
                   controlsList="nodownload"
                   src={video?.data?.videoFile}
                   poster={video?.data?.thumbnail}
