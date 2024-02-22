@@ -14,6 +14,7 @@ function debounce(fn, t) {
 
 function Search() {
    const { search, searchResults, isPending } = useSearchVideo();
+
    const [searchInput, setSearch] = useState();
    const inputRef = useRef(null);
 
@@ -33,9 +34,9 @@ function Search() {
 
    return (
       <div
-         className={`w-[100%] px-10 flex justify-center z-10 sticky top-0 bg-zinc-800`}
+         className={`container mx-auto w-[100%] justify-center px-10 flex z-10 sticky top-0 bg-zinc-800`}
       >
-         <div className="border-[1px] border-zinc-600 rounded-md grid grid-cols-[1fr_auto] items-center mt-2 h-10 overflow-hidden mb-4 w-[80%]">
+         <div className="border-[1px] border-zinc-600 rounded-md grid grid-cols-[1fr_auto] mt-2 h-10 overflow-hidden mb-4 w-[80%]">
             <input
                ref={inputRef}
                onChange={(e) => setSearch(e.target.value)}
@@ -52,12 +53,12 @@ function Search() {
             </Button>
          </div>
          {inputRef?.current?.value && (
-            <ul className="w-[80%] min-h-[100px] max-h-[150px] overflow-y-auto z-10 bg-zinc-400 text-zinc-950 rounded-sm absolute top-[100%] flex flex-col items-start justify-center">
+            <ul className="w-[80%] min-h-[100px] max-h-[150px] overflow-y-auto z-10 bg-zinc-800 rounded-sm absolute top-[90%] flex flex-col items-center p-2">
                {isPending && <MiniSpinner />}
                {searchResults?.data?.length === 0 && "no results"}
                {searchResults?.data?.map((result) => (
                   <li
-                     className="flex w-[80%] cursor-pointer items-center gap-3 m-3 h-[30px]"
+                     className="flex w-[80%] border-b-[1px] border-b-zinc-400/50 cursor-pointer items-center gap-3 m-3 p-[20px] h-[30px]"
                      key={result?._id}
                   >
                      <img

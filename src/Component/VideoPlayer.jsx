@@ -25,47 +25,66 @@ function useVideo() {
 
 export { VideoProvider, useVideo };
 
-function VideoPlayer({ src, poster, controlsList, videoId, ct }) {
+function VideoPlayer({ src, poster, controlsList, videoId, ct, progress }) {
    const videoRef = useRef(null);
+   const [loadedPercentage, setLoadedPercentage] = useState(0);
    const [controlsVisible, setControlsVisible] = useState(false);
    const [videoTime, setVideoTime] = useState(
       videoRef?.current?.currentTime || 0
    );
    const { setVideoUrl } = useVideo();
-
    const [volume, setVolume] = useState(1.0);
-   const [progress, setProgress] = useState(0);
 
    useEffect(() => {
-      // if (videoRef?.current) {
-      //    videoRef?.current?.play();
-      // }
-
-      let videoRefrerence = videoRef?.current;
+      const videoReference = videoRef.current;
+      videoReference.currentTime = ct || 0;
       function handlePlay(e) {
          if (e.code === "Space") {
-            if (videoRef?.current?.paused) {
-               videoRef.current.play();
+            if (videoReference.paused) {
+               videoReference.play();
             } else {
-               videoRef?.current?.pause();
+               videoReference.pause();
             }
          }
       }
-      const updateProgress = () => {
-         videoRef.current.currentTime = ct || 0;
-         setProgress(videoRef.current.currentTime);
-      };
-      videoRefrerence.addEventListener("timeupdate", updateProgress);
+
       document.addEventListener("keydown", handlePlay);
+
       return () => {
          document.removeEventListener("keydown", handlePlay);
-         videoRefrerence.removeEventListener("timeupdate", updateProgress);
       };
    }, [ct]);
 
    useEffect(() => {
+      // const updateLoadedPercentage = () => {
+      //    if (videoRef.current) {
+      //       const video = videoRef.current;
+      //       const buffered = video.buffered;
+
+      //       if (buffered.length > 0) {
+      //          const loadedTimeRange = buffered.end(buffered.length - 1);
+      //          const loadedPercentage =
+      //             (loadedTimeRange / video.duration) * 100;
+      //          setLoadedPercentage(loadedPercentage);
+      //       }
+      //    }
+      // };
+
+      // if (videoRef.current) {
+      //    videoRef.current.addEventListener("progress", updateLoadedPercentage);
+      // }
       setVideoTime(videoRef?.current?.currentTime);
-   }, [videoRef?.current?.currentTime]);
+      // console.log(loadedPercentage);
+
+      // return () => {
+      //    if (videoRef?.current) {
+      //       videoRef?.current.removeEventListener(
+      //          "progress",
+      //          updateLoadedPercentage
+      //       );
+      //    }
+      // };
+   }, [loadedPercentage]);
 
    function toggleFullscreen() {
       if (!document.fullscreenElement) {
@@ -88,7 +107,7 @@ function VideoPlayer({ src, poster, controlsList, videoId, ct }) {
    }
 
    function handlePlayPause() {
-      if (videoRef?.current.paused) {
+      if (videoRef.current.paused) {
          videoRef.current.play();
       } else {
          videoRef.current.pause();
@@ -130,7 +149,7 @@ function VideoPlayer({ src, poster, controlsList, videoId, ct }) {
          onTouchStart={(e) => toggleControls(e)}
          onMouseEnter={(e) => toggleControls(e)}
          onMouseLeave={() => setControlsVisible(false)}
-         className="bg-zinc-900 relative videoPlayer flex justify-center max-h-[300px]"
+         className="bg-zinc-900 relative flex justify-center max-h-[300px]"
          style={{ background: poster }}
       >
          {controlsVisible && (

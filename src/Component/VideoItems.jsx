@@ -104,6 +104,7 @@ function VideoItems({ v, options = true, children, index }) {
                   </h2>
                )}
             </div>
+            <span className="text-sm text-zinc-400"> {v?.views} views</span>
          </div>
       </div>
    );

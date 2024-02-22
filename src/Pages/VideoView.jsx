@@ -25,6 +25,7 @@ function VideoView() {
    const { isLiking, likeVideo } = useVideoLike();
    const { recommendV, isLoading, refetch } = useRecommend();
    const { videoAddView } = useAddView();
+   const [progress, setProgress] = useState(0);
 
    useEffect(() => {
       const videoElement = document.querySelector(".videoPlayer");
@@ -32,21 +33,19 @@ function VideoView() {
          const videoDuration = videoElement.duration;
          const watchedPercentage =
             (videoElement.currentTime / videoDuration) * 100;
-
+         setProgress(videoElement.currentTime);
          if (watchedPercentage >= 15 && !isView) {
             videoAddView(params?.videoId);
             addToWatchHistory(params?.videoId);
             setIsView(true);
          }
       };
-
-      if (!isView)
-         videoElement.addEventListener("timeupdate", handleTimeUpdate);
+      videoElement.addEventListener("timeupdate", handleTimeUpdate);
 
       return () => {
          videoElement.removeEventListener("timeupdate", handleTimeUpdate);
       };
-   }, [isView, setIsView, params?.videoId, addToWatchHistory, videoAddView]);
+   }, [params?.videoId, isView, addToWatchHistory, videoAddView]);
 
    useEffect(() => {
       refetch();
@@ -73,6 +72,7 @@ function VideoView() {
          <div className="space-y-2">
             <div>
                <VideoPlayer
+                  progress={progress}
                   videoId={video?.data?._id}
                   controlsList="nodownload"
                   src={video?.data?.videoFile}
@@ -118,6 +118,7 @@ function VideoView() {
             <button onClick={() => setComments((comment) => !comment)}>
                comments &darr; {video?.data?.totalComments}
             </button>
+
             {isComments && (
                <Comments totalComments={video?.data?.totalComments} />
             )}

@@ -4,10 +4,14 @@ import { useState } from "react";
 import VideoPlayer, { useVideo } from "./VideoPlayer";
 import { useEscapeClose } from "../Hooks/uiHooks/useEscapeClose";
 import Search from "./Search";
+import { useVideoControls } from "../Hooks/uiHooks/useVideoControls";
 
 function AppLayout() {
    const { video } = useVideo();
    const [isNav, setIsNav] = useState(false);
+   const [progress, setProgress] = useState(0);
+
+   useVideoControls(".videoPlayer", setProgress);
 
    function handleNav() {
       setIsNav((op) => !op);
@@ -40,6 +44,7 @@ function AppLayout() {
                      videoId={video?._id}
                      poster={video?.poster}
                      ct={video?.progress}
+                     progress={progress}
                   />
                </div>
             )}

@@ -37,10 +37,8 @@ function InputFile() {
             onChange={(e) => setTitle(e.target.value)}
          />
          <textarea
-            className="bg-transparent outline-none text-zinc-100 border-[0.5px] p-1 rounded-md border-zinc-500"
+            className="bg-transparent outline-none w-[200px] md:w-[250px] text-zinc-100 border-[0.5px] p-1 rounded-md border-zinc-500"
             placeholder="description..."
-            cols="40"
-            rows="10"
             onChange={(e) => setDescription(e.target.value)}
          ></textarea>
          <label

@@ -12,7 +12,6 @@ function VideoControls({
    handleVolumeChange,
    volume,
    progress,
-   videoTime,
    handleVideoTime,
    toggleFullscreen,
    handleVideoUrl,
@@ -25,7 +24,7 @@ function VideoControls({
    return (
       <div className="absolute w-[100%] h-[100%] flex justify-center items-center">
          <button
-            onTouchStart={handlePlayPause}
+            // onTouchStart={handlePlayPause}
             onClick={handlePlayPause}
             className="flex justify-center items-center z-10 bg-zinc-800 h-[40px] w-[40px] rounded-[100%] p-2 cursor-pointer"
          >
@@ -45,7 +44,7 @@ function VideoControls({
             onTouchStart={handleVolumeChange}
          />
          <span className="absolute left-2 bottom-4 text-xs">
-            {minute} : {seconds > 10 ? seconds : `0${seconds} `} /
+            {minute} : {seconds >= 10 ? seconds : `0${seconds} `} /
             {` ${Math.floor(Number(videoRef?.current?.duration / 60))}`} :
             {Math.floor(Number(videoRef?.current?.duration % 60))}
          </span>
@@ -53,7 +52,7 @@ function VideoControls({
          <input
             className="absolute w-[60%] bottom-4 cursor-pointer z-10"
             type="range"
-            value={videoTime}
+            value={progress}
             onChange={(e) => handleVideoTime(e)}
             max={videoRef?.current?.duration || 0}
          />
@@ -65,20 +64,8 @@ function VideoControls({
             onClick={toggleFullscreen}
             onTouchStart={toggleFullscreen}
          />
-         <TbWindowMinimize
-            onClick={() => {
-               handleVideoUrl();
-               navigate("/");
-            }}
-            onTouchStart={() => {
-               handleVideoUrl();
-               navigate("/");
-            }}
-            cursor="pointer"
-            size={20}
-            className="absolute bottom-4 z-10 right-[10%]"
-         />
-         {video?.src && (
+
+         {video?.src ? (
             <>
                <IoMdClose
                   onClick={removeVideo}
@@ -101,6 +88,20 @@ function VideoControls({
                   size={15}
                />
             </>
+         ) : (
+            <TbWindowMinimize
+               onClick={() => {
+                  handleVideoUrl();
+                  navigate("/");
+               }}
+               onTouchStart={() => {
+                  handleVideoUrl();
+                  navigate("/");
+               }}
+               cursor="pointer"
+               size={20}
+               className="absolute bottom-4 z-10 right-[10%]"
+            />
          )}
       </div>
    );

@@ -24,7 +24,6 @@ function Nav({ isNav, setIsNav, handleCloseNav }) {
    const handleLogout = () => {
       userLogout();
    };
-
    return (
       <>
          {isPending && <Loader />}
@@ -76,7 +75,7 @@ function Nav({ isNav, setIsNav, handleCloseNav }) {
                      Tweet
                   </Link>
 
-                  {currentUser && (
+                  {currentUser?.data && (
                      <>
                         <Button
                            extrastyles="h-[30px] w-[100%]"
@@ -100,7 +99,7 @@ function Nav({ isNav, setIsNav, handleCloseNav }) {
                   )}
                </div>
 
-               {currentUser ? (
+               {currentUser?.data ? (
                   <Button onClick={handleLogout} type="danger">
                      LogOut
                   </Button>

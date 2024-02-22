@@ -12,11 +12,12 @@ function Comments() {
    const { videoComments, isLoading } = useGetVideoComments();
    const { addComment, isComenting } = useAddVideoComment();
    const { deleteComment, isDeleting } = useDeleteVideoComment();
-   const params = useParams();
    const [content, setContent] = useState("");
+   const params = useParams();
 
    function handleaddComment(e, videoId, content) {
       e.preventDefault();
+      if (content.length === 0) return;
       addComment({ videoId, content });
       setContent("");
    }
