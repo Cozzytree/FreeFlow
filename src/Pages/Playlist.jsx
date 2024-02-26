@@ -33,7 +33,7 @@ function Playlist() {
             <ModalProvider.ModalOpen opens="play">
                <Button
                   type="primary"
-                  extrastyles="absolute h-[20px] right-10 top-2 text-xs rounded-sm"
+                  extrastyles="absolute h-[20px] right-10 top-20 text-xs rounded-sm"
                >
                   Delete playlist
                </Button>

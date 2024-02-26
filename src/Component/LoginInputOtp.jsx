@@ -5,7 +5,7 @@ import Loader from "./loader";
 import { useVerifyOtp } from "../Hooks/authHooks/useVerifyLogin";
 const length = 6;
 
-function LoginInput({ handleWithotpInput }) {
+function LoginInput({ handleWithOtp }) {
    const [otpInput, setotpInput] = useState(new Array(length).fill(""));
    const [email, setEmail] = useState("");
    const { loginwithOtp, isLoggingotpInput } = useLoginOtp();
@@ -73,10 +73,12 @@ function LoginInput({ handleWithotpInput }) {
             type="primary"
             extrastyles="h-[20px] rounded-sm text-sm"
          >
-            Send otpInput
+            Send otp
          </Button>
          <span
-            onClick={() => handleWithotpInput(false)}
+            onClick={() => {
+               handleWithOtp(false);
+            }}
             className="cursor-pointer text-sm text-zinc-400"
          >
             Login with password

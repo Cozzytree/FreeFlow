@@ -3,11 +3,18 @@
 @tailwind utilities;
 
 body::-webkit-scrollbar {
-   width: 5px;
+   width: 8px;
+
+   border-radius: 10px;
+}
+
+body::-webkit-scrollbar-track {
+   background: rgb(56, 56, 56);
 }
 
 body::-webkit-scrollbar-thumb {
-   background: rgb(45, 0, 43);
+   border-radius: 10px;
+   background: rgba(178, 178, 178, 0.947);
 }
 
 input[type="file"] {

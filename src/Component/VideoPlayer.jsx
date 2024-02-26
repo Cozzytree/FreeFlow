@@ -1,29 +1,6 @@
-import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import VideoControls from "./VideoControls";
-
-const VideoContext = createContext();
-
-function VideoProvider({ children }) {
-   const [video, setVideo] = useState("");
-   function setVideoUrl(video) {
-      setVideo(video);
-   }
-
-   function removeVideo() {
-      setVideo("");
-   }
-   return (
-      <VideoContext.Provider value={{ setVideoUrl, video, removeVideo }}>
-         {children}
-      </VideoContext.Provider>
-   );
-}
-
-function useVideo() {
-   return useContext(VideoContext);
-}
-
-export { VideoProvider, useVideo };
+import { useGlobalContext } from "../Hooks/context/globalContext";
 
 function VideoPlayer({ src, poster, controlsList, videoId, ct, progress }) {
    const videoRef = useRef(null);
@@ -32,7 +9,7 @@ function VideoPlayer({ src, poster, controlsList, videoId, ct, progress }) {
    const [videoTime, setVideoTime] = useState(
       videoRef?.current?.currentTime || 0
    );
-   const { setVideoUrl } = useVideo();
+   const { setVideoUrl } = useGlobalContext();
    const [volume, setVolume] = useState(1.0);
 
    useEffect(() => {
@@ -114,18 +91,32 @@ function VideoPlayer({ src, poster, controlsList, videoId, ct, progress }) {
       }
    }
 
-   function toggleControls(e) {
-      const target = e.touches ? e.touches[0].target : e.target;
-
+   function toggleControlsMouse(e) {
+      const target = e.target;
       const isInput = target.tagName.toLowerCase() === "input";
       const isSvg = target.tagName.toLowerCase() === "svg";
       const isPath = target.tagName.toLowerCase() === "path";
       const isButton = target.tagName.toLowerCase() === "button";
+
       if (isInput || isSvg || isPath || isButton) {
          return;
       }
 
       setControlsVisible((prev) => !prev);
+   }
+
+   function toggleControlsTouch(e) {
+      const target = e.target;
+      const isInput = target.tagName.toLowerCase() === "input";
+      const isSvg = target.tagName.toLowerCase() === "svg";
+      const isPath = target.tagName.toLowerCase() === "path";
+      const isButton = target.tagName.toLowerCase() === "button";
+
+      if (isInput || isSvg || isPath || isButton) {
+         return;
+      }
+      if (controlsVisible) setControlsVisible(false);
+      else setControlsVisible(true);
    }
 
    function handleVolumeChange(event) {
@@ -146,10 +137,10 @@ function VideoPlayer({ src, poster, controlsList, videoId, ct, progress }) {
 
    return (
       <div
-         onTouchStart={(e) => toggleControls(e)}
-         onMouseEnter={(e) => toggleControls(e)}
+         onClick={(e) => toggleControlsTouch(e)}
+         onMouseEnter={(e) => toggleControlsMouse(e)}
          onMouseLeave={() => setControlsVisible(false)}
-         className="bg-zinc-900 relative flex justify-center max-h-[300px]"
+         className={`relative flex justify-center w-auto max-h-[300px] rounded-xl shadow-zinc-700/50 shadow-lg`}
          style={{ background: poster }}
       >
          {controlsVisible && (
@@ -172,7 +163,7 @@ function VideoPlayer({ src, poster, controlsList, videoId, ct, progress }) {
             ref={videoRef}
             poster={poster}
             src={src}
-            className="videoPlayer object-contain"
+            className={`videoPlayer object-contain rounded-xl`}
             controlsList={controlsList}
          />
       </div>

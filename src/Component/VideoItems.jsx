@@ -41,7 +41,7 @@ function VideoItems({ v, options = true, children, index }) {
    return (
       <div
          ref={(video) => (videoRef.current[+index] = video)}
-         className="transition-all duration-300 flex flex-col p-5 gap-2 bg-zinc-900/20 items-start relative"
+         className={`transition-all duration-300 flex flex-col p-5 gap-2 items-start relative`}
       >
          {isDeleting && <Loader />}
          {children && children}
@@ -72,7 +72,7 @@ function VideoItems({ v, options = true, children, index }) {
                data-src={v?.thumbnail}
                poster=""
                controlsList="nodownload nofullscreen nodocumentfile"
-               className="videos transition-all duration-200 w-[300px] h-[200px] object-scale-down rounded-md animate-slow cursor-pointer"
+               className={`videos transition-all duration-200 w-[300px] h-[200px] object-scale-down rounded-md animate-slow cursor-pointer`}
                onMouseLeave={handleStopv}
                onMouseEnter={handlePlayV}
                src={isVideo ? v?.videoFile : ""}

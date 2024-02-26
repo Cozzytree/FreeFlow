@@ -34,7 +34,7 @@ function Search() {
 
    return (
       <div
-         className={`container mx-auto w-[100%] justify-center px-10 flex z-10 sticky top-0 bg-zinc-800`}
+         className={`w-[100%] justify-center px-10 flex z-20 sticky top-0 bg-zinc-800/50`}
       >
          <div className="border-[1px] border-zinc-600 rounded-md grid grid-cols-[1fr_auto] mt-2 h-10 overflow-hidden mb-4 w-[80%]">
             <input

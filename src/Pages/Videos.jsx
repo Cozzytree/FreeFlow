@@ -1,21 +1,18 @@
 import VideoItems from "../Component/VideoItems";
-import Loader from "../Component/loader";
 import { useAllVideos } from "../Hooks/videoHooks/useGetAllVideos";
+import { useDocumentTitle } from "../Hooks/uiHooks/useDocumentTitle";
 
 function Videos() {
    const { allVideos, loadingVideos } = useAllVideos();
+   useDocumentTitle("Videos");
 
    return (
       <>
-         {loadingVideos ? (
-            <Loader />
-         ) : (
-            <div className="w-[90vw] grid grid-cols-[auto_auto] md:grid-cols-[auto_auto_auto] justify-start gap-1">
-               {allVideos?.pages[0]?.data?.data?.data?.map((v, i) => (
-                  <VideoItems v={v} key={v?._id} index={i} />
-               ))}
-            </div>
-         )}
+         <div className="w-[90vw] grid grid-cols-[auto_auto] md:grid-cols-[auto_auto_auto] justify-center gap-1">
+            {allVideos?.pages[0]?.data?.data?.data?.map((v, i) => (
+               <VideoItems v={v} key={v?._id} index={i} />
+            ))}
+         </div>
       </>
    );
 }

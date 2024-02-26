@@ -13,7 +13,7 @@ function UserVideos() {
    const { data } = userVideos || [];
    return (
       <>
-         {(loadingUser || loadingVideos || loadingCurrentUser) && <Loader />}
+         {(loadingUser || loadingCurrentUser) && <Loader />}
          <UserView
             userId={cu?.data?._id}
             username={currentUser?.data?.username}
@@ -27,9 +27,15 @@ function UserVideos() {
          <div
             className={`w-[80vw] grid py-3 grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr] gap-2 justify-center h-[100%] origin-right transition-all duration-150`}
          >
-            {data?.map((v) => (
-               <VideoItems v={v} key={v._id} type="user" />
-            ))}
+            {loadingVideos ? (
+               "loading..."
+            ) : (
+               <>
+                  {data?.map((v) => (
+                     <VideoItems v={v} key={v._id} type="user" />
+                  ))}
+               </>
+            )}
          </div>
       </>
    );

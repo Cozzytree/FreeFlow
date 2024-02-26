@@ -4,11 +4,13 @@ import Items from "../Component/Items";
 import Loader from "../Component/loader";
 import { useAddTweet } from "../Hooks/tweetsHooks/useAddTweet";
 import { useGetTweet } from "../Hooks/tweetsHooks/useGetTweets";
+import { useDocumentTitle } from "../Hooks/uiHooks/useDocumentTitle";
 
 function Tweet() {
    const { register, handleSubmit, reset } = useForm();
    const { loadingTweets, allTweets } = useGetTweet();
    const { useraddTweet, loadingaddTweet } = useAddTweet();
+   useDocumentTitle("Tweets");
 
    function onSubmit(data) {
       useraddTweet(data);

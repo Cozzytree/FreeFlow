@@ -39,13 +39,28 @@ function VideoView() {
             addToWatchHistory(params?.videoId);
             setIsView(true);
          }
+         if (
+            videoElement &&
+            videoElement?.currentTime === videoElement?.duration
+         ) {
+            navigate(`/v/${recommendV?.data?.[0]?._id}`);
+            videoElement.currentTime = 0;
+         }
       };
+
       videoElement.addEventListener("timeupdate", handleTimeUpdate);
 
       return () => {
          videoElement.removeEventListener("timeupdate", handleTimeUpdate);
       };
-   }, [params?.videoId, isView, addToWatchHistory, videoAddView]);
+   }, [
+      params?.videoId,
+      isView,
+      addToWatchHistory,
+      videoAddView,
+      navigate,
+      recommendV,
+   ]);
 
    useEffect(() => {
       refetch();
@@ -54,12 +69,6 @@ function VideoView() {
       if (videoPlayerElement) {
          videoPlayerElement.scrollIntoView({ behavior: "smooth" });
       }
-      const videoTag = videoPlayerElement?.children[0];
-
-      if (videoTag && videoTag?.currentTime === videoTag?.duration) {
-         navigate(`/v/${recommendV?.data?.[0]?._id}`);
-         videoTag.currentTime = 0;
-      }
    }, [params?.videoId, refetch, refetchGetAvideo, navigate, recommendV]);
 
    function handleVideoLike(videoId) {
@@ -67,10 +76,10 @@ function VideoView() {
    }
 
    return (
-      <div className="flex flex-col md:grid md:grid-cols-[1fr_0.5fr] gap-5 animate-slow">
+      <div className="flex flex-col md:grid md:grid-cols-[1fr_0.5fr] gap-5 animate-slow ">
          {loadingVideo && <Loader />}
          <div className="space-y-2">
-            <div>
+            <div className="rounded-md">
                <VideoPlayer
                   progress={progress}
                   videoId={video?.data?._id}

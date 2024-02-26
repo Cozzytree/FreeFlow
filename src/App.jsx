@@ -11,7 +11,7 @@ import Videos from "./Pages/Videos";
 import Login from "./Pages/Login";
 import SignUp from "./Pages/SignUp";
 import VideoView from "./Pages/VideoView";
-import { VideoProvider } from "./Component/VideoPlayer";
+import { GlobalContextProvider } from "./Hooks/context/globalContext";
 import UserVideos from "./Pages/UserVideos";
 import UserTweets from "./Pages/UserTweets";
 import Loader from "./Component/loader";
@@ -48,7 +48,7 @@ const client = new QueryClient({
 function App() {
    return (
       <Suspense fallback={<Loader />}>
-         <VideoProvider>
+         <GlobalContextProvider>
             <QueryClientProvider client={client}>
                <RouterProvider router={route} />
                <Toaster
@@ -66,7 +66,7 @@ function App() {
                />
                <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
-         </VideoProvider>
+         </GlobalContextProvider>
       </Suspense>
    );
 }

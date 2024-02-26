@@ -3,163 +3,128 @@ import axios from "axios";
 /* eslint-disable no-useless-catch */
 class Video {
    async getUserVideo(userId) {
-      try {
-         const response = await fetch(
-            `http://localhost:8000/api/v1/videos/user_v/${userId}`,
-            {
-               method: "GET",
-               credentials: "include",
-            }
-         );
-         const data = await response.json();
-         if (data?.success === false) {
-            throw new Error(data?.message);
-         }
-         return data;
-      } catch (error) {
-         throw error;
-      }
+      return await axios
+         .get(`${import.meta.env.VITE_API_URL}/videos/user_v/${userId}`, {
+            withCredentials: true,
+         })
+         .then((data) => data?.data)
+         .catch((err) => err?.response?.data?.message);
    }
 
    async getAvideo(videoId) {
-      try {
-         const response = await fetch(
-            `http://localhost:8000/api/v1/videos/${videoId}`,
-            {
-               method: "GET",
-               credentials: "include",
-            }
-         );
-         const data = await response.json();
-
-         if (data?.success === false) {
-            throw new Error(data?.message);
-         }
-
-         return data;
-      } catch (error) {
-         throw error;
-      }
+      return await axios
+         .get(`${import.meta.env.VITE_API_URL}/videos/${videoId}`, {
+            withCredentials: true,
+         })
+         .then((data) => data?.data)
+         .catch((err) => err?.response?.data?.message);
    }
 
    async getAllVideos({ pageparam = 1 }) {
-      try {
-         const response = await fetch(
-            `http://localhost:8000/api/v1/videos?page=${pageparam}&limit=10`,
-            { method: "GET" }
-         );
-         const data = await response.json();
-         if (data?.success === false) {
-            throw new Error(data?.message);
-         }
-         return { data, pageparam };
-      } catch (error) {
-         throw error;
-      }
+      return await axios
+         .get(
+            `${import.meta.env.VITE_API_URL}/videos?page=${pageparam}&limit=10`
+         )
+         .then((data) => {
+            return { data: data?.data, pageparam };
+         })
+         .catch((err) => err?.response?.data?.message);
    }
 
    async uploadVideo(formData) {
-      try {
-         const response = await fetch(
-            "http://localhost:8000/api/v1/videos/upload",
-            {
-               method: "POST",
-               credentials: "include",
-               body: formData,
-            }
-         );
-         const data = await response.json();
-         if (data?.success === false) {
-            throw new Error(data?.message);
-         }
-         return data;
-      } catch (error) {
-         throw error;
-      }
+      return axios
+         .post(`${import.meta.env.VITE_API_URL}/videos/upload`, formData, {
+            withCredentials: true,
+            headers: { "Content-Type": "multipart/form-data" },
+         })
+         .then((data) => data?.data)
+         .catch((err) => err?.response?.data?.message);
+
+      // try {
+      //    const response = await fetch(
+      //       `${import.meta.env.VITE_API_URL}/videos/upload`,
+      //       {
+      //          method: "POST",
+      //          credentials: "include",
+      //          body: formData,
+      //       }
+      //    );
+      //    const data = await response.json();
+      //    if (data?.success === false) {
+      //       throw new Error(data?.message);
+      //    }
+      //    return data;
+      // } catch (error) {
+      //    throw error;
+      // }
    }
 
    async deleteVideo(videoId) {
-      try {
-         const response = await fetch(
-            `http://localhost:8000/api/v1/videos/d/${videoId}`,
-            {
-               method: "DELETE",
-               credentials: "include",
-            }
-         );
-         const data = await response.json();
-         if (data?.success === false) {
-            throw new Error(data?.message);
-         }
-         return data;
-      } catch (error) {
-         throw error;
-      }
+      return await axios
+         .delete(`${import.meta.env.VITE_API_URL}/videos/d/${videoId}`, {
+            withCredentials: true,
+         })
+         .then((data) => data?.data)
+         .catch((err) => err?.response?.data?.message);
    }
 
    async addView(videoId) {
-      try {
-         const response = await fetch(
-            `http://localhost:8000/api/v1/videos/addView/${videoId}`,
-            {
-               method: "PATCH",
-               credentials: "include",
-            }
-         );
-         const data = await response.json();
-         if (data?.success === false) {
-            throw new Error(data?.message);
-         }
-      } catch (error) {
-         throw error;
-      }
+      return await axios
+         .patch(
+            `${import.meta.env.VITE_API_URL}/videos/addView/${videoId}`,
+            {},
+            { withCredentials: true }
+         )
+         .then((data) => data?.data)
+         .catch((err) => err?.response?.data?.message);
    }
 
    async updateVideo(videoId, info) {
-      try {
-         const response = await fetch(
-            `http://localhost:8000/api/v1/videos/e_title/${videoId}`,
+      console.log(info);
+      return await axios
+         .patch(
+            `${import.meta.env.VITE_API_URL}/videos/e_title/${videoId}`,
+            info,
             {
-               method: "PATCH",
-               credentials: "include",
-               headers: {
-                  "Content-Type": "application/json",
-               },
-               body: JSON.stringify(info),
+               withCredentials: true,
+               headers: { "Content-Type": "application/json" },
             }
-         );
-         const data = await response.json();
-         if (data?.success === false) {
-            throw new Error(data?.message);
-         }
-
-         return data;
-      } catch (error) {
-         throw error;
-      }
+         )
+         .then((data) => data?.data)
+         .catch((err) => err?.response?.data?.message);
    }
 
    async updateThumbnail(videoId, formData) {
-      console.log(videoId, formData);
-      try {
-         const response = await fetch(
-            `http://localhost:8000/api/v1/videos/e_thumbnail/${videoId}`,
+      return await axios
+         .patch(
+            `${import.meta.env.VITE_API_URL}/videos/e_thumbnail/${videoId}`,
+            formData,
             {
-               method: "PATCH",
-               credentials: "include",
-               body: formData,
+               withCredentials: true,
+               headers: { "Content-Type": "multipart/form-data" },
             }
-         );
+         )
+         .then((data) => data?.data)
+         .catch((err) => err?.response?.data?.message);
+      // try {
+      //    const response = await fetch(
+      //       `${import.meta.env.VITE_API_URL}/videos/e_thumbnail/${videoId}`,
+      //       {
+      //          method: "PATCH",
+      //          credentials: "include",
+      //          body: formData,
+      //       }
+      //    );
 
-         const data = await response.json();
-         if (data?.success === false) {
-            throw new Error(data?.message);
-         }
+      //    const data = await response.json();
+      //    if (data?.success === false) {
+      //       throw new Error(data?.message);
+      //    }
 
-         return data;
-      } catch (error) {
-         throw error;
-      }
+      //    return data;
+      // } catch (error) {
+      //    throw error;
+      // }
    }
 
    async recommends(videoId) {

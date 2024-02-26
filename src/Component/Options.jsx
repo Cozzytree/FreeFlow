@@ -30,6 +30,7 @@ function Options({
    const [title, setTitle] = useState(videoEdit?.title);
    const [description, setDescription] = useState(videoEdit?.description || "");
    const [thumbnail, setThumbnail] = useState(null);
+
    return (
       <div className="absolute right-2 top-1 flex flex-col justify-end items-end text-sm rotate-90">
          <ModalProvider>
@@ -71,14 +72,16 @@ function Options({
                                  {tweetEdit && (
                                     <form
                                        onSubmit={(e) => {
-                                          tweetEdit?.editHandler(
-                                             e,
-                                             tweetEdit?.tweetId,
-                                             {
-                                                content: content,
-                                             }
-                                          );
-                                          setContent("");
+                                          e.preventDefault();
+                                          if (tweetEdit?.tweet !== content) {
+                                             tweetEdit?.editHandler(
+                                                tweetEdit?.tweetId,
+                                                {
+                                                   content: content,
+                                                }
+                                             );
+                                             setContent(content);
+                                          }
                                        }}
                                        className="flex flex-col items-center gap-3"
                                     >

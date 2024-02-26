@@ -25,8 +25,7 @@ function Items({ tweet }) {
       toggleTweet(tweetId);
    }
 
-   function handleEditTweet(e, tweetId, content) {
-      e.preventDefault();
+   function handleEditTweet(tweetId, content) {
       userEditTweet({ tweetId, content });
    }
 
