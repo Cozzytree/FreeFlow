@@ -164,6 +164,19 @@ class Auth {
             throw new Error(err?.response?.data?.message);
          });
    }
+
+   async clearWatchHistory() {
+      return await axios
+         .patch(
+            `${import.meta.env.VITE_API_URL}/users/clearWatchHistory`,
+            {},
+            { withCredentials: true }
+         )
+         .then((data) => data?.data)
+         .catch((err) => {
+            throw new Error(err?.response?.data?.message);
+         });
+   }
 }
 const authservices = new Auth();
 export default authservices;

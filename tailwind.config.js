@@ -4,10 +4,10 @@ export default {
    theme: {
       extend: {
          fontFamily: {
-            Changa: "Changa, sans-serif",
+            MPLUS: "M PLUS Code Latin, monospace",
          },
          animation: {
-            slow: "slow 1s ease linear",
+            slow: "1s ease linear",
          },
          keyframes: {
             slow: {

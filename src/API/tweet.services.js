@@ -60,6 +60,15 @@ class Tweet {
          .then((data) => data?.data)
          .catch((err) => err?.response?.data?.message);
    }
+
+   async getATweet(tweetId) {
+      return await axios
+         .get(`${import.meta.env.VITE_API_URL}/tweet/info/${tweetId}`, {
+            withCredentials: true,
+         })
+         .then((data) => data?.data)
+         .catch((err) => err?.response?.data?.message);
+   }
 }
 
 const tweetServices = new Tweet();

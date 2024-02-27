@@ -51,6 +51,7 @@ function Comments() {
                   className="grid grid-cols-[auto_1fr] gap-5 pb-5 w-[100%] relative p-3"
                >
                   <Options
+                     Isshare={false}
                      userId={comment?.user?._id}
                      currentItem={comment?._id}
                      deleteHandler={handleDeleteComment}

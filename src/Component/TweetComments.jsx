@@ -27,12 +27,12 @@ function TweetComments({ tweetId }) {
    return (
       <>
          <div
-            className={`min-w-[100%] max-h-[250px] p-1 overflow-y-scroll rounded-lg bg-zinc-800`}
+            className={`w-[80%] gap-2 p-1 rounded-lg bg-zinc-800/40 border-[1px] border-zinc-100/10`}
          >
             {(isLoading || isPending) && <MiniSpinner />}
 
             {tweetComments?.pages[0]?.data?.data?.length === 0 && (
-               <p>no comments</p>
+               <p className="p-2 text-xs text-zinc-400">no comments...</p>
             )}
 
             {tweetComments?.pages[0]?.data?.data?.map((comment) => (
@@ -51,15 +51,13 @@ function TweetComments({ tweetId }) {
                      className="w-[30px] h-[30px] rounded-[100%]"
                   />
                   <div className="space-y-2">
-                     <h2 className="text-[2px] md:text-[1.2em] flex flex-col">
+                     <h2 className="text-[2px] md:text-[1em] flex flex-col">
                         {comment?.user?.username}
-                        <span className="text-xs md:text-sm px-3 text-zinc-400">
+                        <span className="text-xs tracking-tighter px-3 text-zinc-400">
                            {time(comment?.createdAt)}
                         </span>
                      </h2>
-                     <p className="text-zinc-300 text-sm md:text-[1em]">
-                        {comment?.content}
-                     </p>
+                     <p className="text-zinc-300 text-sm">{comment?.content}</p>
                   </div>
                </div>
             ))}

@@ -2,7 +2,7 @@ import Button from "./Button";
 
 function CommentForm({ isLoading, handler, setContent }) {
    return (
-      <form onSubmit={handler} className="w-[100%] flex relative">
+      <form onSubmit={handler} className="w-[80%] flex relative py-2">
          <input
             onChange={(e) => setContent(e.target.value)}
             type="text"

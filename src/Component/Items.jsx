@@ -3,16 +3,13 @@ import { time } from "../utils/time";
 import Options from "./Options";
 import { useDeleteTweet } from "../Hooks/tweetsHooks/useDeleteTweet";
 import { useLikeTweet } from "../Hooks/likeHooks/useTweetLike";
-import TweetComments from "./tweetComments";
-import { useState } from "react";
 import { MdMessage } from "react-icons/md";
 import { useEditTweet } from "../Hooks/tweetsHooks/useEditTweet";
 import { useNavigate } from "react-router";
 import { useLazyImage } from "../Hooks/uiHooks/useLazyImage";
 
-function Items({ tweet }) {
+function Items({ tweet, showCommentNo = true, isInfo = false }) {
    const navigate = useNavigate();
-   const [isComment, setComment] = useState(false);
    const { deletingTweet, userDeleteTweet } = useDeleteTweet();
    const { toggleTweet, loadingTweetlike } = useLikeTweet();
    const { isEditing, userEditTweet } = useEditTweet();
@@ -31,12 +28,12 @@ function Items({ tweet }) {
 
    return (
       <div
-         className={`space-y-5 w-[90vw] md:w-[80vw] py-5 flex flex-col items-center ${
+         className={`space-y-5 w-[90vw] md:w-[90vw]  py-5 flex flex-col items-center ${
             deletingTweet && "animate-pulse"
          }`}
       >
          {tweet && (
-            <article className="flex flex-cols w-[80%] md:w-[60%] min-h-[125px] items-start gap-5 p-3 bg-zinc-700/20 rounded-md relative">
+            <article className="flex flex-cols w-[80%] border-[1px] border-zinc-600/70 md:w-[80%] min-h-[125px] items-start gap-5 p-3 bg-zinc-700/20 rounded-md relative">
                <Options
                   userId={tweet?.ownerInfo?._id}
                   deleteHandler={handleDeleteTweet}
@@ -72,7 +69,7 @@ function Items({ tweet }) {
                         )}
 
                         <p className="text-[0.65em] md:text-[0.85em]">
-                           {time(tweet?.createdAt)}
+                           {tweet?.createdAt && time(tweet?.createdAt)}
                         </p>
                      </span>
                      <p className="text-sm md:text-[1.1em]">{tweet?.content}</p>
@@ -89,17 +86,22 @@ function Items({ tweet }) {
                            totalLikes={tweet?.totalLikesCount}
                         />
                         <p className="flex items-center gap-1">
-                           <MdMessage
-                              cursor="pointer"
-                              onClick={() => setComment((cur) => !cur)}
-                           />
-                           <span className="text-sm">
-                              {tweet?.totalCommentsCount}
-                           </span>
+                           {showCommentNo && (
+                              <>
+                                 <MdMessage
+                                    cursor="pointer"
+                                    onClick={() => {
+                                       if (!isInfo)
+                                          navigate(`/post/${tweet?._id}`);
+                                    }}
+                                 />
+                                 <span className="text-sm">
+                                    {tweet?.totalCommentsCount}
+                                 </span>
+                              </>
+                           )}
                         </p>
                      </div>
-
-                     {isComment && <TweetComments tweetId={tweet?._id} />}
                   </div>
                </section>
             </article>

@@ -22,10 +22,11 @@ function UserView({
    return (
       <div className="w-[80vw] grid grid-cols-[auto_1fr] items-center gap-3 relative">
          <img
-            className="w-[80px] aspect-auto md:w-[150px] h-[80px] md:h-[150px] rounded-[100%]"
+            className="w-[80px] md:w-[150px] h-[80px] md:h-[150px] rounded-[100%] object-cover"
             src={avatar}
             alt=""
          />
+
          <div className="grid grid-rows-[auto_auto] gap-3">
             <div className="flex flex-col">
                <h1 className="text-xl md:text-2xl font-bold">{username}</h1>

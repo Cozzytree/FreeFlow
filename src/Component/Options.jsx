@@ -16,6 +16,7 @@ import PlaylistItem from "./PlaylistItem";
 import { share } from "../utils/share";
 
 function Options({
+   Isshare = true,
    handleOptions,
    userId,
    deleteHandler,
@@ -41,18 +42,20 @@ function Options({
                />
             </ModalProvider.ModalOpen>
             <ModalProvider.ModalWindow window="options" clickOutside={false}>
-               <OptionsItem>
-                  <FaShare
-                     onClick={() =>
-                        share({
-                           title: document.title,
-                           text: "Check out this amazing content!",
-                           url: document.URL,
-                        })
-                     }
-                  />
-                  Share
-               </OptionsItem>
+               {Isshare && (
+                  <OptionsItem>
+                     <FaShare
+                        onClick={() =>
+                           share({
+                              title: document.title,
+                              text: "Check out this amazing content!",
+                              url: document.URL,
+                           })
+                        }
+                     />
+                     Share
+                  </OptionsItem>
+               )}
 
                {currentUser?.data?._id === userId && userId !== undefined && (
                   <>

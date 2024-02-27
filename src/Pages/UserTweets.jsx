@@ -5,11 +5,14 @@ import Loader from "../Component/loader";
 import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
 import { useGetUser } from "../Hooks/authHooks/useGetUser";
 import { useGetUserTweets } from "../Hooks/tweetsHooks/useGetUserTweets";
+import { useDocumentTitle } from "../Hooks/uiHooks/useDocumentTitle";
 
 function UserTweets() {
    const { currentUser: cu, loadingCurrentUser } = useCurrentUser();
    const { userTweets, loadingUserTweets } = useGetUserTweets();
    const { currentUser } = useGetUser();
+   useDocumentTitle(currentUser?.data?.username);
+
    return (
       <>
          {(loadingUserTweets || loadingCurrentUser) && <Loader />}

@@ -69,7 +69,7 @@ function Nav() {
                               src={currentUser?.data?.avatar}
                               alt=""
                            />
-                           <h1 className="text-sm">
+                           <h1 className="text-xl md:text-2xl">
                               {currentUser?.data?.username}
                            </h1>
                         </Link>

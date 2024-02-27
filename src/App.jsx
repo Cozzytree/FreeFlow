@@ -16,6 +16,8 @@ import UserVideos from "./Pages/UserVideos";
 import UserTweets from "./Pages/UserTweets";
 import Loader from "./Component/loader";
 import Playlist from "./Pages/Playlist";
+import PageNotFound from "./Pages/PageNotFound";
+import TweetInDetail from "./Pages/TweetInDetail";
 
 const route = createBrowserRouter([
    {
@@ -26,6 +28,7 @@ const route = createBrowserRouter([
          { path: "/u/:userId/videos", element: <UserVideos /> },
          { path: "/u/:userId/tweets", element: <UserTweets /> },
          { path: "/tweets", element: <Tweet /> },
+         { path: "/post/:postId", element: <TweetInDetail /> },
          { path: "/settings", element: <Settings /> },
          { path: "/:userId/watch_history", element: <WatchHistory /> },
          { path: "/login", element: <Login /> },
@@ -34,6 +37,7 @@ const route = createBrowserRouter([
          { path: "/pl/:playlistId", element: <Playlist /> },
       ],
    },
+   { path: "*", element: <PageNotFound /> },
 ]);
 
 const client = new QueryClient({
