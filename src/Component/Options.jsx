@@ -11,9 +11,10 @@ import { useState } from "react";
 import MiniSpinner from "./MiniSpinner";
 import AreYouSure from "./AreYouSure";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
-import Input from "./Input";
 import PlaylistItem from "./PlaylistItem";
 import { share } from "../utils/share";
+import { useForm } from "react-hook-form";
+import FormInput from "./FormInput";
 
 function Options({
    Isshare = true,
@@ -27,10 +28,16 @@ function Options({
    deleteBtnLabel,
 }) {
    const { currentUser } = useCurrentUser();
-   const [content, setContent] = useState(tweetEdit?.tweet);
-   const [title, setTitle] = useState(videoEdit?.title);
-   const [description, setDescription] = useState(videoEdit?.description || "");
+   const { handleSubmit, register } = useForm();
    const [thumbnail, setThumbnail] = useState(null);
+
+   const tweetUpdate = (data) => {
+      tweetEdit?.editHandler(tweetEdit?.tweetId, data);
+   };
+
+   const videoUpdate = (data) => {
+      videoEdit?.handler(videoEdit?.videoId, data);
+   };
 
    return (
       <div className="absolute right-2 top-1 flex flex-col justify-end items-end text-sm rotate-90">
@@ -74,25 +81,16 @@ function Options({
                                  {/* {tweet edit window} */}
                                  {tweetEdit && (
                                     <form
-                                       onSubmit={(e) => {
-                                          e.preventDefault();
-                                          if (tweetEdit?.tweet !== content) {
-                                             tweetEdit?.editHandler(
-                                                tweetEdit?.tweetId,
-                                                {
-                                                   content: content,
-                                                }
-                                             );
-                                             setContent(content);
-                                          }
-                                       }}
+                                       onSubmit={handleSubmit(tweetUpdate)}
                                        className="flex flex-col items-center gap-3"
                                     >
-                                       <Input
-                                          setState={setContent}
+                                       <FormInput
+                                          id="content"
+                                          type="text"
+                                          register={register}
+                                          placeholder="hello"
                                           defaultValue={tweetEdit?.tweet}
                                        />
-
                                        <Button
                                           disabled={tweetEdit?.loading}
                                           extrastyles="rounded-sm h-[30px]"
@@ -141,32 +139,24 @@ function Options({
                                        )}
 
                                        <form
-                                          onSubmit={(e) => {
-                                             videoEdit?.handler(
-                                                e,
-                                                videoEdit?.videoId,
-                                                {
-                                                   title,
-                                                   description,
-                                                }
-                                             );
-                                          }}
+                                          onSubmit={handleSubmit(videoUpdate)}
                                           className="flex flex-col text-zinc-50 items-center gap-3"
                                        >
-                                          <Input
-                                             setState={setTitle}
-                                             defaultValue={title}
+                                          <FormInput
+                                             id="title"
+                                             register={register}
+                                             placeholder="Title"
+                                             defaultValue={videoEdit?.title}
+                                          />
+                                          <FormInput
+                                             id="description"
+                                             register={register}
+                                             defaultValue={
+                                                videoEdit?.description
+                                             }
+                                             placeholder="description..."
                                           />
 
-                                          <textarea
-                                             onChange={(e) =>
-                                                setDescription(e.target.value)
-                                             }
-                                             className="bg-transparent outline-none border-[0.5px] border-zinc-400 rounded-md p-2 text-zinc-100"
-                                             defaultValue={description}
-                                             cols="30"
-                                             placeholder="description..."
-                                          ></textarea>
                                           <label
                                              className="flex gap-2 transition-all"
                                              htmlFor="isPublished"
@@ -179,8 +169,10 @@ function Options({
                                                 type="checkbox"
                                                 name=""
                                                 id="isPublished"
+                                                {...register("isPublished")}
                                              />
                                           </label>
+
                                           <Button
                                              disabled={videoEdit?.loader}
                                              type="primary"

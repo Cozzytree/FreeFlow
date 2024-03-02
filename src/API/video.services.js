@@ -80,7 +80,6 @@ class Video {
    }
 
    async updateVideo(videoId, info) {
-      console.log(info);
       return await axios
          .patch(
             `${import.meta.env.VITE_API_URL}/videos/e_title/${videoId}`,

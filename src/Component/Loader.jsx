@@ -1,9 +1,10 @@
+import { createPortal } from "react-dom";
+
 function Loader() {
-  return (
-    <div className="fixed flex justify-center items-center inset-0 w-full h-full backdrop-blur-sm z-[999]">
-      <div className="w-[30px] h-[30px] rounded-[100%] border-[4px] border-b-transparent border-sky-500 animate-spin"></div>
-    </div>
-  );
+   return createPortal(
+      <div className="fixed top-0 left-0 animate-pulse pt-8 pb-8 pl-[100px] gap-3 inset-0 w-full h-full z-[999] bg-zinc-700/50"></div>,
+      document.body
+   );
 }
 
 export default Loader;

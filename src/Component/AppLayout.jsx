@@ -25,7 +25,7 @@ function AppLayout() {
             </main>
             {/* //Portable videoPlayer */}
             {video?.src && (
-               <div className="fixed bottom-0 w-[100%] right-0 md:w-[500px] p-0">
+               <div className="fixed p-3 bottom-0 w-[100%] right-0 md:w-[500px] z-20">
                   <VideoPlayer
                      src={video?.src}
                      controlsList="no-download"

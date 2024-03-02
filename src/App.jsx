@@ -18,6 +18,7 @@ import Loader from "./Component/loader";
 import Playlist from "./Pages/Playlist";
 import PageNotFound from "./Pages/PageNotFound";
 import TweetInDetail from "./Pages/TweetInDetail";
+import SearchResults from "./Pages/SearchResults";
 
 const route = createBrowserRouter([
    {
@@ -35,6 +36,7 @@ const route = createBrowserRouter([
          { path: "/signUp", element: <SignUp /> },
          { path: "/v/:videoId", element: <VideoView /> },
          { path: "/pl/:playlistId", element: <Playlist /> },
+         { path: "/query/:q", element: <SearchResults /> },
       ],
    },
    { path: "*", element: <PageNotFound /> },

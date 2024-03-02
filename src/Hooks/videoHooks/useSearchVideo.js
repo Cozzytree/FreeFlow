@@ -1,16 +1,15 @@
 import videoservices from "../../API/video.services";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
 
 export function useSearchVideo() {
-   const queryClient = useQueryClient();
+   const params = useParams();
    const { searchVideo } = videoservices;
-   const {
-      data: searchResults,
-      mutate: search,
-      isPending,
-   } = useMutation({
-      mutationFn: (q) => searchVideo(q),
+
+   const { data: searchResults, isPending } = useQuery({
+      queryFn: () => searchVideo(params?.q),
+      queryKey: ["searchResults"],
    });
 
-   return { searchResults, search, isPending };
+   return { searchResults, isPending };
 }

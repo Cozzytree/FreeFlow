@@ -27,8 +27,7 @@ function VideoItems({ v, options = true, children, index }) {
    function handleDeleteVideo(videoId) {
       userDeleteVideo(videoId);
    }
-   function handleUpdateVideo(e, videoId, info) {
-      e.preventDefault();
+   function handleUpdateVideo(videoId, info) {
       userUpdateVideo({ videoId, info });
    }
 
@@ -38,10 +37,11 @@ function VideoItems({ v, options = true, children, index }) {
       console.log(videoId, image);
       userUpdateThumbnail({ videoId, formData });
    }
+
    return (
       <div
          ref={(video) => (videoRef.current[+index] = video)}
-         className={`transition-all duration-300 flex flex-col p-5 gap-2 items-start relative`}
+         className={`transition-all duration-300 flex flex-col p-5 gap-2 items-start relative bg-zinc-900/20`}
       >
          {isDeleting && <Loader />}
          {children && children}

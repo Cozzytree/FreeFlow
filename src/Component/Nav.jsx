@@ -6,7 +6,7 @@ import Button from "./Button";
 import { useLogout } from "../Hooks/authHooks/useLogout";
 import Loader from "./loader";
 import Link from "./Link";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useClickOutside } from "../Hooks/uiHooks/useClickOutside";
 import { PiTelevisionSimpleFill } from "react-icons/pi";
 import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
@@ -14,6 +14,7 @@ import MiniSpinner from "./MiniSpinner";
 import Subscription from "./Subscription";
 import Playlists from "./Playlists";
 import { useGlobalContext } from "../Hooks/context/globalContext";
+import { useBodyOverlay } from "../Hooks/uiHooks/useBodyOverlay";
 
 function Nav() {
    const [isPlaylist, setPlaylist] = useState(false);
@@ -24,13 +25,7 @@ function Nav() {
    const { handleNav, isNav, handleCloseNav } = useGlobalContext();
 
    useClickOutside(ref, handleCloseNav);
-   useEffect(() => {
-      if (isNav) {
-         document.body.classList.add("overflow-hidden");
-      } else {
-         document.body.classList.remove("overflow-hidden");
-      }
-   }, [isNav]);
+   useBodyOverlay(isNav);
 
    const handleLogout = () => {
       userLogout();
@@ -65,11 +60,11 @@ function Nav() {
                            to={`/u/${currentUser?.data?._id}/videos`}
                         >
                            <img
-                              className="w-[30px] h-[30px] object-cover rounded-[100%]"
+                              className="w-[30px] h-[30px] rounded-[100%]"
                               src={currentUser?.data?.avatar}
                               alt=""
                            />
-                           <h1 className="text-xl md:text-2xl">
+                           <h1 className="text-md">
                               {currentUser?.data?.username}
                            </h1>
                         </Link>

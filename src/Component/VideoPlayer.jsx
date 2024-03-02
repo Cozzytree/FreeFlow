@@ -10,7 +10,15 @@ function VideoPlayer({ src, poster, controlsList, videoId, ct, progress }) {
       videoRef?.current?.currentTime || 0
    );
    const { setVideoUrl } = useGlobalContext();
-   const [volume, setVolume] = useState(1.0);
+   const [volume, setVolume] = useState(null);
+
+   useEffect(() => {
+      if (localStorage.getItem("vol")) {
+         videoRef.current.volume =
+            JSON.parse(localStorage.getItem("vol")) / 100;
+         setVolume(videoRef?.current?.volume);
+      }
+   }, []);
 
    useEffect(() => {
       const videoReference = videoRef.current;
@@ -122,6 +130,7 @@ function VideoPlayer({ src, poster, controlsList, videoId, ct, progress }) {
    function handleVolumeChange(event) {
       const newVolume = parseFloat(event.target.value);
       setVolume(newVolume / 100);
+      localStorage.setItem("vol", newVolume);
       videoRef.current.volume = newVolume / 100;
    }
 

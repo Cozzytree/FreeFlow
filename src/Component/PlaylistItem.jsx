@@ -2,20 +2,21 @@ import { useState } from "react";
 import { useUserPlaylists } from "../Hooks/playlistHooks/useGetPlaylists";
 import Button from "./Button";
 import MiniSpinner from "./MiniSpinner";
-import Input from "./Input";
 import { useCreatePlaylist } from "../Hooks/playlistHooks/useCreatePlaylist";
 import { useAddVtoPL } from "../Hooks/playlistHooks/useAddVtoPL";
+import FormInput from "./FormInput";
+import { useForm } from "react-hook-form";
 
 function PlaylistItem({ videoId }) {
+   const { handleSubmit, register, reset } = useForm();
    const { userPlaylists, isLoadingPlaylists } = useUserPlaylists();
    const { userCreatePlaylist, creatingPlaylist } = useCreatePlaylist();
    const { userAddVtoPL } = useAddVtoPL();
    const [isForm, setForm] = useState(false);
-   const [name, setName] = useState("");
 
-   function handleCreatePlaylist(e, title) {
-      e.preventDefault();
-      userCreatePlaylist(title);
+   function handleCreatePlaylist(data) {
+      userCreatePlaylist(data);
+      reset();
    }
 
    function handleAddVtoP(playlistId, videoId) {
@@ -43,10 +44,15 @@ function PlaylistItem({ videoId }) {
 
          {isForm && (
             <form
-               onSubmit={(e) => handleCreatePlaylist(e, { name })}
+               onSubmit={handleSubmit(handleCreatePlaylist)}
                className="flex flex-col items-center gap-3"
             >
-               <Input setState={setName} placeholder="title..." />
+               <FormInput
+                  required={true}
+                  id="name"
+                  register={register}
+                  placeholder="title..."
+               />
                <Button
                   disabled={creatingPlaylist}
                   type="primary"

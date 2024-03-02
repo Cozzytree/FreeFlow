@@ -5,6 +5,7 @@ import Loader from "../Component/loader";
 import { useAddTweet } from "../Hooks/tweetsHooks/useAddTweet";
 import { useGetTweet } from "../Hooks/tweetsHooks/useGetTweets";
 import { useDocumentTitle } from "../Hooks/uiHooks/useDocumentTitle";
+import FormInput from "../Component/FormInput";
 
 function Tweet() {
    const { register, handleSubmit, reset } = useForm();
@@ -15,6 +16,7 @@ function Tweet() {
    function onSubmit(data) {
       useraddTweet(data);
       reset();
+      // console.log(data);
    }
 
    return (
@@ -26,15 +28,13 @@ function Tweet() {
             className="flex gap-2 mb-4"
             onSubmit={handleSubmit(onSubmit)}
          >
-            <textarea
-               className="bg-transparent border-[0.8px] border-zinc-600/50 rounded-md p-3 outline-none text-xs md:text-xl font-thin tracking-wide w-[150px] md:w-[250px]"
-               name="content"
+            <FormInput
+               required={true}
                id="content"
-               cols="50"
-               rows="1"
-               placeholder="write something..."
-               {...register("content", { required: true })}
-            ></textarea>
+               placeholder="Write Something..."
+               register={register}
+               type="text"
+            />
             <Button
                ariaLabel="like button"
                extrastyles="rounded-md"

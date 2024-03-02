@@ -48,10 +48,12 @@ function VideoView() {
          }
       };
 
-      videoElement.addEventListener("timeupdate", handleTimeUpdate);
+      if (videoElement)
+         videoElement.addEventListener("timeupdate", handleTimeUpdate);
 
       return () => {
-         videoElement.removeEventListener("timeupdate", handleTimeUpdate);
+         if (videoElement)
+            videoElement.removeEventListener("timeupdate", handleTimeUpdate);
       };
    }, [
       params?.videoId,
@@ -76,7 +78,7 @@ function VideoView() {
    }
 
    return (
-      <div className="flex flex-col md:grid md:grid-cols-[1fr_0.5fr] gap-5 animate-slow ">
+      <div className="flex flex-col md:grid md:grid-cols-[1fr_auto] gap-5 animate-slow">
          {loadingVideo && <Loader />}
          <div className="space-y-2">
             <div className="rounded-md">

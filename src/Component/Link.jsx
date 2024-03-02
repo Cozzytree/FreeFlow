@@ -5,7 +5,7 @@ function Link({ children, to, active = false, onClick }) {
       <NavLink
          onClick={onClick}
          to={to}
-         className={`grid grid-cols-[auto_auto] items-end transition-all duration-300 hover:text-zinc-800 hover:bg-zinc-400 p-3 gap-1 ${
+         className={`grid grid-cols-[1fr_1fr] items-end transition-all duration-300 hover:text-zinc-800 hover:bg-zinc-400 p-3 gap-1 ${
             active === true ? "border-b-[1px] border-b-zinc-400" : ""
          }`}
       >
