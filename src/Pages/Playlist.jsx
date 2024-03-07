@@ -1,16 +1,17 @@
-import VideoItems from "../Component/VideoItems";
 import Loader from "../Component/loader";
 import { useGetAplaylist } from "../Hooks/playlistHooks/useGetAplaylist";
-import Options from "../Component/Options";
 import { useDeleteVfromPL } from "../Hooks/playlistHooks/useDelVfromPL";
 import { useNavigate, useParams } from "react-router";
-import Button from "../Component/Button";
-import ModalProvider from "../Component/Modal";
-import AreYouSure from "../Component/AreYouSure";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDeletePlaylist } from "../Hooks/playlistHooks/useDeletePlaylist";
+import VideoRow from "../Component/VideoRow";
+import ModalProvider from "../Component/Modal";
+import VideoOptionsItem from "../Component/VideoOptionsItem";
+import AreYouSure from "../Component/AreYouSure";
+import { MdDelete } from "react-icons/md";
 
 function Playlist() {
+   const [isOptions, setOptions] = useState(null);
    const params = useParams();
    const navigate = useNavigate();
    const { aPlaylist, loadingPlaylist, refetch } = useGetAplaylist();
@@ -24,79 +25,86 @@ function Playlist() {
    function handleRemoveV(playlistId, videoId) {
       removeV({ playlistId, videoId });
       refetch();
+      setOptions(null);
+   }
+
+   function handleOptions(index) {
+      setOptions((option) => (option === index ? null : index));
    }
 
    return (
       <>
          {(isDeleting || isRemoving) && <Loader />}
-         <ModalProvider>
-            <ModalProvider.ModalOpen opens="play">
-               <Button
-                  type="danger"
-                  extrastyles="absolute h-[20px] right-10 top-20 text-xs rounded-sm"
-               >
-                  Delete playlist
-               </Button>
-            </ModalProvider.ModalOpen>
-            <ModalProvider.ModalWindow window="play" clickOutside={false}>
-               <AreYouSure label="Are you sure you want to delete the playlist?">
-                  <Button
-                     onClick={() => userDeletePlaylist(aPlaylist?.data[0]?._id)}
-                     type="danger"
-                  >
-                     Delete
-                  </Button>
-               </AreYouSure>
-            </ModalProvider.ModalWindow>
-         </ModalProvider>
+         <div className="w-[100%] h-[80%] md:h-[100%] gap-5 flex flex-col md:grid grid-cols-[0.5fr_1fr]">
+            <div className="w-[100%] h-[100%] flex flex-col overflow-hidden rounded-2xl relative bg-gradient-to-b from-[rgba(156,156,156,0.55)] to-[rgba(0,0,0,0.0)] p-5">
+               <div className="w--[100%] flex justify-center">
+                  <img
+                     src={aPlaylist?.data[0]?.playlistV?.thumbnail}
+                     alt=""
+                     className="w-[200px] object-cover"
+                  />
+               </div>
+               <h1 className="text-2xl p-4">{aPlaylist?.data[0]?.name}</h1>
+               <h2>{aPlaylist?.data[0]?.createdBy.username}</h2>{" "}
+               <select className="w-[100px] bg-transparent outline-none border-zinc-400 p-2">
+                  <option value="" className="p-2 outline-none bg-transparent">
+                     Public
+                  </option>
+                  <option value="" className="p-2 outline-none bg-transparent">
+                     Private
+                  </option>
+               </select>
+               <p>{aPlaylist?.data[0]?.description || "no description"}</p>
+            </div>
 
-         <div className="w-[100%] px-10">
-            <h1 className="border-b-[1px] text-xl md:text-2xl border-zinc-500">
-               {aPlaylist?.data[0]?.name}
-            </h1>
-            <span className="text-sm text-zinc-400">created by </span>
-            <h1
-               onClick={() =>
-                  navigate(`/u/${aPlaylist?.data[0]?.createdBy?._id}/videos`)
-               }
-               className="text-md md:text-2xl font-bold text-sky-600 cursor-pointer underline px-10"
-            >
-               {aPlaylist?.data[0]?.createdBy?.username}
-            </h1>
-         </div>
-
-         <div className="w-[90vw] grid grid-cols-[auto_auto_auto] justify-start">
-            {loadingPlaylist && <Loader />}
-            {aPlaylist?.data.length >= 1 &&
-            aPlaylist?.data[0]?.playlistV?._id ? (
-               <>
-                  {aPlaylist?.data?.map((playlist, i) => (
-                     <VideoItems
-                        v={playlist?.playlistV}
+            {aPlaylist?.data[0]?.playlistV?._id ? (
+               <div className="space-y-1 video-container">
+                  {aPlaylist?.data?.map((v, i) => (
+                     <VideoRow
                         key={i}
-                        options={false}
-                     >
-                        <Options
-                           deleteBtnLabel="remove from playlist"
-                           userId={playlist?.createdBy?._id}
-                           deleteHandler={() =>
-                              handleRemoveV(
-                                 playlist?._id,
-                                 playlist?.playlistV?._id
-                              )
-                           }
-                        />
-                     </VideoItems>
+                        video={v?.playlistV}
+                        index={i}
+                        handleOptions={handleOptions}
+                        isOptions={isOptions}
+                        setOption={setOptions}
+                        options={
+                           <>
+                              <ModalProvider>
+                                 <ModalProvider.ModalOpen opens="playlist">
+                                    <VideoOptionsItem
+                                       onClick={open}
+                                       label="Remove from Playlist"
+                                       icon={<MdDelete fill="red" size={15} />}
+                                    />
+                                 </ModalProvider.ModalOpen>
+                                 <ModalProvider.ModalWindow window="playlist">
+                                    <AreYouSure
+                                       label="Are you sure you want to reomve fom playlist ?"
+                                       confirm="Yes"
+                                       hadler={() =>
+                                          handleRemoveV(
+                                             v?._id,
+                                             v?.playlistV?._id
+                                          )
+                                       }
+                                    ></AreYouSure>
+                                 </ModalProvider.ModalWindow>
+                              </ModalProvider>
+
+                              <VideoOptionsItem label="Share" />
+                           </>
+                        }
+                     />
                   ))}
-               </>
+               </div>
             ) : (
-               <p className="text-red-400 text-center w-[100%]">
-                  EMPTY PLAYLIST
-                  <span
-                     onClick={() => navigate("/")}
-                     className="text-sky-600 cursor-pointer"
-                  >
-                     add some
+               <p
+                  className="cursor-pointer h-[20px]"
+                  onClick={() => navigate("/")}
+               >
+                  Empty!
+                  <span className="border-b-[1px] border-zinc-400">
+                     Go To Home &rarr;
                   </span>
                </p>
             )}

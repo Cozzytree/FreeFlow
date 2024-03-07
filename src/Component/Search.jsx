@@ -14,22 +14,14 @@ function debounce(fn, t) {
 function Search() {
    const navigate = useNavigate();
    const [searchInput, setSearch] = useState();
+   const [focused, setFocused] = useState(false);
    const inputRef = useRef(null);
 
    const handleSearch = useCallback(() => {
       if (!searchInput) return;
-      // search(searchInput);
       navigate(`/query/${searchInput}`);
+      setSearch("");
    }, [searchInput, navigate]);
-
-   // useEffect(() => {
-   //    const find = debounce(handleSearch, 2000);
-   //    if (searchInput?.length > 3) {
-   //       find(search);
-   //    }
-
-   //    return () => clearTimeout(find);
-   // }, [searchInput, handleSearch, search]);
 
    return (
       <div

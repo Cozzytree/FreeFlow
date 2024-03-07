@@ -1,3 +1,4 @@
+import { useParams } from "react-router";
 import Items from "../Component/Items";
 import TweetsVideoToggle from "../Component/TweetsVideoToggle";
 import UserView from "../Component/UserView";
@@ -9,6 +10,7 @@ import { useDocumentTitle } from "../Hooks/uiHooks/useDocumentTitle";
 
 function UserTweets() {
    const { currentUser: cu, loadingCurrentUser } = useCurrentUser();
+   const params = useParams();
    const { userTweets, loadingUserTweets } = useGetUserTweets();
    const { currentUser } = useGetUser();
    useDocumentTitle(currentUser?.data?.username);
@@ -25,7 +27,7 @@ function UserTweets() {
             isSubscribed={currentUser?.data?.isSubscribed}
             type="owner"
          />
-         <TweetsVideoToggle />
+         <TweetsVideoToggle params={params} />
 
          {userTweets?.data[0]?.data?.map((twee) => (
             <Items tweet={twee} key={twee?._id} />

@@ -1,18 +1,23 @@
-import { useRef, useState } from "react";
-import { useNavigate } from "react-router";
-import Options from "./Options";
-import { useDeleteVideos } from "../Hooks/videoHooks/useDeleteVideo";
+import VideoOptions from "./VideoOptions";
 import Loader from "./loader";
-import { useUpdateVideo } from "../Hooks/videoHooks/useUpdateVideo";
-import { useUpdateThumbnail } from "../Hooks/videoHooks/useUpdateThumbnail";
+import { useRef, useState } from "react";
+import { HiOutlineDotsVertical } from "react-icons/hi";
+import { useNavigate } from "react-router";
+import { useDeleteVideos } from "../Hooks/videoHooks/useDeleteVideo";
 import { useLazyImage } from "../Hooks/uiHooks/useLazyImage";
 
-function VideoItems({ v, options = true, children, index }) {
+function VideoItems({
+   v,
+   children,
+   index,
+   isOptions,
+   handleOption,
+   options,
+   setIsOptions,
+}) {
    const [isVideo, setVideo] = useState(false);
-   const { userDeleteVideo, isDeleting } = useDeleteVideos();
-   const { isUpdating, userUpdateVideo } = useUpdateVideo();
-   const { userUpdateThumbnail, isUpdating: updatingThumbnail } =
-      useUpdateThumbnail();
+   const { isDeleting } = useDeleteVideos();
+
    const navigate = useNavigate();
    const videoRef = useRef([]);
 
@@ -24,47 +29,16 @@ function VideoItems({ v, options = true, children, index }) {
    function handleStopv() {
       setVideo(false);
    }
-   function handleDeleteVideo(videoId) {
-      userDeleteVideo(videoId);
-   }
-   function handleUpdateVideo(videoId, info) {
-      userUpdateVideo({ videoId, info });
-   }
-
-   function handleUpdateThumbnail(videoId, image) {
-      const formData = new FormData();
-      formData.append("thumbnail", image);
-      console.log(videoId, image);
-      userUpdateThumbnail({ videoId, formData });
-   }
 
    return (
       <div
          ref={(video) => (videoRef.current[+index] = video)}
-         className={`transition-all duration-300 flex flex-col p-5 gap-2 items-start relative bg-zinc-900/20`}
+         className={`transition-all duration-300 flex flex-col p-5 gap-2 items-start bg-zinc-900/20`}
       >
          {isDeleting && <Loader />}
          {children && children}
-         {options && (
-            <Options
-               type="video"
-               userId={v?.owner}
-               deleteHandler={handleDeleteVideo}
-               currentItem={v?._id}
-               videoEdit={{
-                  handler: handleUpdateVideo,
-                  upThumbnail: handleUpdateThumbnail,
-                  updatingThumbnail,
-                  loader: isUpdating,
-                  videoId: v?._id,
-                  title: v?.title,
-                  published: v?.isPublished,
-                  description: v?.description,
-               }}
-            />
-         )}
 
-         <div className="relative">
+         <div className="grid grid-cols-[1fr_auto] relative">
             <video
                onClick={() => {
                   navigate(`/v/${v?._id}`);
@@ -79,6 +53,19 @@ function VideoItems({ v, options = true, children, index }) {
                autoPlay
                muted
             ></video>
+            <HiOutlineDotsVertical
+               cursor="pointer"
+               onClick={() => {
+                  handleOption(index);
+               }}
+               className="h-[10px] w-[20px]"
+            />
+            {isOptions === index && (
+               <VideoOptions setIsOptions={setIsOptions}>
+                  {options && options}
+               </VideoOptions>
+            )}
+
             <span className="text-sm absolute bottom-1 right-2">
                {(v?.duration / 60).toFixed(2)}
             </span>

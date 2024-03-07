@@ -1,10 +1,8 @@
-import { useParams } from "react-router";
 import Link from "./Link";
 import { useEffect, useState } from "react";
 
-function TweetsVideoToggle() {
+function TweetsVideoToggle({ params }) {
    const [isVideo, setVideo] = useState("videos");
-   const params = useParams();
 
    useEffect(() => {
       const url = document.URL.split("/");

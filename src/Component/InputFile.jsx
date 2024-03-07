@@ -3,44 +3,47 @@ import Button from "./Button";
 import { useUpload } from "../Hooks/videoHooks/useUpload";
 import MiniSpinner from "./MiniSpinner";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import FormInput from "./FormInput";
+import FormTextArea from "./FormTextArea";
 
 function InputFile() {
+   const { register, handleSubmit } = useForm();
    const { userUploadVideo, isUploading } = useUpload();
    const [videoFile, setVideoFile] = useState(null);
    const [cover, setCover] = useState(null);
-   const [title, setTitle] = useState("");
-   const [description, setDescription] = useState("");
 
-   function handleSubmit(e) {
-      e.preventDefault();
-      if (!title || !cover || !videoFile) return;
+   function onSubmit(data) {
+      if (!data.title || !cover || !videoFile) return;
 
       const formData = new FormData();
       formData.append("videoFile", videoFile);
       formData.append("thumbnail", cover);
-      formData.append("title", title);
-      formData.append("description", description);
-
+      formData.append("title", data.title);
+      formData.append("description", data.description);
       userUploadVideo(formData);
    }
 
    return (
       <form
          encType="multipart/form-data"
-         onSubmit={handleSubmit}
+         onSubmit={handleSubmit(onSubmit)}
          className="flex flex-col items-center gap-2 p-2 rounded-lg"
       >
-         <input
-            className="bg-transparent outline-none text-zinc-100 border-[0.5px] p-1 rounded-md border-zinc-500"
-            type="text"
-            placeholder="title"
-            onChange={(e) => setTitle(e.target.value)}
+         <FormInput
+            register={register}
+            id="title"
+            placeholder="title..."
+            required={true}
          />
-         <textarea
-            className="bg-transparent outline-none w-[200px] md:w-[250px] text-zinc-100 border-[0.5px] p-1 rounded-md border-zinc-500"
+
+         <FormTextArea
+            register={register}
+            id="description"
             placeholder="description..."
-            onChange={(e) => setDescription(e.target.value)}
-         ></textarea>
+            required={true}
+         />
+
          <label
             htmlFor="videoFile"
             className="w-fit p-[4px] md:h-[30px] rounded-[100%] flex justify-center items-center cursor-pointer text-zinc-50 gap-3"

@@ -5,7 +5,7 @@ import Loader from "../Component/loader";
 import { useAddTweet } from "../Hooks/tweetsHooks/useAddTweet";
 import { useGetTweet } from "../Hooks/tweetsHooks/useGetTweets";
 import { useDocumentTitle } from "../Hooks/uiHooks/useDocumentTitle";
-import FormInput from "../Component/FormInput";
+import FormTextArea from "../Component/FormTextArea";
 
 function Tweet() {
    const { register, handleSubmit, reset } = useForm();
@@ -28,7 +28,7 @@ function Tweet() {
             className="flex gap-2 mb-4"
             onSubmit={handleSubmit(onSubmit)}
          >
-            <FormInput
+            <FormTextArea
                required={true}
                id="content"
                placeholder="Write Something..."
@@ -37,7 +37,7 @@ function Tweet() {
             />
             <Button
                ariaLabel="like button"
-               extrastyles="rounded-md"
+               extrastyles="rounded-md h-[30px]"
                type="primary"
             >
                Tweet

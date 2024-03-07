@@ -1,4 +1,4 @@
-import {
+import React, {
    cloneElement,
    createContext,
    useContext,
@@ -30,7 +30,12 @@ function ModalProvider({ children }) {
 
 function ModalOpen({ children, opens }) {
    const { open } = useContext(ModalContext);
-   return cloneElement(children, { onClick: () => open(opens) });
+   if (React.isValidElement(children)) {
+      return cloneElement(children, {
+         onClick: () => open(opens),
+         open: () => open(opens),
+      });
+   }
 }
 
 function ModalWindow({ children, window, clickOutside = true, escape = true }) {

@@ -1,20 +1,20 @@
+import ModalProvider from "./Modal";
+import OptionsItem from "./OptionsItem";
+import Button from "./Button";
+import AreYouSure from "./AreYouSure";
+import MiniSpinner from "./MiniSpinner";
+import PlaylistItem from "./PlaylistItem";
+import FormInput from "./FormInput";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaShare } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa";
-import OptionsItem from "./OptionsItem";
-import ModalProvider from "./Modal";
 import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
-import Button from "./Button";
 import { useState } from "react";
-import MiniSpinner from "./MiniSpinner";
-import AreYouSure from "./AreYouSure";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
-import PlaylistItem from "./PlaylistItem";
 import { share } from "../utils/share";
 import { useForm } from "react-hook-form";
-import FormInput from "./FormInput";
 
 function Options({
    Isshare = true,

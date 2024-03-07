@@ -1,8 +1,13 @@
-function AreYouSure({ label, children }) {
+import Button from "./Button";
+
+function AreYouSure({ label, children, confirm, hadler, loader }) {
    return (
-      <div className="bg-zinc-900/20 text-zinc-50 flex flex-col items-center gap-4 p-8">
+      <div className="bg-transparent text-zinc-50 flex flex-col items-center gap-4 p-8">
          <p>{label}</p>
          {children}
+         <Button onClick={hadler} type="danger" disabled={loader}>
+            {confirm}
+         </Button>
       </div>
    );
 }
