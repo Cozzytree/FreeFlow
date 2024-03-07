@@ -1,4 +1,4 @@
-import VideoOptions from "./VideoOptions";
+import VideoOptions from "./ItemOptions";
 import Loader from "./loader";
 import { useRef, useState } from "react";
 import { HiOutlineDotsVertical } from "react-icons/hi";

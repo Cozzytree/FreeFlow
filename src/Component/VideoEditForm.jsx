@@ -24,7 +24,7 @@ function VideoEditForm({
          <ModalProvider.ModalOpen opens="videoEdit">
             <VideoOptionsItem
                label="Edit"
-               icon={<FaEdit className="w-[100%]" />}
+               icon={<FaEdit className="w-full absolute" />}
             />
          </ModalProvider.ModalOpen>
          <ModalProvider.ModalWindow window="videoEdit">

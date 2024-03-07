@@ -6,7 +6,7 @@ import VideoOptionsItem from "../Component/VideoOptionsItem";
 import VideoEditForm from "../Component/VideoEditForm";
 import ModalProvider from "../Component/Modal";
 import AreYouSure from "../Component/AreYouSure";
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaShare } from "react-icons/fa";
 import { useGetUser } from "../Hooks/authHooks/useGetUser";
 import { useUserVideo } from "../Hooks/videoHooks/useUserVideo";
 import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
@@ -79,34 +79,46 @@ function UserVideos() {
                         isOptions={option}
                         options={
                            <>
-                              <ModalProvider>
-                                 <ModalProvider.ModalOpen>
-                                    <VideoOptionsItem
-                                       label="Delete"
-                                       icon={
-                                          <FaTrash
-                                             className="w-full"
-                                             fill="red"
+                              {cu?.data?._id === v?.owner && (
+                                 <>
+                                    <ModalProvider>
+                                       <ModalProvider.ModalOpen>
+                                          <VideoOptionsItem
+                                             label="Delete"
+                                             icon={
+                                                <FaTrash
+                                                   className="w-full absolute"
+                                                   fill="red"
+                                                />
+                                             }
                                           />
+                                       </ModalProvider.ModalOpen>
+                                       <ModalProvider.ModalWindow>
+                                          <AreYouSure
+                                             label="Are you sure you want to delete this video?"
+                                             hadler={() =>
+                                                handleDeleteVideo(v?._id)
+                                             }
+                                             confirm="Delete"
+                                             loader={isDeleting}
+                                          />
+                                       </ModalProvider.ModalWindow>
+                                    </ModalProvider>
+                                    <VideoEditForm
+                                       video={v}
+                                       handleUpdateThumbnail={
+                                          handleUpdateThumbnail
                                        }
+                                       updatingThumbnail={updatingThumbnail}
+                                       handleUpdateVideo={handleUpdateVideo}
+                                       updatingVideo={isUpdating}
                                     />
-                                 </ModalProvider.ModalOpen>
-                                 <ModalProvider.ModalWindow>
-                                    <AreYouSure
-                                       label="Are you sure you want to delete this video?"
-                                       hadler={() => handleDeleteVideo(v?._id)}
-                                       confirm="Delete"
-                                       loader={isDeleting}
-                                    />
-                                 </ModalProvider.ModalWindow>
-                              </ModalProvider>
+                                 </>
+                              )}
 
-                              <VideoEditForm
-                                 video={v}
-                                 handleUpdateThumbnail={handleUpdateThumbnail}
-                                 updatingThumbnail={updatingThumbnail}
-                                 handleUpdateVideo={handleUpdateVideo}
-                                 updatingVideo={isUpdating}
+                              <VideoOptionsItem
+                                 label="Share"
+                                 icon={<FaShare className="w-full absolute" />}
                               />
                            </>
                         }

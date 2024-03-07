@@ -7,8 +7,10 @@ import { MdOutlinePlaylistAdd } from "react-icons/md";
 import { useAllVideos } from "../Hooks/videoHooks/useGetAllVideos";
 import { useDocumentTitle } from "../Hooks/uiHooks/useDocumentTitle";
 import { useState } from "react";
+import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
 
 function Videos() {
+   const { currentUser } = useCurrentUser();
    const { allVideos, loadingVideos } = useAllVideos();
    const [isOptions, setIsOptions] = useState(null);
    useDocumentTitle("Videos");
@@ -34,18 +36,21 @@ function Videos() {
                      options={
                         <>
                            <VideoOptionsItem label="share" />
-
-                           <ModalProvider>
-                              <ModalProvider.ModalOpen opens="playlistItem">
-                                 <VideoOptionsItem
-                                    label={"Save to playlist"}
-                                    icon={<MdOutlinePlaylistAdd />}
-                                 />
-                              </ModalProvider.ModalOpen>
-                              <ModalProvider.ModalWindow window="playlistItem">
-                                 <PlaylistItem videoId={v?._id} />
-                              </ModalProvider.ModalWindow>
-                           </ModalProvider>
+                           {currentUser?.data?._id && (
+                              <ModalProvider>
+                                 <ModalProvider.ModalOpen opens="playlistItem">
+                                    <VideoOptionsItem
+                                       label={"add to playlist"}
+                                       icon={
+                                          <MdOutlinePlaylistAdd className="w-[100%] absolute opacity-0" />
+                                       }
+                                    />
+                                 </ModalProvider.ModalOpen>
+                                 <ModalProvider.ModalWindow window="playlistItem">
+                                    <PlaylistItem videoId={v?._id} />
+                                 </ModalProvider.ModalWindow>
+                              </ModalProvider>
+                           )}
                         </>
                      }
                   />

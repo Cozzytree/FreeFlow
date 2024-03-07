@@ -9,6 +9,7 @@ import ModalProvider from "../Component/Modal";
 import VideoOptionsItem from "../Component/VideoOptionsItem";
 import AreYouSure from "../Component/AreYouSure";
 import { MdDelete } from "react-icons/md";
+import VideoOptions from "../Component/ItemOptions";
 
 function Playlist() {
    const [isOptions, setOptions] = useState(null);
@@ -45,15 +46,23 @@ function Playlist() {
                   />
                </div>
                <h1 className="text-2xl p-4">{aPlaylist?.data[0]?.name}</h1>
-               <h2>{aPlaylist?.data[0]?.createdBy.username}</h2>{" "}
-               <select className="w-[100px] bg-transparent outline-none border-zinc-400 p-2">
-                  <option value="" className="p-2 outline-none bg-transparent">
-                     Public
-                  </option>
-                  <option value="" className="p-2 outline-none bg-transparent">
-                     Private
-                  </option>
-               </select>
+               <h2>{aPlaylist?.data[0]?.createdBy.username}</h2>
+               <div>
+                  <select className="w-[100px] bg-transparent outline-none border-zinc-400 p-2">
+                     <option
+                        value=""
+                        className="p-2 outline-none bg-transparent"
+                     >
+                        Public
+                     </option>
+                     <option
+                        value=""
+                        className="p-2 outline-none bg-transparent"
+                     >
+                        Private
+                     </option>
+                  </select>
+               </div>
                <p>{aPlaylist?.data[0]?.description || "no description"}</p>
             </div>
 
@@ -73,8 +82,14 @@ function Playlist() {
                                  <ModalProvider.ModalOpen opens="playlist">
                                     <VideoOptionsItem
                                        onClick={open}
-                                       label="Remove from Playlist"
-                                       icon={<MdDelete fill="red" size={15} />}
+                                       label="Remove"
+                                       icon={
+                                          <MdDelete
+                                             fill="red"
+                                             size={15}
+                                             className="w-[100%]"
+                                          />
+                                       }
                                     />
                                  </ModalProvider.ModalOpen>
                                  <ModalProvider.ModalWindow window="playlist">

@@ -1,59 +1,44 @@
 import Like from "./Like";
 import { time } from "../utils/time";
-import Options from "./Options";
-import { useDeleteTweet } from "../Hooks/tweetsHooks/useDeleteTweet";
+import VideoOptions from "./ItemOptions";
+import { HiOutlineDotsVertical } from "react-icons/hi";
 import { useLikeTweet } from "../Hooks/likeHooks/useTweetLike";
 import { MdMessage } from "react-icons/md";
-import { useEditTweet } from "../Hooks/tweetsHooks/useEditTweet";
 import { useNavigate } from "react-router";
 import { useLazyImage } from "../Hooks/uiHooks/useLazyImage";
 
-function Items({ tweet, showCommentNo = true, isInfo = false }) {
+function Items({
+   tweet,
+   showCommentNo = true,
+   isInfo = false,
+   index,
+   handleOptions,
+   isOptions,
+   setOption,
+   options,
+}) {
    const navigate = useNavigate();
-   const { deletingTweet, userDeleteTweet } = useDeleteTweet();
    const { toggleTweet, loadingTweetlike } = useLikeTweet();
-   const { isEditing, userEditTweet } = useEditTweet();
    useLazyImage(".tweets", "data-src", tweet, "src");
 
-   function handleDeleteTweet(tweetId) {
-      userDeleteTweet(tweetId);
-   }
    function handleTweetLike(tweetId) {
       toggleTweet(tweetId);
    }
 
-   function handleEditTweet(tweetId, content) {
-      userEditTweet({ tweetId, content });
-   }
-
    return (
       <div
-         className={`space-y-5 w-[90vw] md:w-[90vw]  py-5 flex flex-col items-center ${
-            deletingTweet && "animate-pulse"
-         }`}
+         className={`space-y-5 w-[90vw] md:w-[90vw] py-5 flex flex-col items-center`}
       >
          {tweet && (
-            <article className="flex flex-cols w-[80%] border-[1px] border-zinc-600/70 md:w-[80%] min-h-[125px] items-start gap-5 p-3 bg-zinc-700/20 rounded-md relative">
-               <Options
-                  userId={tweet?.ownerInfo?._id}
-                  deleteHandler={handleDeleteTweet}
-                  currentItem={tweet?._id}
-                  tweetEdit={{
-                     tweet: tweet?.content,
-                     loading: isEditing,
-                     tweetId: tweet?._id,
-                     editHandler: handleEditTweet,
-                  }}
-               />
+            <article className="grid grid-cols-[auto_1fr_auto] w-[80%] border-[1px] border-zinc-600/50 md:w-[80%] min-h-[125px] items-start gap-5 p-3 bg-zinc-700/30 rounded-md relative">
                {tweet?.ownerInfo && (
                   <img
-                     className="w-[50px] transition-all duration-200 h-[50px] object-cover rounded-[100%] tweets"
+                     className="w-[50px] border-[1px] border-zinc-400/50 transition-all duration-200 h-[50px] object-cover rounded-[100%] tweets"
                      data-src={tweet?.ownerInfo?.avatar}
                      src=""
-                     alt=""
+                     alt="avatar"
                   />
                )}
-
                <section className="grid grid-rows-[auto_1fr] h-[100%] p-1 w-[100%]">
                   <div className="flex flex-col gap-1 h-[50px]">
                      <span className="flex items-end gap-2">
@@ -104,6 +89,17 @@ function Items({ tweet, showCommentNo = true, isInfo = false }) {
                      </div>
                   </div>
                </section>
+               <HiOutlineDotsVertical
+                  cursor="pointer"
+                  onClick={() => {
+                     handleOptions(index);
+                  }}
+               />
+               {index === isOptions && (
+                  <VideoOptions setIsOptions={setOption} outsideClose={false}>
+                     {options && options}
+                  </VideoOptions>
+               )}
             </article>
          )}
       </div>

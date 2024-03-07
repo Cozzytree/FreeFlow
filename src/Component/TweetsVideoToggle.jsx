@@ -11,7 +11,7 @@ function TweetsVideoToggle({ params }) {
 
    return (
       <nav className="w-[100%] px-8 pt-5 border-b-[0.5px] border-zinc-700">
-         <ul className="style-none flex gap-10 ">
+         <ul className="style-none flex gap-10 justify-center">
             <Link
                active={isVideo === "videos"}
                to={`/u/${params?.userId}/videos`}
