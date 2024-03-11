@@ -77,7 +77,7 @@ function UserTweets() {
                setOption={setOption}
                options={
                   <>
-                     {twee?.ownerInfo?._id === currentUser?.data?._id && (
+                     {twee?.ownerInfo?._id === cu?.data?._id && (
                         <>
                            <ModalProvider>
                               <ModalProvider.ModalOpen>
@@ -93,7 +93,7 @@ function UserTweets() {
                                     onSubmit={handleSubmit((data) =>
                                        onSubmit(data, twee?._id)
                                     )}
-                                    className="flex flex-col items-center gap-3"
+                                    className="modal flex flex-col items-center gap-3"
                                  >
                                     <FormInput
                                        id="content"
@@ -133,6 +133,7 @@ function UserTweets() {
                            </ModalProvider>
                         </>
                      )}
+                     <VideoOptionsItem label="Report" />
                   </>
                }
             />

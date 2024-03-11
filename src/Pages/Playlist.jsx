@@ -10,13 +10,24 @@ import VideoOptionsItem from "../Component/VideoOptionsItem";
 import AreYouSure from "../Component/AreYouSure";
 import { MdDelete } from "react-icons/md";
 import VideoOptions from "../Component/ItemOptions";
+import { HiOutlineDotsVertical } from "react-icons/hi";
+import { useEditPlayName } from "../Hooks/playlistHooks/useEditPlayName";
+import { useForm } from "react-hook-form";
+import FormInput from "../Component/FormInput";
+import Button from "../Component/Button";
+import FormTextArea from "../Component/FormTextArea";
+import { useEditDescription } from "../Hooks/playlistHooks/useEditDescription";
 
 function Playlist() {
    const [isOptions, setOptions] = useState(null);
+   const [playlistOptions, setPlaylistOptions] = useState(null);
+   const { handleSubmit, register } = useForm();
    const params = useParams();
    const navigate = useNavigate();
    const { aPlaylist, loadingPlaylist, refetch } = useGetAplaylist();
    const { isDeleting, userDeletePlaylist } = useDeletePlaylist();
+   const { editPlaylistName, isEditing } = useEditPlayName();
+   const { editPlaylistDescription, isEditingDescrip } = useEditDescription();
    const { removeV, isRemoving } = useDeleteVfromPL();
 
    useEffect(() => {
@@ -29,25 +40,60 @@ function Playlist() {
       setOptions(null);
    }
 
+   function handlePlaylistOptions() {
+      setPlaylistOptions((option) => (option === 0 ? null : 0));
+   }
+
    function handleOptions(index) {
       setOptions((option) => (option === index ? null : index));
    }
 
+   function reload() {
+      setPlaylistOptions(null);
+      refetch();
+   }
+
+   function handleEditName() {
+      return (data) => {
+         if (aPlaylist?.data[0]?.name === data?.name) return;
+         editPlaylistName(
+            { playlistId: params?.playlistId, name: data },
+            { onSuccess: () => reload() }
+         );
+      };
+   }
+
+   function handleEditDescription() {
+      return (data) => {
+         if (aPlaylist?.data[0]?.description === data?.description) return;
+         editPlaylistDescription(
+            {
+               playlistId: params?.playlistId,
+               description: data,
+            },
+            {
+               onSuccess: () => reload(),
+            }
+         );
+      };
+   }
+
    return (
       <>
-         {(isDeleting || isRemoving) && <Loader />}
-         <div className="w-[100%] h-[80%] md:h-[100%] gap-5 flex flex-col md:grid grid-cols-[0.5fr_1fr]">
+         {(isDeleting || isRemoving || loadingPlaylist) && <Loader />}
+         <div className="w-[100%] h-[90%] md:h-[100%] gap-5 flex flex-col md:grid grid-cols-[0.5fr_1fr]">
             <div className="w-[100%] h-[100%] flex flex-col overflow-hidden rounded-2xl relative bg-gradient-to-b from-[rgba(156,156,156,0.55)] to-[rgba(0,0,0,0.0)] p-5">
                <div className="w--[100%] flex justify-center">
                   <img
                      src={aPlaylist?.data[0]?.playlistV?.thumbnail}
                      alt=""
-                     className="w-[200px] object-cover"
+                     className="w-[150px] md:w-[200px] object-cover"
                   />
                </div>
                <h1 className="text-2xl p-4">{aPlaylist?.data[0]?.name}</h1>
                <h2>{aPlaylist?.data[0]?.createdBy.username}</h2>
-               <div>
+
+               <div className="flex relative items-center justify-between w-[80%]">
                   <select className="w-[100px] bg-transparent outline-none border-zinc-400 p-2">
                      <option
                         value=""
@@ -62,7 +108,96 @@ function Playlist() {
                         Private
                      </option>
                   </select>
+
+                  <HiOutlineDotsVertical
+                     cursor="pointer"
+                     onClick={handlePlaylistOptions}
+                  />
+                  {playlistOptions === 0 && (
+                     <VideoOptions setIsOptions={setPlaylistOptions}>
+                        {/* {edit playlist name } */}
+                        <ModalProvider>
+                           <ModalProvider.ModalOpen opens="editName">
+                              <VideoOptionsItem label="Edit Name" />
+                           </ModalProvider.ModalOpen>
+                           <ModalProvider.ModalWindow window="editName">
+                              <form
+                                 onSubmit={handleSubmit(handleEditName())}
+                                 className="modal grid grid-cols-1 grid-rows-2 gap-2 justify-items-center"
+                              >
+                                 <FormInput
+                                    type="text"
+                                    register={register}
+                                    required={true}
+                                    defaultValue={aPlaylist?.data[0]?.name}
+                                    id="name"
+                                    placeholder="playlist name..."
+                                 />
+                                 <Button
+                                    disabled={isEditing}
+                                    type="primary"
+                                    extrastyles="h-[25px] rounded-md"
+                                 >
+                                    Save
+                                 </Button>
+                              </form>
+                           </ModalProvider.ModalWindow>
+                        </ModalProvider>
+
+                        {/* {edit description} */}
+                        <ModalProvider>
+                           <ModalProvider.ModalOpen opens="editDescription">
+                              <VideoOptionsItem label="Edit description" />
+                           </ModalProvider.ModalOpen>
+                           <ModalProvider.ModalWindow window="editDescription">
+                              <form
+                                 onSubmit={handleSubmit(
+                                    handleEditDescription()
+                                 )}
+                                 className="modal grid grid-cols-1 grid-rows-2 gap-2 justify-items-center"
+                              >
+                                 <FormTextArea
+                                    id="description"
+                                    register={register}
+                                    required={true}
+                                    defaultValue={
+                                       aPlaylist?.data[0]?.description
+                                    }
+                                    placeholder="description..."
+                                 />
+                                 <Button
+                                    disabled={isEditingDescrip}
+                                    type="primary"
+                                    extrastyles="rounded-md h-[25px]"
+                                 >
+                                    SAVE
+                                 </Button>
+                              </form>
+                           </ModalProvider.ModalWindow>
+                        </ModalProvider>
+
+                        {/* { delete playlist} */}
+                        <ModalProvider>
+                           <ModalProvider.ModalOpen opens="deletePlay">
+                              <VideoOptionsItem label="Delete playlist" />
+                           </ModalProvider.ModalOpen>
+                           <ModalProvider.ModalWindow window="deletePlay">
+                              <AreYouSure
+                                 label="Are you sure you want to delete the playlist?"
+                                 hadler={() =>
+                                    userDeletePlaylist(params?.playlistId)
+                                 }
+                                 confirm="CONFIRM"
+                                 loader={isDeleting}
+                              />
+                           </ModalProvider.ModalWindow>
+                        </ModalProvider>
+
+                        <VideoOptionsItem label="Share" />
+                     </VideoOptions>
+                  )}
                </div>
+
                <p>{aPlaylist?.data[0]?.description || "no description"}</p>
             </div>
 

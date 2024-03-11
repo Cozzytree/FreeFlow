@@ -96,7 +96,7 @@ function Items({
                   }}
                />
                {index === isOptions && (
-                  <VideoOptions setIsOptions={setOption} outsideClose={false}>
+                  <VideoOptions setIsOptions={setOption}>
                      {options && options}
                   </VideoOptions>
                )}

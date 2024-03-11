@@ -47,7 +47,10 @@ function Videos() {
                                     />
                                  </ModalProvider.ModalOpen>
                                  <ModalProvider.ModalWindow window="playlistItem">
-                                    <PlaylistItem videoId={v?._id} />
+                                    <PlaylistItem
+                                       videoId={v?._id}
+                                       published={v?.isPublished}
+                                    />
                                  </ModalProvider.ModalWindow>
                               </ModalProvider>
                            )}

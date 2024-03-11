@@ -43,7 +43,7 @@ function VideoRow({
          />
 
          {index === isOptions && (
-            <VideoOptions setIsOptions={setOption} outsideClose={false}>
+            <VideoOptions setIsOptions={setOption} outsideClose={true}>
                {options && options}
             </VideoOptions>
          )}

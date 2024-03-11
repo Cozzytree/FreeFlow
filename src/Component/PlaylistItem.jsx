@@ -6,62 +6,80 @@ import { useCreatePlaylist } from "../Hooks/playlistHooks/useCreatePlaylist";
 import { useAddVtoPL } from "../Hooks/playlistHooks/useAddVtoPL";
 import FormInput from "./FormInput";
 import { useForm } from "react-hook-form";
+import { useDeleteVfromPL } from "../Hooks/playlistHooks/useDelVfromPL";
 
-function PlaylistItem({ videoId }) {
-   const { handleSubmit, register, reset } = useForm();
-   const { userPlaylists, isLoadingPlaylists } = useUserPlaylists();
-   const { userCreatePlaylist, creatingPlaylist } = useCreatePlaylist();
-   const { userAddVtoPL } = useAddVtoPL();
+function PlaylistItem({ videoId, published }) {
+   const [publish] = useState(published);
    const [isForm, setForm] = useState(false);
+   const { handleSubmit, register, reset } = useForm();
+   const { userPlaylists, isLoadingPlaylists } = useUserPlaylists(videoId);
+   const { removeV, isRemoving } = useDeleteVfromPL();
+   const { userCreatePlaylist, creatingPlaylist } = useCreatePlaylist();
+   const { userAddVtoPL, isAddingVtoPl } = useAddVtoPL();
 
    function handleCreatePlaylist(data) {
       userCreatePlaylist(data);
       reset();
    }
 
-   function handleAddVtoP(playlistId, videoId) {
-      userAddVtoPL({ playlistId, videoId });
+   function handlePublished() {
+      if (publish) {
+         userAddVtoPL({
+            playlistId: userPlaylists?.data[0]?._id,
+            videoId,
+         });
+      } else {
+         removeV({ playlistId: userPlaylists?.data[0]?._id, videoId });
+      }
    }
 
    return (
-      <div className="grid grid-rows-[1fr_1fr_auto] gap-3 items-center h-[200px] min-w-[200px]">
+      <div className="modal grid grid-rows-[1fr_1fr_auto] gap-3 items-center h-auto min-w-[200px]">
          {isLoadingPlaylists && <MiniSpinner />}
          {!userPlaylists?.data?.length && (
             <p className="text-zinc-50">no playlists</p>
          )}
 
-         <ul className="list-none text-zinc-50 w-[100%] text-center">
+         <ul className="list-none text-zinc-50 w-[100%] text-center flex flex-col justify-center">
             {userPlaylists?.data?.map((play) => (
                <li
-                  onClick={() => handleAddVtoP(play?._id, videoId)}
-                  className="cursor-pointer p-1 border-b-[0.5px] border-b-zinc-600"
+                  className="modal w-full p-1 border-b-[0.5px] border-b-zinc-600 grid grid-cols-[auto_1fr]"
                   key={play?._id}
                >
-                  {play?.name}
+                  <input
+                     disabled={isAddingVtoPl || isRemoving}
+                     onChange={handlePublished}
+                     type="checkbox"
+                     id={play?.name}
+                     defaultChecked={play?.exist}
+                  />
+                  <label htmlFor={play?.name} id={play?.name}>
+                     {play?.name}
+                  </label>
                </li>
             ))}
          </ul>
 
-         {isForm && (
-            <form
-               onSubmit={handleSubmit(handleCreatePlaylist)}
-               className="flex flex-col items-center gap-3"
+         <form
+            onSubmit={handleSubmit(handleCreatePlaylist)}
+            className={`modal ${
+               isForm ? "block" : "hidden"
+            } transition-[opacity] flex flex-col items-center gap-3`}
+         >
+            <FormInput
+               required={true}
+               id="name"
+               register={register}
+               placeholder="title..."
+            />
+            <Button
+               disabled={creatingPlaylist}
+               type="primary"
+               extrastyles="rounded-sm"
             >
-               <FormInput
-                  required={true}
-                  id="name"
-                  register={register}
-                  placeholder="title..."
-               />
-               <Button
-                  disabled={creatingPlaylist}
-                  type="primary"
-                  extrastyles="rounded-sm"
-               >
-                  SAVE
-               </Button>
-            </form>
-         )}
+               SAVE
+            </Button>
+         </form>
 
          <Button
             onClick={() => setForm((form) => !form)}

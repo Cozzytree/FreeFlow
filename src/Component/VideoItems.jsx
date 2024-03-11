@@ -60,11 +60,11 @@ function VideoItems({
                }}
                className="h-[10px] w-[20px]"
             />
-            {isOptions === index && (
+            {isOptions === index ? (
                <VideoOptions setIsOptions={setIsOptions}>
                   {options && options}
                </VideoOptions>
-            )}
+            ) : null}
 
             <span className="text-sm absolute bottom-1 right-2">
                {(v?.duration / 60).toFixed(2)}

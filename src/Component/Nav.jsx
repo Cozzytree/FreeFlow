@@ -1,18 +1,18 @@
+import Button from "./Button";
+import Loader from "./loader";
+import Link from "./Link";
+import MiniSpinner from "./MiniSpinner";
+import Subscription from "./Subscription";
+import Playlists from "./Playlists";
 import { FaBars } from "react-icons/fa";
 import { FaHome } from "react-icons/fa";
 import { FaPencilAlt } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
-import Button from "./Button";
 import { useLogout } from "../Hooks/authHooks/useLogout";
-import Loader from "./loader";
-import Link from "./Link";
 import { useRef, useState } from "react";
 import { useClickOutside } from "../Hooks/uiHooks/useClickOutside";
 import { PiTelevisionSimpleFill } from "react-icons/pi";
 import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
-import MiniSpinner from "./MiniSpinner";
-import Subscription from "./Subscription";
-import Playlists from "./Playlists";
 import { useGlobalContext } from "../Hooks/context/globalContext";
 import { useBodyOverlay } from "../Hooks/uiHooks/useBodyOverlay";
 

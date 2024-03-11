@@ -2,11 +2,14 @@ import axios from "axios";
 
 /* eslint-disable no-useless-catch */
 class Playlist {
-   async getUserPlaylist() {
+   async getUserPlaylist(videoId) {
       return await axios
-         .get(`${import.meta.env.VITE_API_URL}/playlist/getPlaylists`, {
-            withCredentials: true,
-         })
+         .get(
+            `${import.meta.env.VITE_API_URL}/playlist/getPlaylists/${videoId}`,
+            {
+               withCredentials: true,
+            }
+         )
          .then((data) => data?.data)
          .catch((err) => {
             throw new Error(err?.response?.data?.message);
@@ -96,6 +99,42 @@ class Playlist {
          .then((data) => data?.data)
          .catch((err) => {
             throw new Error(err?.response?.data?.message);
+         });
+   }
+
+   async editPlayName(playlistId, name) {
+      return await axios
+         .patch(
+            `${
+               import.meta.env.VITE_API_URL
+            }/playlist/editPlaylistName/${playlistId}`,
+            name,
+            {
+               withCredentials: true,
+               headers: { "Content-Type": "application/json" },
+            }
+         )
+         .then((data) => data?.data)
+         .catch((err) => {
+            if (err) throw new Error(err?.response?.data?.message);
+         });
+   }
+
+   async editPlayDescription(playlistId, description) {
+      return await axios
+         .patch(
+            `${
+               import.meta.env.VITE_API_URL
+            }/playlist/editDescription/${playlistId}`,
+            description,
+            {
+               withCredentials: true,
+               headers: { "Content-Type": "application/json" },
+            }
+         )
+         .then((data) => data?.data)
+         .catch((err) => {
+            if (err) throw new Error(err?.response?.data?.message);
          });
    }
 }

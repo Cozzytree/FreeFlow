@@ -1,16 +1,23 @@
-import { useUserPlaylists } from "../Hooks/playlistHooks/useGetPlaylists";
 import Link from "./Link";
+import MiniSpinner from "./MiniSpinner";
+import { useUserPlaylists } from "../Hooks/playlistHooks/useGetPlaylists";
+import { MdPlaylistPlay } from "react-icons/md";
 
 function Playlists() {
-   const { userPlaylists } = useUserPlaylists();
-   if (!userPlaylists?.data?.length) return <p>no playlist</p>;
+   const { userPlaylists, isLoadingPlaylists } = useUserPlaylists();
+
    return (
-      <ul>
-         {userPlaylists?.data?.map((playlist) => (
-            <Link to={`/pl/${playlist?._id}`} key={playlist?._id}>
-               {playlist?.name}
-            </Link>
-         ))}
+      <ul className="bg-zinc-800 p-1 text-xs">
+         {isLoadingPlaylists && <MiniSpinner />}
+         {userPlaylists?.data.length ? (
+            userPlaylists?.data?.map((playlist) => (
+               <Link to={`/pl/${playlist?._id}`} key={playlist?._id}>
+                  <MdPlaylistPlay size={15} /> {playlist?.name}
+               </Link>
+            ))
+         ) : (
+            <p>Empty</p>
+         )}
       </ul>
    );
 }

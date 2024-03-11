@@ -8,7 +8,7 @@ export function useDeleteVfromPL() {
       mutationFn: ({ playlistId, videoId }) =>
          removevideoFromPl(playlistId, videoId),
       onSuccess: () => {
-         toast.success("video successfully removed from the playlist");
+         toast.success("video removed successfully");
       },
       onError: (error) => {
          toast.error(error?.message);
