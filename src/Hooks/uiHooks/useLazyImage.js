@@ -28,5 +28,5 @@ export function useLazyImage(element, dataset, dependency, attribute) {
       tweets.forEach((tweet) => observer.observe(tweet));
 
       return () => observer.disconnect();
-   }, [dependency]);
+   }, [dependency, attribute, dataset, dependency, element]);
 }

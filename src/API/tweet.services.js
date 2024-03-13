@@ -1,13 +1,21 @@
 import axios from "axios";
+import { PER_PAGE } from "../utils/consts.js";
 
 /* eslint-disable no-useless-catch */
 class Tweet {
-   async getAllTweets() {
+   async getAllTweets(pageparam = 1) {
       return axios
-         .get(`${import.meta.env.VITE_API_URL}/tweet/at`, {
-            withCredentials: true,
+         .get(
+            `${
+               import.meta.env.VITE_API_URL
+            }/tweet/at?page=${pageparam}&limit=${PER_PAGE}`,
+            {
+               withCredentials: true,
+            }
+         )
+         .then((data) => {
+            return { data: data?.data, pageparam };
          })
-         .then((data) => data?.data)
          .catch((err) => err?.response?.data?.message);
    }
 

@@ -8,7 +8,7 @@ import VideoRow from "../Component/VideoRow";
 import ModalProvider from "../Component/Modal";
 import VideoOptionsItem from "../Component/VideoOptionsItem";
 import AreYouSure from "../Component/AreYouSure";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdEdit, MdShare } from "react-icons/md";
 import VideoOptions from "../Component/ItemOptions";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { useEditPlayName } from "../Hooks/playlistHooks/useEditPlayName";
@@ -82,7 +82,7 @@ function Playlist() {
       <>
          {(isDeleting || isRemoving || loadingPlaylist) && <Loader />}
          <div className="w-[100%] h-[90%] md:h-[100%] gap-5 flex flex-col md:grid grid-cols-[0.5fr_1fr]">
-            <div className="w-[100%] h-[100%] flex flex-col overflow-hidden rounded-2xl relative bg-gradient-to-b from-[rgba(156,156,156,0.55)] to-[rgba(0,0,0,0.0)] p-5">
+            <div className="w-[100%] h-[100%] flex flex-col overflow-hidden rounded-2xl relative bg-gradient-to-b from-[rgba(156,156,156,0.55)] to-[rgba(0,0,0,0.0)] p-5 gap-4">
                <div className="w--[100%] flex justify-center">
                   <img
                      src={aPlaylist?.data[0]?.playlistV?.thumbnail}
@@ -90,25 +90,14 @@ function Playlist() {
                      className="w-[150px] md:w-[200px] object-cover"
                   />
                </div>
-               <h1 className="text-2xl p-4">{aPlaylist?.data[0]?.name}</h1>
+               <h1 className="text-2xl">{aPlaylist?.data[0]?.name}</h1>
                <h2>{aPlaylist?.data[0]?.createdBy.username}</h2>
 
                <div className="flex relative items-center justify-between w-[80%]">
-                  <select className="w-[100px] bg-transparent outline-none border-zinc-400 p-2">
-                     <option
-                        value=""
-                        className="p-2 outline-none bg-transparent"
-                     >
-                        Public
-                     </option>
-                     <option
-                        value=""
-                        className="p-2 outline-none bg-transparent"
-                     >
-                        Private
-                     </option>
+                  <select className="bg-zinc-800 p-2 rounded-md">
+                     <option className="bg-transparent">Public</option>
+                     <option className="bg-transparent">Private</option>
                   </select>
-
                   <HiOutlineDotsVertical
                      cursor="pointer"
                      onClick={handlePlaylistOptions}
@@ -118,7 +107,10 @@ function Playlist() {
                         {/* {edit playlist name } */}
                         <ModalProvider>
                            <ModalProvider.ModalOpen opens="editName">
-                              <VideoOptionsItem label="Edit Name" />
+                              <VideoOptionsItem
+                                 label="Name"
+                                 icon={<MdEdit className="w-full" />}
+                              />
                            </ModalProvider.ModalOpen>
                            <ModalProvider.ModalWindow window="editName">
                               <form
@@ -147,7 +139,10 @@ function Playlist() {
                         {/* {edit description} */}
                         <ModalProvider>
                            <ModalProvider.ModalOpen opens="editDescription">
-                              <VideoOptionsItem label="Edit description" />
+                              <VideoOptionsItem
+                                 label="Description"
+                                 icon={<MdEdit className="w-full" />}
+                              />
                            </ModalProvider.ModalOpen>
                            <ModalProvider.ModalWindow window="editDescription">
                               <form
@@ -179,7 +174,12 @@ function Playlist() {
                         {/* { delete playlist} */}
                         <ModalProvider>
                            <ModalProvider.ModalOpen opens="deletePlay">
-                              <VideoOptionsItem label="Delete playlist" />
+                              <VideoOptionsItem
+                                 label="Delete playlist"
+                                 icon={
+                                    <MdDelete className="w-full" fill="red" />
+                                 }
+                              />
                            </ModalProvider.ModalOpen>
                            <ModalProvider.ModalWindow window="deletePlay">
                               <AreYouSure
@@ -193,7 +193,10 @@ function Playlist() {
                            </ModalProvider.ModalWindow>
                         </ModalProvider>
 
-                        <VideoOptionsItem label="Share" />
+                        <VideoOptionsItem
+                           label="Share"
+                           icon={<MdShare className="w-full" />}
+                        />
                      </VideoOptions>
                   )}
                </div>

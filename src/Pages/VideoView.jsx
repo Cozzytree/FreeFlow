@@ -1,3 +1,12 @@
+import VideoComments from "../Component/VideoComments";
+import VideoPlayer from "../Component/VideoPlayer";
+import Loader from "../Component/loader";
+import Like from "../Component/Like";
+import VideoItems from "../Component/VideoItems";
+import MiniSpinner from "../Component/MiniSpinner";
+import VideoOptionsItem from "../Component/VideoOptionsItem";
+import ModalProvider from "../Component/Modal";
+import PlaylistItem from "../Component/PlaylistItem";
 import { useEffect } from "react";
 import { useGetaVideo } from "../Hooks/videoHooks/useGetaVideo";
 import { time } from "../utils/time";
@@ -9,30 +18,21 @@ import { useVideoLike } from "../Hooks/likeHooks/useVideoLike";
 import { useRecommend } from "../Hooks/videoHooks/useRecommend";
 import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
-import Comments from "../Component/Comments";
-import VideoPlayer from "../Component/VideoPlayer";
-import Loader from "../Component/loader";
-import Like from "../Component/Like";
-import VideoItems from "../Component/VideoItems";
-import MiniSpinner from "../Component/MiniSpinner";
-import VideoOptionsItem from "../Component/VideoOptionsItem";
-import ModalProvider from "../Component/Modal";
-import PlaylistItem from "../Component/PlaylistItem";
 
 function VideoView() {
    const [isView, setIsView] = useState(false);
    const [extra, setExtra] = useState(false);
    const [isComments, setComments] = useState(false);
    const [isOptions, setIsOptions] = useState(null);
-   const { currentUser } = useCurrentUser();
+   const [progress, setProgress] = useState(0);
    const navigate = useNavigate();
    const params = useParams();
+   const { currentUser } = useCurrentUser();
    const { video, loadingVideo, refetchGetAvideo } = useGetaVideo();
    const { addToWatchHistory } = useUpdateWatchHistory();
    const { isLiking, likeVideo } = useVideoLike();
    const { recommendV, isLoading, refetch } = useRecommend();
    const { videoAddView } = useAddView();
-   const [progress, setProgress] = useState(0);
 
    useEffect(() => {
       const videoElement = document.querySelector(".videoPlayer");
@@ -142,7 +142,7 @@ function VideoView() {
             </button>
 
             {isComments && (
-               <Comments totalComments={video?.data?.totalComments} />
+               <VideoComments totalComments={video?.data?.totalComments} />
             )}
          </div>
 

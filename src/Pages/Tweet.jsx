@@ -1,20 +1,54 @@
-import { useForm } from "react-hook-form";
 import Button from "../Component/Button";
 import Items from "../Component/Items";
 import Loader from "../Component/loader";
+import VideoOptionsItem from "../Component/VideoOptionsItem";
+import FormTextArea from "../Component/FormTextArea";
+import { useForm } from "react-hook-form";
 import { useAddTweet } from "../Hooks/tweetsHooks/useAddTweet";
 import { useGetTweet } from "../Hooks/tweetsHooks/useGetTweets";
 import { useDocumentTitle } from "../Hooks/uiHooks/useDocumentTitle";
-import FormTextArea from "../Component/FormTextArea";
-import { useState } from "react";
-import VideoOptionsItem from "../Component/VideoOptionsItem";
+import { useEffect, useRef, useState } from "react";
 
 function Tweet() {
    const [option, setOptions] = useState(null);
    const { register, handleSubmit, reset } = useForm();
-   const { loadingTweets, allTweets } = useGetTweet();
+   const tweetRef = useRef(null);
+   const {
+      loadingTweets,
+      allTweets,
+      fetchNextPage,
+      isFetchingNextPage,
+      hasNextPage,
+   } = useGetTweet();
    const { useraddTweet, loadingaddTweet } = useAddTweet();
+
    useDocumentTitle("Tweets");
+
+   useEffect(() => {
+      const observer = new IntersectionObserver(
+         (entries) => {
+            entries.forEach((entry) => {
+               if (
+                  entry.isIntersecting &&
+                  entry.target === tweetRef?.current?.lastElementChild
+               ) {
+                  if (hasNextPage) fetchNextPage();
+               }
+            });
+         },
+         {
+            root: null,
+            threshold: [0.5],
+         }
+      );
+      const tweets = tweetRef?.current?.children;
+
+      for (const tweet of tweets) {
+         observer.observe(tweet);
+      }
+
+      return () => observer.disconnect();
+   }, [fetchNextPage, hasNextPage]);
 
    function handleOptions(index) {
       setOptions((option) => (option === index ? null : index));
@@ -24,6 +58,11 @@ function Tweet() {
       useraddTweet(data);
       reset();
    }
+
+   const tweets =
+      allTweets
+         ?.map((t) => t?.data?.data?.tweets)
+         .reduce((acc, curr) => [...acc, ...curr]) || [];
 
    return (
       <>
@@ -50,22 +89,24 @@ function Tweet() {
             </Button>
          </form>
 
-         {allTweets?.data?.map((tweet, index) => (
-            <Items
-               key={tweet?._id}
-               tweet={tweet}
-               index={index}
-               handleOptions={handleOptions}
-               isOptions={option}
-               setOption={setOptions}
-               options={
-                  <>
-                     <VideoOptionsItem label="Share" />
-                     <VideoOptionsItem label="Report" />
-                  </>
-               }
-            />
-         ))}
+         <div ref={tweetRef} className="tweet h-full">
+            {tweets?.map((tweet, index) => (
+               <Items
+                  key={tweet?._id}
+                  tweet={tweet}
+                  index={index}
+                  handleOptions={handleOptions}
+                  isOptions={option}
+                  setOption={setOptions}
+                  options={
+                     <>
+                        <VideoOptionsItem label="Report" />
+                     </>
+                  }
+               />
+            ))}
+            {isFetchingNextPage && "loading"}
+         </div>
       </>
    );
 }

@@ -1,14 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdPlaylistAdd, MdShare } from "react-icons/md";
 import VideoRow from "../Component/VideoRow";
 import { useSearchVideo } from "../Hooks/videoHooks/useSearchVideo";
 import VideoOptionsItem from "../Component/VideoOptionsItem";
 import PlaylistItem from "../Component/PlaylistItem";
 import ModalProvider from "../Component/Modal";
+import { useParams } from "react-router";
 
 function SearchResults() {
-   const { searchResults } = useSearchVideo();
+   const params = useParams();
+   const { searchResults, refetch } = useSearchVideo();
    const [isOptions, setOptions] = useState(null);
+
+   useEffect(() => {
+      refetch();
+   }, [params, refetch]);
 
    const handleOptions = (index) => {
       setOptions((option) => (option === index ? null : index));

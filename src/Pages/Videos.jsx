@@ -3,7 +3,7 @@ import Loader from "../Component/loader";
 import PlaylistItem from "../Component/PlaylistItem";
 import ModalProvider from "../Component/Modal";
 import VideoOptionsItem from "../Component/VideoOptionsItem";
-import { MdOutlinePlaylistAdd } from "react-icons/md";
+import { MdOutlinePlaylistAdd, MdShare } from "react-icons/md";
 import { useAllVideos } from "../Hooks/videoHooks/useGetAllVideos";
 import { useDocumentTitle } from "../Hooks/uiHooks/useDocumentTitle";
 import { useState } from "react";
@@ -35,14 +35,16 @@ function Videos() {
                      handleOption={handleOption}
                      options={
                         <>
-                           <VideoOptionsItem label="share" />
                            {currentUser?.data?._id && (
                               <ModalProvider>
                                  <ModalProvider.ModalOpen opens="playlistItem">
                                     <VideoOptionsItem
                                        label={"add to playlist"}
                                        icon={
-                                          <MdOutlinePlaylistAdd className="w-[100%] absolute opacity-0" />
+                                          <MdOutlinePlaylistAdd
+                                             className="w-full"
+                                             size={15}
+                                          />
                                        }
                                     />
                                  </ModalProvider.ModalOpen>
@@ -54,6 +56,10 @@ function Videos() {
                                  </ModalProvider.ModalWindow>
                               </ModalProvider>
                            )}
+                           <VideoOptionsItem
+                              label="share"
+                              icon={<MdShare className="w-full" size={12} />}
+                           />
                         </>
                      }
                   />

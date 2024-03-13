@@ -24,14 +24,14 @@ function VideoEditForm({
          <ModalProvider.ModalOpen opens="videoEdit">
             <VideoOptionsItem
                label="Edit"
-               icon={<FaEdit className="w-full absolute" />}
+               icon={<FaEdit className="w-full" />}
             />
          </ModalProvider.ModalOpen>
          <ModalProvider.ModalWindow window="videoEdit">
             <>
                <label
                   htmlFor="thumbnail"
-                  className="text-zinc-50 p-4 cursor-pointer space-x-4"
+                  className="modal text-zinc-50 p-4 cursor-pointer space-x-4"
                >
                   Change thumbnail
                   <input
@@ -56,7 +56,7 @@ function VideoEditForm({
 
                <form
                   onSubmit={handleSubmit(videoUpdate)}
-                  className="flex flex-col text-zinc-50 items-center gap-3"
+                  className="modal flex flex-col text-zinc-50 items-center gap-3"
                >
                   <FormInput
                      id="title"

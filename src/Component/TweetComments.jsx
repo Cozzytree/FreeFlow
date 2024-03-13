@@ -1,27 +1,35 @@
-import { useState } from "react";
-import { useGetTweetComments } from "../Hooks/commentHooks/getTweetComments";
 import CommentForm from "./CommentForm";
 import MiniSpinner from "./MiniSpinner";
+import VideoOptions from "./ItemOptions";
+import VideoOptionsItem from "./VideoOptionsItem";
+import ModalProvider from "./Modal";
+import AreYouSure from "./AreYouSure";
+import { useGetTweetComments } from "../Hooks/commentHooks/getTweetComments";
 import { useAddTweetComment } from "../Hooks/commentHooks/useaddTweetComment";
 import { time } from "../utils/time";
 import { useDeleteTweetComment } from "../Hooks/commentHooks/useDeleteCommentTweet";
-import Options from "./Options";
+import { HiOutlineDotsVertical } from "react-icons/hi";
+import { useState } from "react";
+import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
 
 function TweetComments({ tweetId }) {
+   const { currentUser } = useCurrentUser();
+   const [isOptions, setOption] = useState(null);
    const { isLoading, tweetComments } = useGetTweetComments(tweetId);
    const { addTcomment, commentingTweet } = useAddTweetComment();
    const { isPending, deleteComment } = useDeleteTweetComment();
-   const [content, setContent] = useState("");
 
-   function handleTweetComment(e, tweetId, content) {
-      e.preventDefault();
+   const handleOption = (index) => {
+      setOption((option) => (option === index ? null : index));
+   };
+
+   function handleTweetComment(tweetId, content) {
       if (!content.content) return;
       addTcomment({ tweetId, content });
-      setContent("");
    }
 
    function handleDeleteComment(commentId) {
-      deleteComment(commentId);
+      deleteComment(commentId, { onSuccess: () => setOption(null) });
    }
 
    return (
@@ -35,16 +43,11 @@ function TweetComments({ tweetId }) {
                <p className="p-2 text-xs text-zinc-400">no comments...</p>
             )}
 
-            {tweetComments?.pages[0]?.data?.data?.map((comment) => (
+            {tweetComments?.pages[0]?.data?.data?.map((comment, index) => (
                <div
                   key={comment._id}
-                  className="grid grid-cols-[auto_1fr] gap-4 pb-2 w-[100%] relative p-3"
+                  className="grid grid-cols-[auto_1fr_auto] gap-4 pb-2 w-[100%] relative p-3"
                >
-                  <Options
-                     userId={comment?.user?._id}
-                     currentItem={comment?._id}
-                     deleteHandler={handleDeleteComment}
-                  />
                   <img
                      src={comment?.user?.avatar}
                      alt="image"
@@ -59,14 +62,43 @@ function TweetComments({ tweetId }) {
                      </h2>
                      <p className="text-zinc-300 text-sm">{comment?.content}</p>
                   </div>
+
+                  {currentUser?.data?._id === comment?.user?._id && (
+                     <>
+                        <HiOutlineDotsVertical
+                           cursor="pointer"
+                           onClick={() => handleOption(index)}
+                        />
+                        {index === isOptions && (
+                           <VideoOptions setIsOptions={setOption}>
+                              <VideoOptionsItem label="Edit" />
+
+                              <ModalProvider>
+                                 <ModalProvider.ModalOpen opens="delComment">
+                                    <VideoOptionsItem label="Delete" />
+                                 </ModalProvider.ModalOpen>
+                                 <ModalProvider.ModalWindow window="delComment">
+                                    <AreYouSure
+                                       hadler={() =>
+                                          handleDeleteComment(comment?._id)
+                                       }
+                                       loader={isPending}
+                                       label="Are you sure you want to delete the comment ?"
+                                       confirm="DELETE"
+                                    />
+                                 </ModalProvider.ModalWindow>
+                              </ModalProvider>
+                           </VideoOptions>
+                        )}
+                     </>
+                  )}
                </div>
             ))}
          </div>
 
          <CommentForm
-            setContent={setContent}
-            handler={(e) => {
-               handleTweetComment(e, tweetId, { content });
+            handler={(content) => {
+               handleTweetComment(tweetId, content);
             }}
             isLoading={commentingTweet}
          />

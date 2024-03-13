@@ -9,7 +9,6 @@ import { useForm } from "react-hook-form";
 import { useDeleteVfromPL } from "../Hooks/playlistHooks/useDelVfromPL";
 
 function PlaylistItem({ videoId, published }) {
-   const [publish] = useState(published);
    const [isForm, setForm] = useState(false);
    const { handleSubmit, register, reset } = useForm();
    const { userPlaylists, isLoadingPlaylists } = useUserPlaylists(videoId);
@@ -23,13 +22,13 @@ function PlaylistItem({ videoId, published }) {
    }
 
    function handlePublished() {
-      if (publish) {
+      if (published) {
+         removeV({ playlistId: userPlaylists?.data[0]?._id, videoId });
+      } else {
          userAddVtoPL({
             playlistId: userPlaylists?.data[0]?._id,
             videoId,
          });
-      } else {
-         removeV({ playlistId: userPlaylists?.data[0]?._id, videoId });
       }
    }
 

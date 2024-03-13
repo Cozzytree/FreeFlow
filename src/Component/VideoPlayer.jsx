@@ -149,7 +149,7 @@ function VideoPlayer({ src, poster, controlsList, videoId, ct, progress }) {
          onClick={(e) => toggleControlsTouch(e)}
          onMouseEnter={(e) => toggleControlsMouse(e)}
          onMouseLeave={() => setControlsVisible(false)}
-         className={`relative flex justify-center min-w-[250px] w-auto max-h-[300px] rounded-xl shadow-zinc-700/50 shadow-lg`}
+         className={`relative flex justify-center w-auto max-h-[350px] rounded-xl shadow-zinc-700/50 shadow-lg`}
          style={{ background: poster }}
       >
          {controlsVisible && (

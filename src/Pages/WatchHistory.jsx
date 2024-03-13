@@ -6,17 +6,25 @@ import { useGetWatchHistory } from "../Hooks/authHooks/useGetWatchHistory";
 import { useDocumentTitle } from "../Hooks/uiHooks/useDocumentTitle";
 import Button from "../Component/Button";
 import { useClearWHistory } from "../Hooks/authHooks/useClearHistory";
+import { useState } from "react";
+import VideoOptionsItem from "../Component/VideoOptionsItem";
+import { MdPlaylistAdd } from "react-icons/md";
+import ModalProvider from "../Component/Modal";
+import PlaylistItem from "../Component/PlaylistItem";
 
 function WatchHistory() {
    const navigate = useNavigate();
    const { currentUser, loadingCurrentUser } = useCurrentUser();
+   const [isOptions, setOptions] = useState(null);
    const { cWatchHistory, isClearing } = useClearWHistory();
    useDocumentTitle("Watch History");
    if (!currentUser && !loadingCurrentUser) {
       navigate("/login");
    }
-
    const { userWatchHistory, loadingHistory } = useGetWatchHistory();
+   const handleOption = (index) => {
+      setOptions((option) => (option === index ? null : index));
+   };
 
    return (
       <>
@@ -38,7 +46,28 @@ function WatchHistory() {
             {loadingHistory && <Loader />}
 
             {userWatchHistory?.data?.map((v, i) => (
-               <VideoItems key={i} v={v.watch_history} />
+               <VideoItems
+                  key={i}
+                  v={v.watch_history}
+                  isOptions={isOptions}
+                  handleOption={handleOption}
+                  setIsOptions={setOptions}
+                  options={
+                     <>
+                        <ModalProvider>
+                           <ModalProvider.ModalOpen opens="wh">
+                              <VideoOptionsItem
+                                 label="add to playlist"
+                                 icon={<MdPlaylistAdd size={15} />}
+                              />
+                           </ModalProvider.ModalOpen>
+                           <ModalProvider.ModalWindow window="wh">
+                              <PlaylistItem videoId={v?._id} />
+                           </ModalProvider.ModalWindow>
+                        </ModalProvider>
+                     </>
+                  }
+               />
             ))}
          </div>
       </>

@@ -87,7 +87,7 @@ function UserVideos() {
                                              label="Delete"
                                              icon={
                                                 <FaTrash
-                                                   className="w-full absolute"
+                                                   className="w-full"
                                                    fill="red"
                                                 />
                                              }
@@ -104,6 +104,7 @@ function UserVideos() {
                                           />
                                        </ModalProvider.ModalWindow>
                                     </ModalProvider>
+
                                     <VideoEditForm
                                        video={v}
                                        handleUpdateThumbnail={

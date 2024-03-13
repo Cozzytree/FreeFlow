@@ -3,8 +3,8 @@ import { useEffect } from "react";
 export function useClickOutside(ref, handler, clickOutside = true) {
    useEffect(() => {
       function handleOutsideClick(e) {
-         const className = e.target.classList[0];
-         const parentClass = e.target.parentElement.classList[0];
+         const className = e.target?.classList[0];
+         const parentClass = e.target.parentElement?.classList[0];
 
          const isSVG =
             e.target instanceof SVGElement ||

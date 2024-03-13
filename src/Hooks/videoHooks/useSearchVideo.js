@@ -6,10 +6,14 @@ export function useSearchVideo() {
    const params = useParams();
    const { searchVideo } = videoservices;
 
-   const { data: searchResults, isPending } = useQuery({
+   const {
+      data: searchResults,
+      isPending,
+      refetch,
+   } = useQuery({
       queryFn: () => searchVideo(params?.q),
       queryKey: ["searchResults"],
    });
 
-   return { searchResults, isPending };
+   return { searchResults, isPending, refetch };
 }

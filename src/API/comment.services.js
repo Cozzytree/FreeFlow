@@ -1,5 +1,7 @@
 /* eslint-disable no-useless-catch */
 
+import axios from "axios";
+
 class Comment {
    async getVideoComments({ videoId, pageParam = 1 }) {
       try {
@@ -20,26 +22,21 @@ class Comment {
    }
 
    async addVideoComment(videoId, content) {
-      try {
-         const response = await fetch(
+      return await axios
+         .post(
             `${import.meta.env.VITE_API_URL}/comments/ac/${videoId}`,
+            content,
             {
-               method: "POST",
-               credentials: "include",
-               headers: {
-                  "Content-Type": "application/json",
-               },
-               body: JSON.stringify(content),
+               headers: { "Content-Type": "application/json" },
+               withCredentials: true,
             }
-         );
-         const data = await response.json();
-         if (data?.success === false) {
-            throw new Error(data?.message);
-         }
-         return data;
-      } catch (error) {
-         throw error;
-      }
+         )
+         .then((data) => data?.data)
+         .catch((err) => {
+            if (err) {
+               throw new Error(err?.response?.data?.message);
+            }
+         });
    }
 
    async deleteVideoComment(commentId) {
@@ -96,26 +93,41 @@ class Comment {
    }
 
    async addTweetComment(tweetId, content) {
-      try {
-         const response = await fetch(
+      return await axios
+         .post(
             `${import.meta.env.VITE_API_URL}/comments/atc/${tweetId}`,
+            content,
             {
-               method: "POST",
-               credentials: "include",
-               headers: {
-                  "Content-Type": "application/json",
-               },
-               body: JSON.stringify(content),
+               headers: { "Content-Type": "application/json" },
+               withCredentials: true,
             }
-         );
-         const data = await response.json();
-         if (data?.success === false) {
-            throw new Error(data?.message);
-         }
-         return data;
-      } catch (error) {
-         throw error;
-      }
+         )
+         .then((data) => data?.data)
+         .catch((error) => {
+            if (error) {
+               throw new Error(error?.response?.data?.message);
+            }
+         });
+      // try {
+      //    const response = await fetch(
+      //       `${import.meta.env.VITE_API_URL}/comments/atc/${tweetId}`,
+      //       {
+      //          method: "POST",
+      //          credentials: "include",
+      //          headers: {
+      //             "Content-Type": "application/json",
+      //          },
+      //          body: JSON.stringify(content),
+      //       }
+      //    );
+      //    const data = await response.json();
+      //    if (data?.success === false) {
+      //       throw new Error(data?.message);
+      //    }
+      //    return data;
+      // } catch (error) {
+      //    throw error;
+      // }
    }
 
    async deleteTweetComment(commentId) {

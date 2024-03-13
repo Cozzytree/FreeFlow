@@ -83,9 +83,7 @@ function UserTweets() {
                               <ModalProvider.ModalOpen>
                                  <VideoOptionsItem
                                     label="Edit"
-                                    icon={
-                                       <MdEdit className="w-full absolute opacity-0" />
-                                    }
+                                    icon={<MdEdit className="w-full" />}
                                  />
                               </ModalProvider.ModalOpen>
                               <ModalProvider.ModalWindow>
@@ -118,7 +116,10 @@ function UserTweets() {
                                  <VideoOptionsItem
                                     label="Delete"
                                     icon={
-                                       <MdDelete className="w-full opacity-0 absolute" />
+                                       <MdDelete
+                                          className="w-full"
+                                          fill="red"
+                                       />
                                     }
                                  />
                               </ModalProvider.ModalOpen>

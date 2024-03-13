@@ -1,15 +1,25 @@
+import { useForm } from "react-hook-form";
 import Button from "./Button";
+import FormInput from "./FormInput";
 
-function CommentForm({ isLoading, handler, setContent }) {
+function CommentForm({ isLoading, handler }) {
+   const { register, handleSubmit } = useForm();
+   function onSubmit(data) {
+      handler(data);
+   }
    return (
-      <form onSubmit={handler} className="w-[80%] flex relative py-2">
-         <input
-            onChange={(e) => setContent(e.target.value)}
+      <form
+         onSubmit={handleSubmit(onSubmit)}
+         className="w-[80%] flex relative py-2"
+      >
+         <FormInput
             type="text"
+            placeholder="comment..."
             id="content"
-            className="rounded-md w-[100%] text-xs md:text-sm bg-transparent border-b-[1px] outline-none px-3 py-1"
-            placeholder="write a comment..."
+            register={register}
+            required={true}
          />
+
          <Button
             disabled={isLoading}
             extrastyles="rounded-md h-[40px] text-xs"
