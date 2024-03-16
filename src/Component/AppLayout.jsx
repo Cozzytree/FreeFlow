@@ -16,7 +16,7 @@ function AppLayout() {
    return (
       <>
          <div
-            className={`w-full min-h-[100vh] font-MPLUS font-semibold grid grid-rows-[auto_1fr] gap-3 relative bg-zinc-800 text-zinc-100 text-md`}
+            className={`w-full min-h-[100vh] font-MPLUS font-semibold grid grid-rows-[auto_1fr] gap-3 relative bg-[rgba(0,0,0,0.93)] text-zinc-100 text-md`}
          >
             <Search />
             <Nav />

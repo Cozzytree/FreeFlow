@@ -10,9 +10,10 @@ export function useGetUser() {
       data: currentUser,
       isLoading: loadingUser,
       error,
+      refetch,
    } = useQuery({
       queryFn: () => getUserProfile(params?.userId),
       queryKey: ["getUser"],
    });
-   return { currentUser, loadingUser, error };
+   return { currentUser, loadingUser, error, refetch };
 }

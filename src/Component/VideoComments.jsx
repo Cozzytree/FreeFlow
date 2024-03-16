@@ -1,33 +1,50 @@
-import { useGetVideoComments } from "../Hooks/commentHooks/getVideoComments";
 import MiniSpinner from "./MiniSpinner";
+import CommentForm from "./CommentForm";
+import VideoOptions from "./ItemOptions";
+import VideoOptionsItem from "./VideoOptionsItem";
+import ModalProvider from "./Modal";
+import AreYouSure from "./AreYouSure";
+import FormInput from "./FormInput";
+import Button from "./Button";
+import { useGetVideoComments } from "../Hooks/commentHooks/getVideoComments";
 import { time } from "../utils/time";
 import { useAddVideoComment } from "../Hooks/commentHooks/useAddComment";
 import { useParams } from "react-router";
 import { useDeleteVideoComment } from "../Hooks/commentHooks/useDeleteVideoComment";
-import CommentForm from "./CommentForm";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { useState } from "react";
-import VideoOptions from "./ItemOptions";
 import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
-import VideoOptionsItem from "./VideoOptionsItem";
 import { MdDelete, MdEdit } from "react-icons/md";
-import ModalProvider from "./Modal";
-import AreYouSure from "./AreYouSure";
-import FormInput from "./FormInput";
 import { useForm } from "react-hook-form";
-import Button from "./Button";
+import { useVideoUpdateComment } from "../Hooks/commentHooks/useUpdateVideoComment";
 
 function VideoComments() {
    const [isOptions, setOption] = useState(null);
+   const [isEdit, setEdit] = useState(false);
    const { handleSubmit, register } = useForm();
    const { currentUser } = useCurrentUser();
    const { videoComments, isLoading } = useGetVideoComments();
    const { addComment, isComenting } = useAddVideoComment();
    const { deleteComment, isDeleting } = useDeleteVideoComment();
+   const { userUpdateVideoComment, isUpdatingVideoComment } =
+      useVideoUpdateComment();
    const params = useParams();
 
-   function handleaddComment(videoId, content) {
-      addComment({ videoId, content });
+   function handleEdit() {
+      setEdit((edit) => !edit);
+      setOption(false);
+   }
+
+   function handleUpdateVideoComment(commentId) {
+      return (data) =>
+         userUpdateVideoComment(
+            { commentId, content: data },
+            { onSuccess: () => setEdit(false) }
+         );
+   }
+
+   function handleaddComment(videoId, content, onSuccess) {
+      addComment({ videoId, content }, { onSuccess: () => onSuccess() });
    }
 
    function handleDeleteComment(commentId) {
@@ -39,16 +56,17 @@ function VideoComments() {
    }
 
    return (
-      <div className="overflow-y-auto max-h-[200px] px-2 overflow-hidden">
+      <div className="overflow-y-auto max-h-[250px] px-2 overflow-hidden">
          {isLoading && <MiniSpinner />}
 
          <div
             className={`transition-all duration-200 space-y-2 flex flex-col items-center`}
          >
             {/* {form for commrnt} */}
-
             <CommentForm
-               handler={(content) => handleaddComment(params?.videoId, content)}
+               handler={(content, onSuccess) =>
+                  handleaddComment(params?.videoId, content, onSuccess)
+               }
                isLoading={isComenting}
             />
 
@@ -71,9 +89,34 @@ function VideoComments() {
                            {time(comment?.createdAt)}
                         </span>
                      </h2>
-                     <p className="text-zinc-300 text-sm md:text-[1em]">
-                        {comment?.content}
-                     </p>
+                     {isEdit ? (
+                        <form
+                           onSubmit={handleSubmit(
+                              handleUpdateVideoComment(comment?._id)
+                           )}
+                           className="grid grid-cols-[1fr_auto] gap-2 place-items-center"
+                        >
+                           <FormInput
+                              defaultValue={comment?.content}
+                              type="text"
+                              placeholder="comment..."
+                              register={register}
+                              required={true}
+                              id="content"
+                           />
+                           <Button
+                              type="primary"
+                              extrastyles="rounded-md h-[25px]"
+                              disabled={isUpdatingVideoComment}
+                           >
+                              SAVE
+                           </Button>
+                        </form>
+                     ) : (
+                        <p className="text-zinc-300 text-sm md:text-[1em]">
+                           {comment?.content}
+                        </p>
+                     )}
                   </div>
 
                   {currentUser?.data?._id === comment?.user?._id && (
@@ -84,40 +127,11 @@ function VideoComments() {
                         />
                         {index === isOptions && (
                            <VideoOptions setIsOptions={setOption}>
-                              <ModalProvider>
-                                 <ModalProvider.ModalOpen>
-                                    <VideoOptionsItem
-                                       label="Edit"
-                                       icon={
-                                          <MdEdit
-                                             className="w-full"
-                                             seed={15}
-                                          />
-                                       }
-                                    />
-                                 </ModalProvider.ModalOpen>
-                                 <ModalProvider.ModalWindow>
-                                    <form
-                                       onSubmit={handleSubmit()}
-                                       className="modal grid grid-rows-2 gap-2 place-items-center"
-                                    >
-                                       <FormInput
-                                          defaultValue={comment?.content}
-                                          type="text"
-                                          placeholder="comment..."
-                                          register={register}
-                                          required={true}
-                                          id="content"
-                                       />
-                                       <Button
-                                          type="primary"
-                                          extrastyles="rounded-md h-[25px]"
-                                       >
-                                          SAVE
-                                       </Button>
-                                    </form>
-                                 </ModalProvider.ModalWindow>
-                              </ModalProvider>
+                              <VideoOptionsItem
+                                 label="Edit"
+                                 icon={<MdEdit className="w-full" seed={15} />}
+                                 onClick={handleEdit}
+                              />
 
                               <ModalProvider>
                                  <ModalProvider.ModalOpen>

@@ -33,7 +33,7 @@ function VideoItems({
    return (
       <div
          ref={(video) => (videoRef.current[+index] = video)}
-         className={`transition-all duration-300 flex flex-col p-5 gap-2 items-start bg-zinc-900/20`}
+         className={`transition-all duration-300 flex flex-col px-3 py-2 rounded-xl gap-2 items-start bg-zinc-800/40 relative`}
       >
          {isDeleting && <Loader />}
          {children && children}
@@ -67,7 +67,7 @@ function VideoItems({
             ) : null}
 
             <span className="text-sm absolute bottom-1 right-2">
-               {(v?.duration / 60).toFixed(2)}
+               {v?.duration ? (v?.duration / 60).toFixed(2) : ""}
             </span>
          </div>
          <div

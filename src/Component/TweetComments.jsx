@@ -4,23 +4,55 @@ import VideoOptions from "./ItemOptions";
 import VideoOptionsItem from "./VideoOptionsItem";
 import ModalProvider from "./Modal";
 import AreYouSure from "./AreYouSure";
+import Button from "./Button";
+import FormInput from "./FormInput";
 import { useGetTweetComments } from "../Hooks/commentHooks/getTweetComments";
 import { useAddTweetComment } from "../Hooks/commentHooks/useaddTweetComment";
 import { time } from "../utils/time";
 import { useDeleteTweetComment } from "../Hooks/commentHooks/useDeleteCommentTweet";
 import { HiOutlineDotsVertical } from "react-icons/hi";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
+import { MdDelete, MdEdit } from "react-icons/md";
+import { useForm } from "react-hook-form";
+import { useUpdateTweetComment } from "../Hooks/commentHooks/useUpdateTweetComment";
 
 function TweetComments({ tweetId }) {
    const { currentUser } = useCurrentUser();
+   const [isEdit, setEdit] = useState(false);
    const [isOptions, setOption] = useState(null);
+   const { register, handleSubmit } = useForm();
    const { isLoading, tweetComments } = useGetTweetComments(tweetId);
+   const { userUpdateTweetComment, isEditingTweetComentm } =
+      useUpdateTweetComment();
    const { addTcomment, commentingTweet } = useAddTweetComment();
    const { isPending, deleteComment } = useDeleteTweetComment();
+   const inputRef = useRef(null);
+
+   useEffect(() => {
+      if (isEdit && inputRef.current) {
+         inputRef.current.focus();
+      }
+   }, [isEdit]);
 
    const handleOption = (index) => {
       setOption((option) => (option === index ? null : index));
+   };
+
+   const handleEditOpen = () => {
+      setEdit((edit) => !edit);
+      setOption(null);
+   };
+
+   const handleUpdateTweetCommment = (commentId) => {
+      return (data) => {
+         userUpdateTweetComment(
+            { commentId, content: data },
+            {
+               onSuccess: () => setEdit(false),
+            }
+         );
+      };
    };
 
    function handleTweetComment(tweetId, content) {
@@ -54,13 +86,40 @@ function TweetComments({ tweetId }) {
                      className="w-[30px] h-[30px] rounded-[100%]"
                   />
                   <div className="space-y-2">
-                     <h2 className="text-[2px] md:text-[1em] flex flex-col">
+                     <h2 className="text-[0.8em] md:text-[1em] flex flex-col font-medium tracking-wide">
                         {comment?.user?.username}
                         <span className="text-xs tracking-tighter px-3 text-zinc-400">
                            {time(comment?.createdAt)}
                         </span>
                      </h2>
-                     <p className="text-zinc-300 text-sm">{comment?.content}</p>
+                     {isEdit ? (
+                        <form
+                           onSubmit={handleSubmit(
+                              handleUpdateTweetCommment(comment?._id)
+                           )}
+                           className="grid grid-cols-[1fr_auto] gap-1 items-center"
+                        >
+                           <FormInput
+                              inpurRef={inputRef}
+                              type="text"
+                              register={register}
+                              required={true}
+                              defaultValue={comment?.content}
+                              id="content"
+                           />
+                           <Button
+                              type="primary"
+                              extrastyles="rounded-md text-sm"
+                              disabled={isEditingTweetComentm}
+                           >
+                              Save
+                           </Button>
+                        </form>
+                     ) : (
+                        <p className="text-zinc-300 text-sm ">
+                           {comment?.content}
+                        </p>
+                     )}
                   </div>
 
                   {currentUser?.data?._id === comment?.user?._id && (
@@ -71,11 +130,18 @@ function TweetComments({ tweetId }) {
                         />
                         {index === isOptions && (
                            <VideoOptions setIsOptions={setOption}>
-                              <VideoOptionsItem label="Edit" />
+                              <VideoOptionsItem
+                                 label="Edit"
+                                 icon={<MdEdit size={10} />}
+                                 onClick={handleEditOpen}
+                              />
 
                               <ModalProvider>
                                  <ModalProvider.ModalOpen opens="delComment">
-                                    <VideoOptionsItem label="Delete" />
+                                    <VideoOptionsItem
+                                       label="Delete"
+                                       icon={<MdDelete fill="red" size={10} />}
+                                    />
                                  </ModalProvider.ModalOpen>
                                  <ModalProvider.ModalWindow window="delComment">
                                     <AreYouSure

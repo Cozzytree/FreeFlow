@@ -7,7 +7,7 @@ import ModalProvider from "../Component/Modal";
 import MiniSpinner from "../Component/MiniSpinner";
 import AreYouSure from "../Component/AreYouSure";
 import FormInput from "../Component/FormInput";
-import { MdDelete, MdEdit } from "react-icons/md";
+import { MdDelete, MdEdit, MdShare } from "react-icons/md";
 import { useState } from "react";
 import { useGetAtweet } from "../Hooks/tweetsHooks/useGetAtweet";
 import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
@@ -68,12 +68,7 @@ function TweetInDetail() {
                            <ModalProvider.ModalOpen opens="formEdit">
                               <VideoOptionsItem
                                  label="Edit"
-                                 icon={
-                                    <MdEdit
-                                       size={15}
-                                       className="w-full absolute bottom-2 opacity-0"
-                                    />
-                                 }
+                                 icon={<MdEdit size={15} className="w-full" />}
                               />
                            </ModalProvider.ModalOpen>
                            <ModalProvider.ModalWindow window="formEdit">
@@ -107,7 +102,7 @@ function TweetInDetail() {
                                     <MdDelete
                                        fill="red"
                                        size={15}
-                                       className="w-[100%] absolute bottom-2 opacity-0"
+                                       className="w-[100%]"
                                     />
                                  }
                               />
@@ -124,7 +119,10 @@ function TweetInDetail() {
                      </>
                   )}
 
-                  <VideoOptionsItem label="Share" />
+                  <VideoOptionsItem
+                     label="Share"
+                     icon={<MdShare className="w-full" />}
+                  />
                   <VideoOptionsItem label="Report" />
                </>
             }

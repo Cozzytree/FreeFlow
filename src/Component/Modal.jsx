@@ -51,16 +51,16 @@ function ModalWindow({ children, window, clickOutside = true, escape = true }) {
       <div className="fixed inset-0 w-full h-full flex flex-col justify-center items-center backdrop-brightness-[0.4] z-20">
          <div
             ref={ref}
-            className="modal max-w-[80vw] md:min-w-[40vw] p-6 rounded-md border-[0.5px] border-zinc-500/30 h-auto flex flex-col justify-center items-center relative bg-zinc-800 font-MPLUS"
+            className={`modal max-w-[80vw] md:min-w-[40vw] p-6 rounded-md h-auto flex flex-col justify-center items-center relative bg-zinc-900 font-MPLUS`}
          >
             {children}
 
             <AiOutlineClose
                fill="white"
-               size={20}
+               size={25}
                onClick={close}
                cursor="pointer"
-               className="w-[20px] h-[20px] absolute right-0 top-0 p-1 bg-red-700"
+               className="absolute right-0 top-0 p-1"
             />
          </div>
       </div>,

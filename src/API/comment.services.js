@@ -55,23 +55,24 @@ class Comment {
       }
    }
 
-   async updateVideoComment(commentId) {
-      try {
-         const response = await fetch(
+   async updateVideoComment(commentId, content) {
+      return await axios
+         .patch(
             `${import.meta.env.VITE_API_URL}/comments/uc/${commentId}`,
+            content,
             {
-               method: "PATCH",
-               credentials: "include",
+               withCredentials: true,
+               headers: {
+                  "Content-Type": "application/json",
+               },
             }
-         );
-         const data = await response.json();
-         if (data?.success === false) {
-            throw new Error(data?.message);
-         }
-         return data;
-      } catch (error) {
-         throw error;
-      }
+         )
+         .then((data) => data?.data)
+         .catch((err) => {
+            if (err) {
+               throw new Error(err?.response?.data?.message);
+            }
+         });
    }
 
    async getTweetComments({ tweetId, pageParam = 1 }) {
@@ -108,26 +109,6 @@ class Comment {
                throw new Error(error?.response?.data?.message);
             }
          });
-      // try {
-      //    const response = await fetch(
-      //       `${import.meta.env.VITE_API_URL}/comments/atc/${tweetId}`,
-      //       {
-      //          method: "POST",
-      //          credentials: "include",
-      //          headers: {
-      //             "Content-Type": "application/json",
-      //          },
-      //          body: JSON.stringify(content),
-      //       }
-      //    );
-      //    const data = await response.json();
-      //    if (data?.success === false) {
-      //       throw new Error(data?.message);
-      //    }
-      //    return data;
-      // } catch (error) {
-      //    throw error;
-      // }
    }
 
    async deleteTweetComment(commentId) {
@@ -146,23 +127,25 @@ class Comment {
       }
    }
 
-   async updateTweetComment(commentId) {
-      try {
-         const response = await fetch(
+   async updateTweetComment({ commentId, content }) {
+      if (!commentId && !content) return;
+      return await axios
+         .patch(
             `${import.meta.env.VITE_API_URL}/comments/utc/${commentId}`,
+            content,
             {
-               method: "PATCH",
-               credentials: "include",
+               withCredentials: true,
+               headers: {
+                  "Content-Type": "application/json",
+               },
             }
-         );
-         const data = await response.json();
-         if (data?.success === false) {
-            throw new Error(data?.message);
-         }
-         return data;
-      } catch (error) {
-         throw error;
-      }
+         )
+         .then((data) => data?.data)
+         .catch((err) => {
+            if (err) {
+               throw new Error(err?.response?.data?.message);
+            }
+         });
    }
 }
 

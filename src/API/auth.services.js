@@ -177,6 +177,17 @@ class Auth {
             throw new Error(err?.response?.data?.message);
          });
    }
+
+   async settings() {
+      return await axios
+         .get(`${import.meta.env.VITE_API_URL}/users/ud/user_details`, {
+            withCredentials: true,
+         })
+         .then((data) => data?.data)
+         .catch((err) => {
+            if (err) throw new Error(err?.response?.data?.data);
+         });
+   }
 }
 const authservices = new Auth();
 export default authservices;

@@ -1,17 +1,16 @@
 import videoservices from "../../API/video.services";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
 
-export function useSearchVideo() {
-   const params = useParams();
+export function useSearchVideo(params) {
    const { searchVideo } = videoservices;
+   const query = params.get("q");
 
    const {
       data: searchResults,
       isPending,
       refetch,
    } = useQuery({
-      queryFn: () => searchVideo(params?.q),
+      queryFn: () => searchVideo(query),
       queryKey: ["searchResults"],
    });
 

@@ -1,32 +1,35 @@
 import { FaSearch } from "react-icons/fa";
 import Button from "./Button";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
+import { useSearchParams } from "react-router-dom";
 
-function debounce(fn, t) {
-   let timer;
-   return function (...args) {
-      clearTimeout(timer);
-      timer = setTimeout(() => fn(...args), t);
-   };
-}
+// function debounce(fn, t) {
+//    let timer;
+//    return function (...args) {
+//       clearTimeout(timer);
+//       timer = setTimeout(() => fn(...args), t);
+//    };
+// }
 
 function Search() {
    const inputRef = useRef();
    const navigate = useNavigate();
    const { handleSubmit, register } = useForm();
+   const [searchParams, setSearchParams] = useSearchParams();
 
    const handleSearch = (data) => {
       if (!data?.search) return;
-      navigate(`/query/${data?.search}`);
+      navigate(`/search`);
+      searchParams.set("q", data.search);
+      setSearchParams(searchParams);
       localStorage.setItem("search_History", data?.search);
    };
-   useEffect(() => {}, [inputRef]);
 
    return (
       <div
-         className={`w-[100%] justify-center px-10 flex z-20 sticky top-0 bg-zinc-800/50`}
+         className={`w-[100%] justify-center px-10 flex z-20 sticky top-0 bg-black`}
       >
          <form
             ref={inputRef}

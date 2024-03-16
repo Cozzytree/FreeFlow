@@ -17,6 +17,7 @@ import FormInput from "../Component/FormInput";
 import Button from "../Component/Button";
 import FormTextArea from "../Component/FormTextArea";
 import { useEditDescription } from "../Hooks/playlistHooks/useEditDescription";
+import Header from "../Component/Header";
 
 function Playlist() {
    const [isOptions, setOptions] = useState(null);
@@ -81,19 +82,23 @@ function Playlist() {
    return (
       <>
          {(isDeleting || isRemoving || loadingPlaylist) && <Loader />}
-         <div className="w-[100%] h-[90%] md:h-[100%] gap-5 flex flex-col md:grid grid-cols-[0.5fr_1fr]">
-            <div className="w-[100%] h-[100%] flex flex-col overflow-hidden rounded-2xl relative bg-gradient-to-b from-[rgba(156,156,156,0.55)] to-[rgba(0,0,0,0.0)] p-5 gap-4">
-               <div className="w--[100%] flex justify-center">
+         <div className="w-full h-full grid grid-rows-[2fr_1fr] md:grid-cols-[0.5fr_1fr] gap-4">
+            <div className="flex min-h-[40vh] md:min-h-[80vh] flex-col overflow-hidden rounded-2xl relative bg-gradient-to-b from-[rgba(156,156,156,0.55)] to-[rgba(0,0,0,0.0)] p-5 gap-4">
+               <div className="flex justify-center">
                   <img
                      src={aPlaylist?.data[0]?.playlistV?.thumbnail}
                      alt=""
-                     className="w-[150px] md:w-[200px] object-cover"
+                     className="w-[200px] md:w-[500px] object-cover"
                   />
                </div>
-               <h1 className="text-2xl">{aPlaylist?.data[0]?.name}</h1>
-               <h2>{aPlaylist?.data[0]?.createdBy.username}</h2>
+               <Header>
+                  {aPlaylist?.data[0]?.name}
+                  <span className="text-sm px-2">
+                     {aPlaylist?.data[0]?.createdBy.username}
+                  </span>
+               </Header>
 
-               <div className="flex relative items-center justify-between w-[80%]">
+               <div className="flex relative items-start justify-between">
                   <select className="bg-zinc-800 p-2 rounded-md">
                      <option className="bg-transparent">Public</option>
                      <option className="bg-transparent">Private</option>
@@ -201,7 +206,9 @@ function Playlist() {
                   )}
                </div>
 
-               <p>{aPlaylist?.data[0]?.description || "no description"}</p>
+               <p className="text-sm">
+                  {aPlaylist?.data[0]?.description || "no description"}
+               </p>
             </div>
 
             {aPlaylist?.data[0]?.playlistV?._id ? (

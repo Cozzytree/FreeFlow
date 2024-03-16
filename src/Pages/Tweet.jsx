@@ -59,10 +59,13 @@ function Tweet() {
       reset();
    }
 
-   const tweets =
-      allTweets
-         ?.map((t) => t?.data?.data?.tweets)
-         .reduce((acc, curr) => [...acc, ...curr]) || [];
+   const tweets = allTweets?.reduce((acc, current) => {
+      const pageData = current?.data?.data[0];
+
+      const concatenatedPaginated = [...acc, ...pageData.paginated];
+
+      return concatenatedPaginated;
+   }, []);
 
    return (
       <>

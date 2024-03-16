@@ -129,7 +129,7 @@ function VideoView() {
 
             {/* {extras information} */}
             {extra && (
-               <div className="bg-zinc-900/30 p-2 min-h-[100px] rounded-md text-sm md:text-[1em] font-thin tracking-wide">
+               <div className="bg-zinc-900/30 p-2 min-h-[100px] rounded-md text-sm md:text-[1em] font-[500] tracking-wide">
                   {video?.data?.description
                      ? video?.data?.description
                      : "no additional info!"}

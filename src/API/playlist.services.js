@@ -54,7 +54,7 @@ class Playlist {
 
    async addVideoToP(playlistId, videoId) {
       return await axios
-         .put(
+         .patch(
             `${
                import.meta.env.VITE_API_URL
             }/playlist/addVideo/${playlistId}/${videoId}`,

@@ -9,7 +9,7 @@ function Playlists() {
    return (
       <ul className="bg-zinc-800 p-1 text-xs">
          {isLoadingPlaylists && <MiniSpinner />}
-         {userPlaylists?.data.length ? (
+         {userPlaylists?.data.length >= 0 ? (
             userPlaylists?.data?.map((playlist) => (
                <Link to={`/pl/${playlist?._id}`} key={playlist?._id}>
                   <MdPlaylistPlay size={15} /> {playlist?.name}

@@ -11,6 +11,7 @@ import VideoOptionsItem from "../Component/VideoOptionsItem";
 import { MdPlaylistAdd } from "react-icons/md";
 import ModalProvider from "../Component/Modal";
 import PlaylistItem from "../Component/PlaylistItem";
+import Header from "../Component/Header";
 
 function WatchHistory() {
    const navigate = useNavigate();
@@ -28,9 +29,8 @@ function WatchHistory() {
 
    return (
       <>
-         <h1 className="w-[80%] text-left text-2xl md:text-4xl font-medium tracking-wide">
-            Watch History
-         </h1>
+         <Header> Watch History</Header>
+
          {userWatchHistory?.data?.length >= 1 && (
             <Button
                onClick={cWatchHistory}
@@ -47,8 +47,9 @@ function WatchHistory() {
 
             {userWatchHistory?.data?.map((v, i) => (
                <VideoItems
-                  key={i}
                   v={v.watch_history}
+                  key={i}
+                  index={i}
                   isOptions={isOptions}
                   handleOption={handleOption}
                   setIsOptions={setOptions}

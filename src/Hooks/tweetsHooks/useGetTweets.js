@@ -17,7 +17,7 @@ export function useGetTweet() {
       getNextPageParam: (lastPage) => {
          if (
             lastPage?.pageparam * PER_PAGE >=
-            lastPage?.data?.data?.total + PER_PAGE + 10
+            lastPage?.data?.data[0].totalCount[0]?.total + PER_PAGE
          ) {
             return;
          }

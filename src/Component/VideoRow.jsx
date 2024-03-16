@@ -1,6 +1,7 @@
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import VideoOptions from "./ItemOptions";
 import { useNavigate } from "react-router";
+import { useCallback } from "react";
 
 function VideoRow({
    video,
@@ -11,16 +12,18 @@ function VideoRow({
    setOption,
 }) {
    const navigate = useNavigate();
-   const handleNavigate = () => {
-      navigate(`/v/${video?._id}`);
-   };
+   const handleNavigate = useCallback(() => {
+      if (video && video._id) {
+         navigate(`/v/${video._id}`);
+      }
+   }, [navigate, video]);
 
    return (
       <div
          draggable={true}
-         className="video w-[100%] grid grid-cols-[auto_1fr_1fr_auto] gap-4 bg-zinc-900/40 p-3 rounded-md relative"
+         className="video w-[100%] grid grid-cols-[auto_auto_1fr_auto] gap-4 bg-zinc-900/40 p-3 rounded-md relative"
       >
-         <p>{index + 1}</p>
+         <span className="text-xs">{index + 1}</span>
          <img
             onClick={handleNavigate}
             src={video.thumbnail}
@@ -31,8 +34,8 @@ function VideoRow({
             onClick={handleNavigate}
             className="grid grid-rows-[1fr_auto] cursor-pointer"
          >
-            <h3>{video.title}</h3>
-            <h3>{video.user?.username}</h3>
+            <h2 className="text-xs md:text-md">{video.title}</h2>
+            <h3 className="text-xs md:text-md">{video.user?.username}</h3>
          </div>
          <HiOutlineDotsVertical
             onClick={() => {
@@ -44,7 +47,7 @@ function VideoRow({
 
          {index === isOptions && (
             <VideoOptions setIsOptions={setOption} outsideClose={true}>
-               {options && options}
+               {options ?? null}
             </VideoOptions>
          )}
       </div>
