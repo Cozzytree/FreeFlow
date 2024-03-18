@@ -142,12 +142,12 @@ class Video {
       }
    }
 
-   async searchVideo(q, filter = "videos", sort = "createdAt") {
+   async searchVideo(q, type = "video", sortbY = "createdAt") {
       return await axios
          .get(
             `${
                import.meta.env.VITE_API_URL
-            }/videos/s/query?q=${q}&filter=${filter}&sort=${sort}`
+            }/videos/s/query?q=${q}&filter=${type}&sort=${sortbY}`
          )
          .then((data) => data?.data)
          .catch((err) => err?.response?.data?.message);

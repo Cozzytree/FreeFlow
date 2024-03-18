@@ -51,7 +51,7 @@ function ModalWindow({ children, window, clickOutside = true, escape = true }) {
       <div className="fixed inset-0 w-full h-full flex flex-col justify-center items-center backdrop-brightness-[0.4] z-20">
          <div
             ref={ref}
-            className={`modal max-w-[80vw] md:min-w-[40vw] p-6 rounded-md h-auto flex flex-col justify-center items-center relative bg-zinc-900 font-MPLUS`}
+            className={`modal min-h-[250px] max-w-[80vw] md:min-w-[40vw] p-6 rounded-xl h-auto flex flex-col justify-center items-center relative bg-zinc-900 font-MPLUS border-[1px] border-zinc-500`}
          >
             {children}
 

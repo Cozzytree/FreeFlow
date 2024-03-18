@@ -18,6 +18,7 @@ import Button from "../Component/Button";
 import FormTextArea from "../Component/FormTextArea";
 import { useEditDescription } from "../Hooks/playlistHooks/useEditDescription";
 import Header from "../Component/Header";
+import { useToggleIsPublic } from "../Hooks/playlistHooks/useToggleIsPublic";
 
 function Playlist() {
    const [isOptions, setOptions] = useState(null);
@@ -30,6 +31,7 @@ function Playlist() {
    const { editPlaylistName, isEditing } = useEditPlayName();
    const { editPlaylistDescription, isEditingDescrip } = useEditDescription();
    const { removeV, isRemoving } = useDeleteVfromPL();
+   const { isToggling, togglePlaylistPublic } = useToggleIsPublic();
 
    useEffect(() => {
       refetch();
@@ -79,6 +81,10 @@ function Playlist() {
       };
    }
 
+   function handleIsPublic(playlisId) {
+      togglePlaylistPublic(playlisId);
+   }
+
    return (
       <>
          {(isDeleting || isRemoving || loadingPlaylist) && <Loader />}
@@ -99,9 +105,20 @@ function Playlist() {
                </Header>
 
                <div className="flex relative items-start justify-between">
-                  <select className="bg-zinc-800 p-2 rounded-md">
-                     <option className="bg-transparent">Public</option>
-                     <option className="bg-transparent">Private</option>
+                  <select
+                     defaultValue={
+                        aPlaylist?.data[0]?.isPublic ? "public" : "private"
+                     }
+                     disabled={isToggling}
+                     onChange={() => handleIsPublic(aPlaylist?.data[0]?._id)}
+                     className="bg-zinc-800 p-2 rounded-md"
+                  >
+                     <option value="public" className="bg-transparent">
+                        Public
+                     </option>
+                     <option value="private" className="bg-transparent">
+                        Private
+                     </option>
                   </select>
                   <HiOutlineDotsVertical
                      cursor="pointer"

@@ -6,15 +6,14 @@ import { NavLink } from "react-router-dom";
 import { useSignUp } from "../Hooks/authHooks/useSignUp";
 import { useState } from "react";
 import Loader from "../Component/loader";
-
-const inputStyle =
-   "bg-transparent outline-none border-[1px] border-zinc-600 w-[250px] px-3 py-1 rounded-md focus:ring-[1px] ring-sky-700 transition-all duration-200";
+import FormInput from "../Component/FormInput";
 
 function SignUp() {
    const { handleSubmit, register, getValues } = useForm();
    const { userSignUp, loadingSignUp } = useSignUp();
    const [avatar, setAvatar] = useState(null);
    const [coverImage, setCoverImage] = useState(null);
+
    function onSubmit(data) {
       const formData = new FormData();
       for (const item in data) {
@@ -33,44 +32,38 @@ function SignUp() {
             onSubmit={handleSubmit(onSubmit)}
             className="h-fit flex flex-col gap-4 bg-gradient-to-r from-zinc-700/10 via-zinc-800 to-zinc-700/20 py-5 px-4 rounded-md shadow-lg shadow-zinc-700/20"
          >
-            <input
-               className={inputStyle}
+            <FormInput
                type="text"
                id="username"
-               placeholder="username"
-               {...register("username", {
-                  required: "username is required",
-               })}
+               placeholder="Username"
+               register={register}
+               required={true}
             />
-            <input
-               className={inputStyle}
+
+            <FormInput
                type="text"
                id="fullName"
-               placeholder="fullName"
-               {...register("fullName", {
-                  required: "fullName is required",
-               })}
+               placeholder="FullName"
+               register={register}
+               required={register}
             />
-            <input
-               className={inputStyle}
+
+            <FormInput
                type="email"
                id="email"
                placeholder="email..."
-               {...register("email", {
-                  required: "email is required",
-               })}
+               register={register}
+               required={true}
             />
-            <input
-               className={inputStyle}
+            <FormInput
                type="password"
                id="password"
                placeholder="password..."
-               {...register("password", {
-                  required: "password is required",
-               })}
+               register={register}
+               required={true}
             />
             <input
-               className={inputStyle}
+               className="min-w-[200px] bg-transparent w-full text-zinc-100 text-md p-1 outline-none border-[1px] border-zinc-400/50 text-wrap text-sm md:text-md rounded-md "
                type="password"
                id="confirm"
                placeholder="confirm password..."

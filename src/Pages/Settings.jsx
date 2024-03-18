@@ -35,8 +35,8 @@ function Settings() {
                loading="lazy"
                src={userData?.data?.avatar}
                alt="avatar"
-               className="object-contain rounded-lg"
-               width="80px"
+               className="object-contain rounded-[100%]"
+               width="150px"
             />
             <label htmlFor="avatar" className="cursor-pointer text-xs ">
                <MdEdit size={10} />

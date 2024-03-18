@@ -45,7 +45,7 @@ class Tweet {
    }
 
    async addTweet({ content }) {
-      return axios
+      return await axios
          .post(
             `${import.meta.env.VITE_API_URL}/tweet/addTweet`,
             {
@@ -57,7 +57,11 @@ class Tweet {
             }
          )
          .then((data) => data?.data)
-         .catch((err) => err?.response?.data?.message);
+         .catch((err) => {
+            if (err) {
+               err?.response?.data?.message;
+            }
+         });
    }
 
    async getUserTweets(userId) {

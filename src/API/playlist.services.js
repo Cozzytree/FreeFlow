@@ -1,18 +1,29 @@
-import axios from "axios";
-
 /* eslint-disable no-useless-catch */
+import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
+
 class Playlist {
    async getUserPlaylist(videoId) {
       return await axios
-         .get(
-            `${import.meta.env.VITE_API_URL}/playlist/getPlaylists/${videoId}`,
-            {
-               withCredentials: true,
-            }
-         )
+         .get(`${API_URL}/playlist/getPlaylists/${videoId}`, {
+            withCredentials: true,
+         })
          .then((data) => data?.data)
          .catch((err) => {
             throw new Error(err?.response?.data?.message);
+         });
+   }
+
+   async getPlaylistName() {
+      return await axios
+         .get(`${API_URL}/playlist/getPlaylistNames`, {
+            withCredentials: true,
+         })
+         .then((data) => data?.data)
+         .catch((err) => {
+            if (err) {
+               throw new Error(err?.response?.data?.message);
+            }
          });
    }
 
@@ -136,6 +147,21 @@ class Playlist {
          .catch((err) => {
             if (err) throw new Error(err?.response?.data?.message);
          });
+   }
+
+   async toggleIsPublic(playlistId) {
+      try {
+         const response = await axios.patch(
+            `${API_URL}/playlist/togglePublic/${playlistId}`,
+            {},
+            { withCredentials: true }
+         );
+         return response?.data;
+      } catch (error) {
+         if (error) {
+            throw new Error(error?.response?.data?.message);
+         }
+      }
    }
 }
 

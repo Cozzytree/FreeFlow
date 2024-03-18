@@ -33,7 +33,7 @@ function VideoItems({
    return (
       <div
          ref={(video) => (videoRef.current[+index] = video)}
-         className={`transition-all duration-300 flex flex-col px-3 py-2 rounded-xl gap-2 items-start bg-zinc-800/40 relative`}
+         className={`transition-all duration-300 flex flex-col px-3 py-2 rounded-xl gap-2 items-start bg-zinc-800/40 relative shadow-zinc-800/50 shadow-inner`}
       >
          {isDeleting && <Loader />}
          {children && children}
@@ -58,7 +58,7 @@ function VideoItems({
                onClick={() => {
                   handleOption(index);
                }}
-               className="h-[10px] w-[20px]"
+               className="h-[10px] w-[10px]"
             />
             {isOptions === index ? (
                <VideoOptions setIsOptions={setIsOptions}>

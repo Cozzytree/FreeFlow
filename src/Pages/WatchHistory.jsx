@@ -42,7 +42,7 @@ function WatchHistory() {
             </Button>
          )}
 
-         <div className="w-[90vw] grid grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr] justify-center">
+         <div className="w-[90vw] grid grid-cols-[1fr_1fr] gap-3 md:grid-cols-[1fr_1fr_1fr] justify-center">
             {loadingHistory && <Loader />}
 
             {userWatchHistory?.data?.map((v, i) => (

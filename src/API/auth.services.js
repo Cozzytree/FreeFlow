@@ -80,23 +80,18 @@ class Auth {
    }
 
    async signUp(formData) {
-      try {
-         const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/v1/users/register`,
-            {
-               method: "POST",
-               credentials: "include",
-               body: formData,
+      return await axios
+         .post(`${import.meta.env.VITE_API_URL}/users/register`, formData, {
+            headers: {
+               "Content-Type": "multipart/form-data",
+            },
+         })
+         .then((data) => data?.data)
+         .catch((err) => {
+            if (err) {
+               throw new Error(err?.response?.data?.message);
             }
-         );
-
-         const Userdata = await response.json();
-         console.log(Userdata);
-         return Userdata;
-      } catch (error) {
-         console.log(error);
-         throw error;
-      }
+         });
    }
 
    async updateWatchHistory(videoId) {

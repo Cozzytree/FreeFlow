@@ -47,7 +47,7 @@ function Nav() {
          >
             <nav
                ref={ref}
-               className={`bg-zinc-700 overflow-y-auto flex flex-col justify-between px-5 py-[50px] gap-3 origin-left transition-all duration-300 border-[1px] border-zinc-600 rounded-md w-[170px] md:w-[250px] h-[100vh] ${
+               className={`bg-zinc-800 overflow-y-auto flex flex-col justify-between px-5 py-[50px] gap-3 origin-left transition-all duration-300 border-[1px] border-zinc-700 rounded-md w-[170px] md:w-[250px] h-[100vh] ${
                   isNav ? "translate-x-[0]" : "translate-x-[-300px]"
                }`}
             >

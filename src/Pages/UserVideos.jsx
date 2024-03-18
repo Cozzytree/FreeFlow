@@ -67,8 +67,9 @@ function UserVideos() {
          <TweetsVideoToggle params={params} />
 
          <div className={`grid grid-cols-[1fr_1fr_1fr] p-3 gap-4 relative`}>
-            {loadingVideos ? (
-               "loading..."
+            {loadingVideos && <span>loading...</span>}
+            {data?.length === 0 ? (
+               <span className="text-sm text-zinc-400">no videos!</span>
             ) : (
                <>
                   {data?.map((v, index) => (
