@@ -18,6 +18,7 @@ import { useState } from "react";
 import { useEditTweet } from "../Hooks/tweetsHooks/useEditTweet";
 import { useForm } from "react-hook-form";
 import { useDeleteTweet } from "../Hooks/tweetsHooks/useDeleteTweet";
+import Header from "../Component/Header";
 
 function UserTweets() {
    const { register, handleSubmit } = useForm();
@@ -93,6 +94,7 @@ function UserTweets() {
                                     )}
                                     className="modal flex flex-col items-center gap-3"
                                  >
+                                    <Header>Edit Post</Header>
                                     <FormInput
                                        id="content"
                                        type="text"

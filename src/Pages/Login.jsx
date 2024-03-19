@@ -5,6 +5,8 @@ import { useLogin } from "../Hooks/authHooks/useLogin";
 import Loader from "../Component/loader";
 import { useState } from "react";
 import LoginInputOtp from "../Component/LoginInputOtp";
+import FormInput from "../Component/FormInput";
+import Header from "../Component/Header";
 
 function Login() {
    const { handleSubmit, register } = useForm();
@@ -21,7 +23,6 @@ function Login() {
 
    return (
       <>
-         <h1 className="w-[100%] text-center text-2xl">Login</h1>
          {withOtp ? (
             <LoginInputOtp handleWithOtp={handleWithOtp} />
          ) : (
@@ -30,30 +31,31 @@ function Login() {
 
                <form
                   onSubmit={handleSubmit(onSubmit)}
-                  className="h-fit] flex flex-col gap-4 bg-gradient-to-r from-zinc-700/10 via-zinc-800 to-zinc-700/20 py-5 px-4 rounded-md shadow-lg shadow-zinc-700/20"
+                  className="h-fit flex flex-col items-center gap-4 bg-gradient-to-r bg-zinc-800/50 py-3 px-4 rounded-md shadow-lg "
                >
-                  <input
-                     className="bg-transparent outline-none border-[1px] border-zinc-600 w-[200px] px-3 py-1 rounded-md focus:ring-[1px] ring-sky-700 transition-all duration-200"
-                     type="email"
+                  <Header>Login</Header>
+                  <FormInput
+                     register={register}
+                     required={true}
                      id="email"
-                     placeholder="email..."
-                     {...register("email", {
-                        required: "email is required",
-                     })}
+                     placeholder="youremail@email.com"
+                     type="email"
                   />
-                  <input
-                     className="bg-transparent outline-none border-[1px] border-zinc-600 w-[200px] px-3 py-1 rounded-md focus:ring-[1px] ring-sky-700 transition-all duration-200"
+                  <FormInput
                      type="password"
                      id="password"
-                     placeholder="password..."
-                     {...register("password", {
-                        required: "password is required",
-                     })}
+                     register={register}
+                     required={true}
+                     placeholder="password"
                   />
+
                   <span className="text-end cursor-pointer text-zinc-300 ">
                      forgot password?
                   </span>
-                  <Button extrastyles="rounded-md text-sm" type="primary">
+                  <Button
+                     extrastyles="rounded-sm text-xs h-[25px]"
+                     type="primary"
+                  >
                      Login with password
                   </Button>
                   <span
@@ -65,7 +67,10 @@ function Login() {
                      login with otp
                   </span>
                   <NavLink to="/signup">
-                     Don&apos;t have an account Sign Up
+                     <span className="text-zinc-400 text-sm">
+                        Don&apos;t have an account?
+                     </span>
+                     Sign Up
                   </NavLink>
                </form>
             </div>

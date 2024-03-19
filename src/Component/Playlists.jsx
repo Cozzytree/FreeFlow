@@ -7,7 +7,7 @@ function Playlists() {
    const { playlistNames, isLoading } = usePlaylistNames();
 
    return (
-      <ul className="bg-zinc-800 p-1 text-xs">
+      <ul className="bg-zinc-900 p-1 text-xs">
          {isLoading && <MiniSpinner />}
          {playlistNames?.data.length >= 0 ? (
             playlistNames?.data?.map((playlist) => (

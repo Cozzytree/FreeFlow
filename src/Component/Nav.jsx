@@ -119,8 +119,12 @@ function Nav() {
                   </Button>
                ) : (
                   <div>
-                     <Link to="/login">Login</Link>
-                     <Link to="/signUp">SignUp</Link>
+                     <Link onClick={handleNav} to="/login">
+                        Login
+                     </Link>
+                     <Link onClick={handleNav} to="/signUp">
+                        SignUp
+                     </Link>
                   </div>
                )}
             </nav>

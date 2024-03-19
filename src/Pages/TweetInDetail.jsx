@@ -74,7 +74,7 @@ function TweetInDetail() {
                            <ModalProvider.ModalWindow window="formEdit">
                               <form
                                  onSubmit={handleSubmit(tweetUpdate)}
-                                 className="flex flex-col items-center gap-3"
+                                 className="modal flex flex-col items-center gap-3"
                               >
                                  <FormInput
                                     id="content"

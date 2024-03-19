@@ -7,6 +7,7 @@ import { useSignUp } from "../Hooks/authHooks/useSignUp";
 import { useState } from "react";
 import Loader from "../Component/loader";
 import FormInput from "../Component/FormInput";
+import Header from "../Component/Header";
 
 function SignUp() {
    const { handleSubmit, register, getValues } = useForm();
@@ -27,11 +28,12 @@ function SignUp() {
    return (
       <div className="h-[100%] px-3 py-1 flex flex-col justify-center items-center animate-slow">
          {loadingSignUp && <Loader />}
-         <h1 className="w-[100%] text-center text-2xl">Sign Up</h1>
+
          <form
             onSubmit={handleSubmit(onSubmit)}
-            className="h-fit flex flex-col gap-4 bg-gradient-to-r from-zinc-700/10 via-zinc-800 to-zinc-700/20 py-5 px-4 rounded-md shadow-lg shadow-zinc-700/20"
+            className="h-fit w-[300px] flex flex-col gap-4 rounded-md shadow-lg bg-zinc-800/50 py-2 px-5 items-center shadow-zinc-700/20"
          >
+            <Header>Sign Up</Header>
             <FormInput
                type="text"
                id="username"
@@ -39,7 +41,6 @@ function SignUp() {
                register={register}
                required={true}
             />
-
             <FormInput
                type="text"
                id="fullName"
@@ -47,7 +48,6 @@ function SignUp() {
                register={register}
                required={register}
             />
-
             <FormInput
                type="email"
                id="email"
@@ -74,7 +74,6 @@ function SignUp() {
                   },
                })}
             />
-
             {/* {avatar} */}
             <label htmlFor="avatar" className="flex flex-col cursor-pointer">
                <div className="flex gap-4 items-center">
@@ -114,11 +113,15 @@ function SignUp() {
                   }}
                />
             </label>
-
-            <Button extrastyles="rounded-md" type="primary">
+            <Button extrastyles="rounded-sm text-xs h-[25px]" type="primary">
                Sign Up
             </Button>
-            <NavLink to="/login">Already have an account? login</NavLink>
+            <NavLink to="/login">
+               <span className="text-zinc-400 text-sm">
+                  Already have an account ?
+               </span>
+               login
+            </NavLink>
          </form>
       </div>
    );

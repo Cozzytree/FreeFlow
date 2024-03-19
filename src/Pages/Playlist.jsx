@@ -1,31 +1,31 @@
 import Loader from "../Component/loader";
+import VideoRow from "../Component/VideoRow";
+import ModalProvider from "../Component/Modal";
+import VideoOptionsItem from "../Component/VideoOptionsItem";
+import AreYouSure from "../Component/AreYouSure";
+import VideoOptions from "../Component/ItemOptions";
+import FormInput from "../Component/FormInput";
+import Button from "../Component/Button";
+import FormTextArea from "../Component/FormTextArea";
+import Header from "../Component/Header";
 import { useGetAplaylist } from "../Hooks/playlistHooks/useGetAplaylist";
 import { useDeleteVfromPL } from "../Hooks/playlistHooks/useDelVfromPL";
 import { useNavigate, useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { useDeletePlaylist } from "../Hooks/playlistHooks/useDeletePlaylist";
-import VideoRow from "../Component/VideoRow";
-import ModalProvider from "../Component/Modal";
-import VideoOptionsItem from "../Component/VideoOptionsItem";
-import AreYouSure from "../Component/AreYouSure";
 import { MdDelete, MdEdit, MdShare } from "react-icons/md";
-import VideoOptions from "../Component/ItemOptions";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { useEditPlayName } from "../Hooks/playlistHooks/useEditPlayName";
 import { useForm } from "react-hook-form";
-import FormInput from "../Component/FormInput";
-import Button from "../Component/Button";
-import FormTextArea from "../Component/FormTextArea";
 import { useEditDescription } from "../Hooks/playlistHooks/useEditDescription";
-import Header from "../Component/Header";
 import { useToggleIsPublic } from "../Hooks/playlistHooks/useToggleIsPublic";
 
 function Playlist() {
    const [isOptions, setOptions] = useState(null);
    const [playlistOptions, setPlaylistOptions] = useState(null);
-   const { handleSubmit, register } = useForm();
    const params = useParams();
    const navigate = useNavigate();
+   const { handleSubmit, register } = useForm();
    const { aPlaylist, loadingPlaylist, refetch } = useGetAplaylist();
    const { isDeleting, userDeletePlaylist } = useDeletePlaylist();
    const { editPlaylistName, isEditing } = useEditPlayName();
@@ -88,8 +88,8 @@ function Playlist() {
    return (
       <>
          {(isDeleting || isRemoving || loadingPlaylist) && <Loader />}
-         <div className="w-full h-full grid grid-rows-[2fr_1fr] md:grid-cols-[0.5fr_1fr] gap-4">
-            <div className="flex min-h-[40vh] md:min-h-[80vh] flex-col overflow-hidden rounded-2xl relative bg-gradient-to-b from-[rgba(156,156,156,0.55)] to-[rgba(0,0,0,0.0)] p-5 gap-4">
+         <div className="w-full grid grid-rows-[1fr_1fr] md:grid-cols-[0.5fr_1fr] md:grid-rows-[1fr] gap-3">
+            <div className="flex flex-col overflow-hidden rounded-2xl relative bg-gradient-to-b from-[rgba(156,156,156,0.55)] to-[rgba(0,0,0,0.0)] p-5 gap-4">
                <div className="flex justify-center">
                   <img
                      src={aPlaylist?.data[0]?.playlistV?.thumbnail}
@@ -111,7 +111,7 @@ function Playlist() {
                      }
                      disabled={isToggling}
                      onChange={() => handleIsPublic(aPlaylist?.data[0]?._id)}
-                     className="bg-zinc-800 p-2 rounded-md"
+                     className="bg-zinc-800 p-2 rounded-md appearance-none"
                   >
                      <option value="public" className="bg-transparent">
                         Public
@@ -223,13 +223,13 @@ function Playlist() {
                   )}
                </div>
 
-               <p className="text-sm">
+               <p className="text-sm min-h-[150px]">
                   {aPlaylist?.data[0]?.description || "no description"}
                </p>
             </div>
 
             {aPlaylist?.data[0]?.playlistV?._id ? (
-               <div className="space-y-1 video-container">
+               <div className="space-y-2 video-container">
                   {aPlaylist?.data?.map((v, i) => (
                      <VideoRow
                         key={i}

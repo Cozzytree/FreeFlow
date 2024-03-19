@@ -8,6 +8,7 @@ import { useAddTweet } from "../Hooks/tweetsHooks/useAddTweet";
 import { useGetTweet } from "../Hooks/tweetsHooks/useGetTweets";
 import { useDocumentTitle } from "../Hooks/uiHooks/useDocumentTitle";
 import { useEffect, useRef, useState } from "react";
+import MiniSpinner from "../Component/MiniSpinner";
 
 function Tweet() {
    const [option, setOptions] = useState(null);
@@ -61,12 +62,10 @@ function Tweet() {
 
    const tweets = allTweets?.reduce((acc, current) => {
       const pageData = current?.data?.data[0];
-
       const concatenatedPaginated = [...acc, ...pageData.paginated];
-
       return concatenatedPaginated;
    }, []);
-
+   // ("#00505ef");
    return (
       <>
          {(loadingTweets || loadingaddTweet) && <Loader />}
@@ -108,7 +107,8 @@ function Tweet() {
                   }
                />
             ))}
-            {isFetchingNextPage && "loading"}
+
+            {isFetchingNextPage && <MiniSpinner />}
          </div>
       </>
    );

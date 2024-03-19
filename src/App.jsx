@@ -26,9 +26,9 @@ const route = createBrowserRouter([
       element: <AppLayout />,
       children: [
          { path: "/", element: <Videos /> },
+         { path: "/tweets", element: <Tweet /> },
          { path: "/u/:userId/videos", element: <UserVideos /> },
          { path: "/u/:userId/tweets", element: <UserTweets /> },
-         { path: "/tweets", element: <Tweet /> },
          { path: "/post/:postId", element: <TweetInDetail /> },
          { path: "/:userId/watch_history", element: <WatchHistory /> },
          { path: "/login", element: <Login /> },

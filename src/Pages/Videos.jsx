@@ -54,6 +54,7 @@ function Videos() {
                               </ModalProvider>
                            )}
                            <VideoOptionsItem
+                              setIsOptions={setIsOptions}
                               label="share"
                               icon={<MdShare className="w-full" size={12} />}
                            />

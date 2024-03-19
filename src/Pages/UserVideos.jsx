@@ -57,6 +57,7 @@ function UserVideos() {
       <>
          {(loadingUser || loadingCurrentUser) && <Loader />}
          <UserView
+            bio={currentUser?.data?.bio}
             userId={cu?.data?._id}
             username={currentUser?.data?.username}
             avatar={currentUser?.data?.avatar}

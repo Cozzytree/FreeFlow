@@ -4,6 +4,7 @@ import { AiOutlineUpload } from "react-icons/ai";
 import Button from "./Button";
 import InputFile from "./InputFile";
 import ModalProvider from "./Modal";
+import Header from "./Header";
 
 function UserView({
    username,
@@ -12,6 +13,7 @@ function UserView({
    totalVideos,
    isSubscribed,
    userId,
+   bio,
 }) {
    const params = useParams();
    const { userSubscribe, loadingSubscribe } = useSubscribe();
@@ -27,20 +29,47 @@ function UserView({
             alt=""
          />
 
-         <div className="grid grid-rows-[auto_auto] gap-3">
+         <div className="grid grid-rows-[1fr_0.5fr_0.5fr_0.5fr] gap-3">
+            <h1 className="text-xl md:text-2xl font-bold">{username}</h1>
+
             <div className="flex flex-col">
-               <h1 className="text-xl md:text-2xl font-bold">{username}</h1>
-               <span className="text-zinc-400 text-sm md:text-md">
-                  subscribers {subcribersCount}
-               </span>
-               <span className="text-zinc-400 text-sm md:text-md">
-                  video {totalVideos}
-               </span>
+               <p>
+                  <span className="text-zinc-400 text-sm md:text-md">
+                     {subcribersCount} subscribers - {totalVideos} videos
+                  </span>
+                  <span className="text-zinc-400 text-sm md:text-md"></span>
+               </p>
             </div>
+
+            {/* {bio &&  bio?.text} */}
+            <ModalProvider>
+               <ModalProvider.ModalOpen opens="about">
+                  <p className="text-xs text-zinc-400 cursor-pointer">
+                     About &darr;
+                  </p>
+               </ModalProvider.ModalOpen>
+               <ModalProvider.ModalWindow window="about">
+                  <div className="text-zinc-100">
+                     <Header>About</Header>
+                     <p>{bio?.text}</p>
+                     <ul>
+                        <Header>Socials</Header>
+                        {bio?.links?.map((link) => (
+                           <li key={link?._id}>
+                              <span className="text-zinc-200 text-sm">
+                                 {link.name} <a href={link?.url}>{link?.url}</a>
+                              </span>
+                           </li>
+                        ))}
+                     </ul>
+                  </div>
+               </ModalProvider.ModalWindow>
+            </ModalProvider>
+
             <Button
                disabled={loadingSubscribe}
                onClick={handleSubscribe}
-               extrastyles="rounded-md text-xs uppercase"
+               extrastyles="rounded-sm text-xs uppercase"
                type="primary"
             >
                {isSubscribed ? "Subscribed" : "Suscribe"}

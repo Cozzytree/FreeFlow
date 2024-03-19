@@ -183,6 +183,53 @@ class Auth {
             if (err) throw new Error(err?.response?.data?.data);
          });
    }
+
+   async addLinkToBio(link) {
+      return await axios
+         .post(`${import.meta.env.VITE_API_URL}/users/addLinkToBio`, link, {
+            withCredentials: true,
+            headers: {
+               "Content-Type": "application/json",
+            },
+         })
+         .then((data) => data?.data)
+         .catch((err) => {
+            if (err) {
+               throw new Error(err?.response?.data?.message);
+            }
+         });
+   }
+
+   async deleteLinkFromBio(linkId) {
+      return await axios
+         .delete(
+            `${import.meta.env.VITE_API_URL}/users/deleteLinkfromBio/${linkId}`,
+            {
+               withCredentials: true,
+            }
+         )
+         .then((data) => data?.data)
+         .catch((err) => {
+            if (err) {
+               throw new Error(err?.response?.data?.message);
+            }
+         });
+   }
+
+   async UpdateBioText(text) {
+      return await axios
+         .post(`${import.meta.env.VITE_API_URL}/users/updateBioText`, text, {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true,
+         })
+         .then((data) => data?.data)
+         .catch((err) => {
+            if (err) {
+               throw new Error(err?.response?.data?.message);
+            }
+         });
+   }
 }
+
 const authservices = new Auth();
 export default authservices;

@@ -21,7 +21,7 @@ function VideoRow({
    return (
       <div
          draggable={true}
-         className="video w-[100%] grid grid-cols-[auto_auto_1fr_auto] gap-4 bg-zinc-900/40 p-3 rounded-md relative"
+         className="video w-[100%] grid grid-cols-[auto_auto_1fr_auto] gap-4 bg-zinc-800/40 p-3 rounded-md relative"
       >
          <span className="text-xs">{index + 1}</span>
          <img

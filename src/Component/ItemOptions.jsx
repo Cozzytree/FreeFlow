@@ -10,7 +10,7 @@ function VideoOptions({ children, setIsOptions, outsideClose = true }) {
    return (
       <ul
          ref={ref}
-         className={`absolute w-auto flex flex-col gap-3 bg-zinc-900 rounded-md p-2 animate-slow transition-all duration-300 z-10 right-[4%] top-[5%]`}
+         className={`absolute w-auto flex flex-col gap-3 bg-zinc-800 rounded-md p-2 animate-slow transition-all duration-300 z-10 right-[4%] top-[5%]`}
       >
          {children}
       </ul>

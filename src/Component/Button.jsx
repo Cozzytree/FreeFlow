@@ -9,7 +9,7 @@ function Button({
    let styles;
    if (type === "danger") {
       styles =
-         "text-zinc-100 flex items-center gap-1 font-semibold rounded-sm w-fit text-center bg-red-700 p-1";
+         "flex items-center gap-1 font-semibold rounded-sm w-fit text-center bg-red-800 p-1 hover:bg-red-100 hover:text-red-600 transition-all duration-200";
    }
 
    if (type === "primary") {
