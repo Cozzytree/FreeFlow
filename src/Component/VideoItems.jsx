@@ -5,10 +5,10 @@ import { HiOutlineDotsVertical } from "react-icons/hi";
 import { useNavigate } from "react-router";
 import { useDeleteVideos } from "../Hooks/videoHooks/useDeleteVideo";
 import { useLazyImage } from "../Hooks/uiHooks/useLazyImage";
+import { time } from "../utils/time";
 
 function VideoItems({
    v,
-   children,
    index,
    isOptions,
    handleOption,
@@ -33,12 +33,11 @@ function VideoItems({
    return (
       <div
          ref={(video) => (videoRef.current[+index] = video)}
-         className={`transition-all duration-300 flex flex-col px-3 py-2 rounded-xl gap-2 items-start bg-zinc-800/40 relative shadow-zinc-800/50 shadow-inner`}
+         className={`w-full max-h-[300px] transition-all duration-300 flex flex-col px-3 pb-3 rounded-xl gap-2 justify-center`}
       >
          {isDeleting && <Loader />}
-         {children && children}
 
-         <div className="grid grid-cols-[1fr_auto] relative">
+         <div className="w-full flex justify-center relative">
             <video
                onClick={() => {
                   navigate(`/v/${v?._id}`);
@@ -46,13 +45,44 @@ function VideoItems({
                data-src={v?.thumbnail}
                poster=""
                controlsList="nodownload nofullscreen nodocumentfile"
-               className={`videos transition-all duration-200 w-[300px] h-[200px] object-scale-down rounded-md animate-slow cursor-pointer`}
+               className={`videos transition-all duration-200 w-[300px] h-[200px] object-cover rounded-md animate-slow cursor-pointer`}
                onMouseLeave={handleStopv}
                onMouseEnter={handlePlayV}
                src={isVideo ? v?.videoFile : ""}
                autoPlay
                muted
             ></video>
+
+            <span className="text-sm absolute bottom-1 right-2">
+               {v?.duration ? (v?.duration / 60).toFixed(2) : ""}
+            </span>
+         </div>
+
+         <div className="flex gap-3 justify-between w-full relative">
+            <div className="flex justify-between gap-2 text-xs sm:text-sm md:text-md">
+               {v?.user?.avatar && (
+                  <img
+                     onClick={() => navigate(`/u/${v?.user?.id}/videos`)}
+                     src={v?.user?.avatar}
+                     alt="user img"
+                     className="w-[35px] h-[35px] aspect-square rounded-[100%] gap-3"
+                  />
+               )}
+               <div>
+                  <p>{v?.title}</p>
+                  {v?.user?.username && (
+                     <h2
+                        onClick={() => navigate(`/u/${v?.user?.id}/videos`)}
+                        className="text-zinc-400 cursor-pointer"
+                     >
+                        {v?.user?.username}
+                     </h2>
+                  )}
+                  <span className="text-zinc-400">
+                     {v?.views} views - {time(v?.createdAt)}
+                  </span>
+               </div>
+            </div>
             <HiOutlineDotsVertical
                cursor="pointer"
                onClick={() => {
@@ -65,33 +95,6 @@ function VideoItems({
                   {options && options}
                </VideoOptions>
             ) : null}
-
-            <span className="text-sm absolute bottom-1 right-2">
-               {v?.duration ? (v?.duration / 60).toFixed(2) : ""}
-            </span>
-         </div>
-         <div
-            className="flex gap-3"
-            onClick={() => navigate(`/u/${v?.user?.id}/videos`)}
-         >
-            {v?.user?.avatar && (
-               <img
-                  src={v?.user?.avatar}
-                  alt="user img"
-                  className="w-[30px] h-[30px] aspect-square rounded-[100%] gap-3"
-               />
-            )}
-
-            <div>
-               <p className="text-zinc-400 text-sm">{v?.title}</p>
-
-               {v?.user?.username && (
-                  <h2 className="text-sm text-zinc-200 cursor-pointer">
-                     {v?.user?.username}
-                  </h2>
-               )}
-            </div>
-            <span className="text-sm text-zinc-400"> {v?.views} views</span>
          </div>
       </div>
    );

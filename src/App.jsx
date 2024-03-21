@@ -19,6 +19,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
 import { GlobalContextProvider } from "./Hooks/context/globalContext";
+import UserPlaylists from "./Pages/UserPlaylists";
+import VideoUploadPage from "./Pages/VideoUploadPage";
 
 const route = createBrowserRouter([
    {
@@ -29,8 +31,10 @@ const route = createBrowserRouter([
          { path: "/tweets", element: <Tweet /> },
          { path: "/u/:userId/videos", element: <UserVideos /> },
          { path: "/u/:userId/tweets", element: <UserTweets /> },
+         { path: "/u/:userId/playlists", element: <UserPlaylists /> },
          { path: "/post/:postId", element: <TweetInDetail /> },
          { path: "/:userId/watch_history", element: <WatchHistory /> },
+         { path: "/upload_video", element: <VideoUploadPage /> },
          { path: "/login", element: <Login /> },
          { path: "/signUp", element: <SignUp /> },
          { path: "/v/:videoId", element: <VideoView /> },

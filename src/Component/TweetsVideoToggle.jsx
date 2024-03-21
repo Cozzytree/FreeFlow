@@ -24,6 +24,12 @@ function TweetsVideoToggle({ params }) {
             >
                Tweets
             </Link>
+            <Link
+               active={isVideo === "playlists"}
+               to={`/u/${params?.userId}/playlists`}
+            >
+               Playlists
+            </Link>
          </ul>
       </nav>
    );

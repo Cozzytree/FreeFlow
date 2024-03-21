@@ -1,9 +1,12 @@
-import { FaSearch } from "react-icons/fa";
 import Button from "./Button";
+import { FaSearch } from "react-icons/fa";
 import { useRef } from "react";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
+import { AiOutlineVideoCameraAdd } from "react-icons/ai";
+import FormInput from "./FormInput";
+import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
 
 // function debounce(fn, t) {
 //    let timer;
@@ -14,6 +17,7 @@ import { useSearchParams } from "react-router-dom";
 // }
 
 function Search() {
+   const { currentUser } = useCurrentUser();
    const inputRef = useRef();
    const navigate = useNavigate();
    const { handleSubmit, register } = useForm();
@@ -27,32 +31,44 @@ function Search() {
       localStorage.setItem("search_History", data?.search);
    };
 
+   const handleUploadNav = () => {
+      if (currentUser?.data?._id) {
+         navigate("/upload_video");
+      } else {
+         navigate("/login");
+      }
+   };
+
    return (
-      <div
-         className={`w-[100%] justify-center px-10 flex z-20 sticky top-0 bg-black`}
-      >
+      <div className="w-full flex justify-center bg-zinc-950 items-center gap-3 z-20 sticky top-0 bg-blac">
          <form
             ref={inputRef}
             onSubmit={handleSubmit(handleSearch)}
-            className="border-[1px] border-zinc-600 rounded-md grid grid-cols-[1fr_auto] mt-2 h-10 overflow-hidden mb-4 w-[80%]"
+            className="w-fit rounded-xl overflow-hidden grid grid-cols-[1fr_auto] mt-2 h-10 mb-4"
          >
-            <input
-               // ref={inputRef}
-               type="text"
+            <FormInput
+               placeholder="search"
                id="search"
-               placeholder="search videos..."
-               className="bg-transparent w-full text-zinc-100 text-md p-1 outline-none border-[1px] border-zinc-400/50 text-wrap"
-               {...register("search", { required: true })}
+               register={register}
+               type="text"
+               required={true}
             />
 
             <Button
-               extrastyles="px-4 w-[40px]"
+               extrastyles="p-1 rounded-sm"
                type="primary"
                onClick={handleSearch}
             >
                <FaSearch cursor="pointer" />
             </Button>
          </form>
+
+         <AiOutlineVideoCameraAdd
+            onClick={handleUploadNav}
+            size={30}
+            fill="black"
+            className="bg-zinc-100 w-[20px] md:w-[25px] h-[20px] md:h-[25px] cursor-pointer rounded-[100%] p-1"
+         />
       </div>
    );
 }

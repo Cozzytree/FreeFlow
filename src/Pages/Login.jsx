@@ -2,7 +2,6 @@ import { NavLink } from "react-router-dom";
 import Button from "../Component/Button";
 import { useForm } from "react-hook-form";
 import { useLogin } from "../Hooks/authHooks/useLogin";
-import Loader from "../Component/loader";
 import { useState } from "react";
 import LoginInputOtp from "../Component/LoginInputOtp";
 import FormInput from "../Component/FormInput";
@@ -27,8 +26,6 @@ function Login() {
             <LoginInputOtp handleWithOtp={handleWithOtp} />
          ) : (
             <div className="h-[100%] px-3 py-1 flex flex-col justify-center items-center">
-               {isLogging && <Loader />}
-
                <form
                   onSubmit={handleSubmit(onSubmit)}
                   className="h-fit flex flex-col items-center gap-4 bg-gradient-to-r bg-zinc-800/50 py-3 px-4 rounded-md shadow-lg "
@@ -53,7 +50,10 @@ function Login() {
                      forgot password?
                   </span>
                   <Button
-                     extrastyles="rounded-sm text-xs h-[25px]"
+                     disabled={isLogging}
+                     extrastyles={`rounded-sm text-xs h-[25px] ${
+                        isLogging ? "animate-pulse cursor-wait" : ""
+                     } `}
                      type="primary"
                   >
                      Login with password

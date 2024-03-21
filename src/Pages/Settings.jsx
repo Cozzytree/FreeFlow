@@ -65,24 +65,29 @@ function Settings() {
    return (
       <div className="w-full px-8 flex flex-col gap-4 items-center py-10">
          {isLoading && <Loader />}
-         <div className="grid grid-cols-[1fr_auto] items-end gap-2">
+         <div className="w-fit p-2 rounded-md flex items-end gap-2">
             <img
                loading="lazy"
                src={userData?.data?.avatar}
                alt="avatar"
-               className="w-[150px] h-[150px] object-cover rounded-[100%]"
+               className="w-[100px] h-[100px] object-fill rounded-[100%]"
             />
-            <label htmlFor="avatar" className="cursor-pointer text-xs ">
-               <FaEdit size={10} />
+            <label
+               htmlFor="avatar"
+               className="cursor-pointer text-xs flex items-center gap-1"
+            >
+               <FaEdit size={10} /> change profile
             </label>
+            <input className="hidden" type="file" name="" id="avatar" />
          </div>
-         <input className="hidden" type="file" name="" id="avatar" />
 
-         <div className="flex items-center">
+         <div className="flex items-center gap-2">
             <Header>Personal Details</Header>
             <ModalProvider>
                <ModalProvider.ModalOpen opens="form">
-                  <FaEdit cursor="pointer" />
+                  <button className="text-xs flex items-center gap-1">
+                     <FaEdit cursor="pointer" /> edit
+                  </button>
                </ModalProvider.ModalOpen>
                <ModalProvider.ModalWindow window="form">
                   <form
@@ -121,11 +126,9 @@ function Settings() {
                </ModalProvider.ModalWindow>
             </ModalProvider>
          </div>
-
          <Convenience field="Username" name={userData?.data?.username} />
          <Convenience field="Fullname" name={userData?.data?.fullName} />
          <Convenience field="Email" name={userData?.data?.email} />
-
          <div className="flex items-center">
             <Header>About</Header>
             <ModalProvider>
@@ -158,121 +161,128 @@ function Settings() {
          </div>
          <p className="flex items-center gap-1">{userData?.data?.bio?.text}</p>
          <Header>Links</Header>
-         <ul className="flex flex-col items-center gap-1 text-sm">
-            {userData?.data?.bio?.links?.map((link, index) => (
-               <li
-                  key={link?._id}
-                  className="w-full grid grid-cols-[1fr_auto_auto] gap-2 items-center relative"
-               >
-                  <span className="text-sm text-zinc-300">{link.name}</span>
-                  <a
-                     className="underline appearance-none text-sky-300 w-[250px] px-1 overflow-x-auto"
-                     href={link.url}
+         <ul className="flex flex-col items-center gap-2 text-sm">
+            {userData?.data?.bio?.links.length === 0 ? (
+               <span className="text-xs text-zinc-300">empty</span>
+            ) : (
+               userData?.data?.bio?.links?.map((link, index) => (
+                  <li
+                     key={link?._id}
+                     className="w-full grid grid-cols-[1fr_auto_auto] gap-2 items-center relative"
                   >
-                     {link.url}
-                  </a>
-                  <HiOutlineDotsVertical
-                     cursor="pointer"
-                     onClick={() => handleOptions(index)}
-                  />
-                  {index === isOptions && (
-                     <VideoOptions setIsOptions={setOption} outsideClose={true}>
-                        {/* {edit} */}
-                        <ModalProvider>
-                           <ModalProvider.ModalOpen opens="editLinks">
-                              <VideoOptionsItem
-                                 label="Edit"
-                                 icon={<FaEdit />}
-                              />
-                           </ModalProvider.ModalOpen>
-                           <ModalProvider.ModalWindow window="editLinks">
-                              <form className="modal flex flex-col gap-2 items-center justify-center">
-                                 <Header>Link Details</Header>
-                                 <FormInput
-                                    type="text"
-                                    defaultValue={link?.name}
-                                    register={register}
-                                    required={true}
-                                    id="name"
-                                 />
-                                 <FormInput
-                                    type="text"
-                                    defaultValue={link?.url}
-                                    register={register}
-                                    required={true}
-                                    id="url"
-                                 />
-                                 <Button
-                                    extrastyles="text-sm rounded-dm h-[25px]"
-                                    type="primary"
-                                 >
-                                    Save
-                                 </Button>
-                              </form>
-                           </ModalProvider.ModalWindow>
-                        </ModalProvider>
-
-                        <ModalProvider>
-                           <ModalProvider.ModalOpen opens="delLink">
-                              <VideoOptionsItem
-                                 label="Delete"
-                                 icon={<MdDelete />}
-                              />
-                           </ModalProvider.ModalOpen>
-                           <ModalProvider.ModalWindow window="delLink">
-                              <AreYouSure
-                                 label="Are you sure you want to delete?"
-                                 hadler={() => handleDelLink(link?._id)}
-                                 loader={isDeleting}
-                                 confirm="DELETE"
-                              />
-                           </ModalProvider.ModalWindow>
-                        </ModalProvider>
-                     </VideoOptions>
-                  )}
-               </li>
-            ))}
-            <li>
-               {/* {add link} */}
-               <ModalProvider>
-                  <ModalProvider.ModalOpen opens="AddLink">
-                     <MdAdd
-                        className="bg-zinc-600 p-1 rounded-full cursor-pointer"
-                        size={30}
-                     />
-                  </ModalProvider.ModalOpen>
-                  <ModalProvider.ModalWindow window="AddLink">
-                     <form
-                        onSubmit={handleSubmit(handleAddLink)}
-                        className="modal flex flex-col gap-2 items-center justify-center"
+                     <span className="text-sm text-zinc-300">{link.name}</span>
+                     <a
+                        className="underline appearance-none text-sky-300 w-[250px] px-1 overflow-x-auto"
+                        href={link.url}
                      >
-                        <Header>Add Link</Header>
-                        <FormInput
-                           type="text"
-                           id="name"
-                           placeholder="Name"
-                           register={register}
-                           required={true}
-                        />
-                        <FormInput
-                           type="text"
-                           id="url"
-                           placeholder="url"
-                           register={register}
-                           required={true}
-                        />
-                        <Button
-                           disabled={isAddingLink}
-                           extrastyles="text-sm rounded-dm h-[25px]"
-                           type="primary"
+                        {link.url}
+                     </a>
+                     <HiOutlineDotsVertical
+                        cursor="pointer"
+                        onClick={() => handleOptions(index)}
+                     />
+                     {index === isOptions && (
+                        <VideoOptions
+                           setIsOptions={setOption}
+                           outsideClose={true}
                         >
-                           Save
-                        </Button>
-                     </form>
-                  </ModalProvider.ModalWindow>
-               </ModalProvider>
-            </li>
+                           {/* {edit} */}
+                           <ModalProvider>
+                              <ModalProvider.ModalOpen opens="editLinks">
+                                 <VideoOptionsItem
+                                    label="Edit"
+                                    icon={<FaEdit />}
+                                 />
+                              </ModalProvider.ModalOpen>
+                              <ModalProvider.ModalWindow window="editLinks">
+                                 <form className="modal flex flex-col gap-2 items-center justify-center">
+                                    <Header>Link Details</Header>
+                                    <FormInput
+                                       type="text"
+                                       defaultValue={link?.name}
+                                       register={register}
+                                       required={true}
+                                       id="name"
+                                    />
+                                    <FormInput
+                                       type="text"
+                                       defaultValue={link?.url}
+                                       register={register}
+                                       required={true}
+                                       id="url"
+                                    />
+                                    <Button
+                                       extrastyles="text-sm rounded-dm h-[25px]"
+                                       type="primary"
+                                    >
+                                       Save
+                                    </Button>
+                                 </form>
+                              </ModalProvider.ModalWindow>
+                           </ModalProvider>
+
+                           <ModalProvider>
+                              <ModalProvider.ModalOpen opens="delLink">
+                                 <VideoOptionsItem
+                                    label="Delete"
+                                    icon={<MdDelete />}
+                                 />
+                              </ModalProvider.ModalOpen>
+                              <ModalProvider.ModalWindow window="delLink">
+                                 <AreYouSure
+                                    label="Are you sure you want to delete?"
+                                    hadler={() => handleDelLink(link?._id)}
+                                    loader={isDeleting}
+                                    confirm="DELETE"
+                                 />
+                              </ModalProvider.ModalWindow>
+                           </ModalProvider>
+                        </VideoOptions>
+                     )}
+                  </li>
+               ))
+            )}
          </ul>
+         <div>
+            {/* {add link} */}
+            <ModalProvider>
+               <ModalProvider.ModalOpen opens="addLinkForm">
+                  <MdAdd
+                     className="bg-zinc-600 p-1 rounded-full cursor-pointer"
+                     size={30}
+                  />
+               </ModalProvider.ModalOpen>
+               <ModalProvider.ModalWindow window="addLinkForm">
+                  <form
+                     onSubmit={handleSubmit(handleAddLink)}
+                     className="modal flex flex-col gap-2 items-center justify-center"
+                  >
+                     <Header>Add Link</Header>
+                     <FormInput
+                        type="text"
+                        id="name"
+                        placeholder="Name"
+                        register={register}
+                        required={true}
+                     />
+                     <FormInput
+                        type="text"
+                        id="url"
+                        placeholder="url"
+                        register={register}
+                        required={true}
+                     />
+                     <Button
+                        disabled={isAddingLink}
+                        extrastyles="text-sm rounded-dm h-[25px]"
+                        type="primary"
+                     >
+                        Save
+                     </Button>
+                  </form>
+               </ModalProvider.ModalWindow>
+            </ModalProvider>
+         </div>
          <Button type="primary" extrastyles="h-[25px] rounded-[5%]">
             change password
          </Button>

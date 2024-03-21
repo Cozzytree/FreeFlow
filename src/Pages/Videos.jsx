@@ -24,7 +24,7 @@ function Videos() {
          {loadingVideos ? (
             <Loader />
          ) : (
-            <div className="w-[90vw] grid grid-cols-[auto_auto] md:grid-cols-[auto_auto_auto] justify-center gap-1">
+            <div className="w-[90vw] grid grid-cols-1 sm:grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr] just space-y-2 space-x-1">
                {allVideos?.pages[0]?.data?.data?.data?.map((v, i) => (
                   <VideoItems
                      setIsOptions={setIsOptions}

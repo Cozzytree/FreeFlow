@@ -5,6 +5,8 @@ import VideoOptionsItem from "../Component/VideoOptionsItem";
 import VideoEditForm from "../Component/VideoEditForm";
 import ModalProvider from "../Component/Modal";
 import AreYouSure from "../Component/AreYouSure";
+import VideoItems from "../Component/VideoItems";
+import MiniSpinner from "../Component/MiniSpinner";
 import { FaTrash, FaShare } from "react-icons/fa";
 import { useGetUser } from "../Hooks/authHooks/useGetUser";
 import { useUserVideo } from "../Hooks/videoHooks/useUserVideo";
@@ -15,7 +17,6 @@ import { useEffect, useState } from "react";
 import { useUpdateThumbnail } from "../Hooks/videoHooks/useUpdateThumbnail";
 import { useUpdateVideo } from "../Hooks/videoHooks/useUpdateVideo";
 import { useDeleteVideos } from "../Hooks/videoHooks/useDeleteVideo";
-import VideoItems from "../Component/VideoItems";
 
 function UserVideos() {
    const { currentUser: cu, loadingCurrentUser } = useCurrentUser();
@@ -67,8 +68,10 @@ function UserVideos() {
          />
          <TweetsVideoToggle params={params} />
 
-         <div className={`grid grid-cols-[1fr_1fr_1fr] p-3 gap-4 relative`}>
-            {loadingVideos && <span>loading...</span>}
+         <div
+            className={`w-[90vw] grid grid-cols-1 sm:grid-cols-[1fr_1fr] md:grid-cols-[1fr_1fr_1fr] just gap-1 pt-4`}
+         >
+            {loadingVideos && <MiniSpinner />}
             {data?.length === 0 ? (
                <span className="text-sm text-zinc-400">no videos!</span>
             ) : (

@@ -4,10 +4,17 @@ export function time(t) {
    const targetTime = new Date(t);
 
    const timeDifference = currentTime - targetTime;
+   const minuteDifference = Math.floor(timeDifference / (1000 * 60));
    const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
    const dayDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
 
-   if (hoursDifference < 24) {
+   if (minuteDifference < 60) {
+      if (minuteDifference === 1) {
+         return `${minuteDifference} minute ago`;
+      } else {
+         return `${minuteDifference} minutes ago`;
+      }
+   } else if (hoursDifference < 24) {
       return `${hoursDifference} hours ago`;
    } else if (dayDifference < 1) {
       return "today";

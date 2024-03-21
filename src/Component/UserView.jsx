@@ -5,6 +5,7 @@ import Button from "./Button";
 import InputFile from "./InputFile";
 import ModalProvider from "./Modal";
 import Header from "./Header";
+import { MdArrowDownward } from "react-icons/md";
 
 function UserView({
    username,
@@ -44,9 +45,9 @@ function UserView({
             {/* {bio &&  bio?.text} */}
             <ModalProvider>
                <ModalProvider.ModalOpen opens="about">
-                  <p className="text-xs text-zinc-400 cursor-pointer">
-                     About &darr;
-                  </p>
+                  <button className="w-[50px] flex font-normal text-sm text-zinc-300 items-center">
+                     About <MdArrowDownward />
+                  </button>
                </ModalProvider.ModalOpen>
                <ModalProvider.ModalWindow window="about">
                   <div className="text-zinc-100">
@@ -57,7 +58,14 @@ function UserView({
                         {bio?.links?.map((link) => (
                            <li key={link?._id}>
                               <span className="text-zinc-200 text-sm">
-                                 {link.name} <a href={link?.url}>{link?.url}</a>
+                                 {link.name}{" "}
+                                 <a
+                                    href={link?.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                 >
+                                    {link?.url}
+                                 </a>
                               </span>
                            </li>
                         ))}

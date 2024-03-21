@@ -163,6 +163,21 @@ class Playlist {
          }
       }
    }
+
+   async getUserPublicPlaylists(userId) {
+      try {
+         const response = await fetch(
+            `http:localhost:3001/api/v1/playlist/publicPlaylist/${userId}`,
+            { method: "GET", credentials: "include" }
+         );
+         console.log(response?.data);
+         return response;
+      } catch (error) {
+         if (error) {
+            throw new Error(error?.response?.data?.message);
+         }
+      }
+   }
 }
 
 const playlistservices = new Playlist();
