@@ -86,7 +86,7 @@ function VideoComments() {
                      <h2 className="text-sm md:text-[1.2em]">
                         {comment?.user?.username}
                         <span className="text-sm px-3 text-zinc-300">
-                           {time(comment?.createdAt)}
+                           {comment?.createdAt && time(comment?.createdAt)}
                         </span>
                      </h2>
                      {isEdit ? (

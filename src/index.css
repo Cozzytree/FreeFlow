@@ -31,56 +31,56 @@ input[type="file"] {
    color: #b8b8b8;
 }
 
-.loader {
-   width: 30px;
-   height: 30px;
-   border-radius: 50%;
-   display: inline-block;
-   position: relative;
-   border: 3px solid;
-   border-color: #fff #fff transparent transparent;
-   box-sizing: border-box;
-   animation: rotation 1s linear infinite;
-}
-.loader::after,
-.loader::before {
-   content: "";
-   box-sizing: border-box;
-   position: absolute;
-   left: 0;
-   right: 0;
-   top: 0;
-   bottom: 0;
-   margin: auto;
-   border: 3px solid;
-   border-color: transparent transparent #ff3d00 #ff3d00;
-   width: 90%;
-   height: 90%;
-   border-radius: 50%;
-   box-sizing: border-box;
-   animation: rotationBack 0.5s linear infinite;
-   transform-origin: center center;
-}
-.loader::before {
-   width: 15px;
-   height: 15px;
-   border-color: #fff #fff transparent transparent;
-   animation: rotation 1.5s linear infinite;
+input[type="range"] {
+   /* -webkit-appearance: none;  */
+   /* appearance: none; */
+   width: 100%;
+   height: 5px; /* Customize the height of the track */
+   background: #00000026;
+   /* background: transparent; */
+   outline: none; /* Remove the default focus style */
 }
 
-@keyframes rotation {
-   0% {
-      transform: rotate(0deg);
-   }
-   100% {
-      transform: rotate(360deg);
-   }
+input[type="range"]::-webkit-slider-thumb {
+   -webkit-appearance: none; /* Hides the thumb */
+   width: 10px; /* Customize the thumb width */
+   height: 10px; /* Customize the thumb height */
+   background: #f00; /* Thumb color */
+   border-radius: 50%; /* Make thumb circular */
 }
-@keyframes rotationBack {
-   0% {
-      transform: rotate(0deg);
+
+/* HTML: <div class="loader"></div> */
+/* HTML: <div class="loader"></div> */
+.loader {
+   height: 3px;
+   width: 75px;
+   --c: no-repeat linear-gradient(#e4e4e4 0 0);
+   background: var(--c), var(--c), var(--c), var(--c);
+   background-size: 21% 100%;
+   animation: l7 0.5s infinite alternate;
+}
+
+@keyframes l7 {
+   0%,
+   20% {
+      background-position: calc(0 * 100% / 4) 0, calc(1 * 100% / 4) 0,
+         calc(2 * 100% / 4) 0, calc(3 * 100% / 4) 0;
    }
+   35% {
+      background-position: calc(0 * 100% / 4) 0, calc(1 * 100% / 4) 0,
+         calc(2 * 100% / 4) 0, calc(4 * 100% / 4) 0;
+   }
+   50% {
+      background-position: calc(0 * 100% / 4) 0, calc(1 * 100% / 4) 0,
+         calc(3 * 100% / 4) 0, calc(4 * 100% / 4) 0;
+   }
+   65% {
+      background-position: calc(0 * 100% / 4) 0, calc(2 * 100% / 4) 0,
+         calc(3 * 100% / 4) 0, calc(4 * 100% / 4) 0;
+   }
+   80%,
    100% {
-      transform: rotate(-360deg);
+      background-position: calc(1 * 100% / 4) 0, calc(2 * 100% / 4) 0,
+         calc(3 * 100% / 4) 0, calc(4 * 100% / 4) 0;
    }
 }

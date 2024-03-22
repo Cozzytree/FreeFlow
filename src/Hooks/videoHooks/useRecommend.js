@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import videoservices from "../../API/video.services";
 import { useParams } from "react-router";
 export function useRecommend() {
@@ -8,11 +8,11 @@ export function useRecommend() {
       data: recommendV,
       isLoading,
       refetch,
-   } = useQuery({
-      queryFn: () => recommends(params?.videoId),
+   } = useInfiniteQuery({
+      queryFn: (pageparam) => recommends(params?.videoId, pageparam),
       queryKey: ["recommends"],
-      enabled: false,
+      getNextPageParam: (page) => {},
+      enabled: true,
    });
-
-   return { recommendV, isLoading, refetch };
+   return { recommendV: recommendV?.pages, isLoading, refetch };
 }

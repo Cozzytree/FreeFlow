@@ -9,6 +9,7 @@ import VideoView from "./Pages/VideoView";
 import UserVideos from "./Pages/UserVideos";
 import UserTweets from "./Pages/UserTweets";
 import Loader from "./Component/loader";
+import User from "./Pages/User";
 import Playlist from "./Pages/Playlist";
 import PageNotFound from "./Pages/PageNotFound";
 import TweetInDetail from "./Pages/TweetInDetail";
@@ -29,17 +30,23 @@ const route = createBrowserRouter([
       children: [
          { path: "/", element: <Videos /> },
          { path: "/tweets", element: <Tweet /> },
-         { path: "/u/:userId/videos", element: <UserVideos /> },
-         { path: "/u/:userId/tweets", element: <UserTweets /> },
-         { path: "/u/:userId/playlists", element: <UserPlaylists /> },
+         {
+            path: "/u/:userId",
+            element: <User />,
+            children: [
+               { path: "videos", element: <UserVideos /> },
+               { path: "tweets", element: <UserTweets /> },
+               { path: "playlists", element: <UserPlaylists /> },
+            ],
+         },
          { path: "/post/:postId", element: <TweetInDetail /> },
-         { path: "/:userId/watch_history", element: <WatchHistory /> },
          { path: "/upload_video", element: <VideoUploadPage /> },
          { path: "/login", element: <Login /> },
          { path: "/signUp", element: <SignUp /> },
          { path: "/v/:videoId", element: <VideoView /> },
          { path: "/pl/:playlistId", element: <Playlist /> },
          { path: "/search", element: <SearchResults /> },
+         { path: "/:userId/watch_history", element: <WatchHistory /> },
          { path: "/settings", element: <Settings /> },
       ],
    },

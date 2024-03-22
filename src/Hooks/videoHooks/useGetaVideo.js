@@ -14,7 +14,7 @@ export function useGetaVideo() {
    } = useQuery({
       queryFn: () => getAvideo(params?.videoId),
       queryKey: ["Avideo"],
-      enabled: false,
+      enabled: true,
    });
    return { video, loadingVideo, error, refetchGetAvideo };
 }

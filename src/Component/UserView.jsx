@@ -1,8 +1,5 @@
-import { useParams } from "react-router";
 import { useSubscribe } from "../Hooks/subscribeHooks/useSubscribeHooks";
-import { AiOutlineUpload } from "react-icons/ai";
 import Button from "./Button";
-import InputFile from "./InputFile";
 import ModalProvider from "./Modal";
 import Header from "./Header";
 import { MdArrowDownward } from "react-icons/md";
@@ -13,10 +10,9 @@ function UserView({
    subcribersCount,
    totalVideos,
    isSubscribed,
-   userId,
    bio,
+   params,
 }) {
-   const params = useParams();
    const { userSubscribe, loadingSubscribe } = useSubscribe();
 
    function handleSubscribe() {
@@ -83,28 +79,6 @@ function UserView({
                {isSubscribed ? "Subscribed" : "Suscribe"}
             </Button>
          </div>
-
-         <>
-            {params?.userId === userId && (
-               <ModalProvider>
-                  <ModalProvider.ModalOpen opens="upload">
-                     <Button>
-                        <AiOutlineUpload
-                           size={20}
-                           fill="#212121"
-                           className="absolute right-0 bottom-0 w-[25px] h-[25px] bg-lime-600 rounded-[100%] p-1 hover:bg-lime-800 transition-all duration-200"
-                        />
-                     </Button>
-                  </ModalProvider.ModalOpen>
-                  <ModalProvider.ModalWindow
-                     window="upload"
-                     clickOutside={false}
-                  >
-                     <InputFile />
-                  </ModalProvider.ModalWindow>
-               </ModalProvider>
-            )}
-         </>
       </div>
    );
 }

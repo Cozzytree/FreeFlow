@@ -5,6 +5,7 @@ const GlobalContext = createContext();
 const GlobalContextProvider = ({ children }) => {
    const [video, setVideo] = useState("");
    const [isNav, setIsNav] = useState(false);
+   const [globalLoading, setGlobalLoading] = useState(false);
 
    function handleNav() {
       setIsNav((op) => !op);
@@ -29,6 +30,8 @@ const GlobalContextProvider = ({ children }) => {
             isNav,
             handleCloseNav,
             handleNav,
+            setGlobalLoading,
+            globalLoading,
          }}
       >
          {children}

@@ -1,35 +1,26 @@
 import Items from "../Component/Items";
-import TweetsVideoToggle from "../Component/TweetsVideoToggle";
-import UserView from "../Component/UserView";
-import Loader from "../Component/loader";
 import FormInput from "../Component/FormInput";
 import Button from "../Component/Button";
 import VideoOptionsItem from "../Component/VideoOptionsItem";
 import ModalProvider from "../Component/Modal";
 import MiniSpinner from "../Component/MiniSpinner";
 import AreYouSure from "../Component/AreYouSure";
-import { useParams } from "react-router";
+import Header from "../Component/Header";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
-import { useGetUser } from "../Hooks/authHooks/useGetUser";
 import { useGetUserTweets } from "../Hooks/tweetsHooks/useGetUserTweets";
-import { useDocumentTitle } from "../Hooks/uiHooks/useDocumentTitle";
 import { useState } from "react";
 import { useEditTweet } from "../Hooks/tweetsHooks/useEditTweet";
 import { useForm } from "react-hook-form";
 import { useDeleteTweet } from "../Hooks/tweetsHooks/useDeleteTweet";
-import Header from "../Component/Header";
 
 function UserTweets() {
    const { register, handleSubmit } = useForm();
    const { currentUser: cu, loadingCurrentUser } = useCurrentUser();
    const [option, setOption] = useState(null);
-   const params = useParams();
    const { userTweets, loadingUserTweets } = useGetUserTweets();
    const { userEditTweet, isEditing } = useEditTweet();
    const { userDeleteTweet, deletingTweet } = useDeleteTweet();
-   const { currentUser } = useGetUser();
-   useDocumentTitle(currentUser?.data?.username);
 
    const handleOption = (index) => {
       setOption((option) => (option === index ? null : index));
@@ -56,18 +47,7 @@ function UserTweets() {
 
    return (
       <>
-         {(loadingUserTweets || loadingCurrentUser) && <Loader />}
-         <UserView
-            userId={cu?.data?._id}
-            username={currentUser?.data?.username}
-            avatar={currentUser?.data?.avatar}
-            subcribersCount={currentUser?.data?.subcribersCount}
-            totalVideos={currentUser?.data?.totalVideos}
-            isSubscribed={currentUser?.data?.isSubscribed}
-            type="owner"
-         />
-         <TweetsVideoToggle params={params} />
-
+         {loadingUserTweets || (loadingCurrentUser && <MiniSpinner />)}
          {userTweets?.data[0]?.data?.map((twee, index) => (
             <Items
                tweet={twee}

@@ -1,14 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 import VideoControls from "./VideoControls";
 import { useGlobalContext } from "../Hooks/context/globalContext";
+import { useNavigate } from "react-router";
 
-function VideoPlayer({ src, poster, controlsList, videoId, ct, progress }) {
+function VideoPlayer({
+   src,
+   poster,
+   controlsList,
+   videoId,
+   ct,
+   params,
+   recommend,
+   addViewHandler,
+   addWatchHandler,
+}) {
+   const [progress, setProgress] = useState(0);
+   const [isView, setIsView] = useState(false);
+   const navigate = useNavigate();
    const videoRef = useRef(null);
    const [loadedPercentage, setLoadedPercentage] = useState(0);
    const [controlsVisible, setControlsVisible] = useState(false);
-   const [videoTime, setVideoTime] = useState(
-      videoRef?.current?.currentTime || 0
-   );
    const { setVideoUrl } = useGlobalContext();
    const [volume, setVolume] = useState(null);
 
@@ -41,35 +52,69 @@ function VideoPlayer({ src, poster, controlsList, videoId, ct, progress }) {
    }, [ct]);
 
    useEffect(() => {
-      // const updateLoadedPercentage = () => {
-      //    if (videoRef.current) {
-      //       const video = videoRef.current;
-      //       const buffered = video.buffered;
+      const videoElement = videoRef?.current;
+      const updateLoadedPercentage = () => {
+         if (videoElement) {
+            const { buffered, duration } = videoElement;
 
-      //       if (buffered.length > 0) {
-      //          const loadedTimeRange = buffered.end(buffered.length - 1);
-      //          const loadedPercentage =
-      //             (loadedTimeRange / video.duration) * 100;
-      //          setLoadedPercentage(loadedPercentage);
-      //       }
-      //    }
-      // };
+            if (buffered.length > 0) {
+               const loadedTimeRange = buffered.end(buffered.length - 1);
+               const loadedPercentage = (loadedTimeRange / duration) * 100;
+               setLoadedPercentage(loadedPercentage);
+            }
+         }
+      };
 
-      // if (videoRef.current) {
-      //    videoRef.current.addEventListener("progress", updateLoadedPercentage);
-      // }
-      setVideoTime(videoRef?.current?.currentTime);
-      // console.log(loadedPercentage);
+      if (videoRef?.current) {
+         videoElement.addEventListener("progress", updateLoadedPercentage);
+      }
 
-      // return () => {
-      //    if (videoRef?.current) {
-      //       videoRef?.current.removeEventListener(
-      //          "progress",
-      //          updateLoadedPercentage
-      //       );
-      //    }
-      // };
+      if (videoRef?.current) {
+         return () =>
+            videoElement.removeEventListener(
+               "progress",
+               updateLoadedPercentage
+            );
+      }
    }, [loadedPercentage]);
+
+   useEffect(() => {
+      const videoElement = videoRef?.current;
+      const handleTimeUpdate = () => {
+         if (!videoElement) return;
+
+         const { duration, currentTime } = videoElement;
+         const watchedPercentage = (currentTime / duration) * 100;
+         setProgress(currentTime);
+         if (watchedPercentage >= 15 && !isView) {
+            addViewHandler(params?.videoId);
+            addWatchHandler(params?.videoId);
+            setIsView(true);
+         }
+         if (currentTime === duration && recommend) {
+            navigate(`/v/${recommend?.data?.videos[0]?._id}`);
+            videoElement.currentTime = 0;
+         }
+      };
+
+      if (videoElement) {
+         videoElement.addEventListener("timeupdate", handleTimeUpdate);
+         videoElement.scrollIntoView({ behavior: "smooth" });
+      }
+
+      return () => {
+         if (videoElement) {
+            videoElement.removeEventListener("timeupdate", handleTimeUpdate);
+         }
+      };
+   }, [
+      params?.videoId,
+      isView,
+      addWatchHandler,
+      addViewHandler,
+      navigate,
+      recommend,
+   ]);
 
    function toggleFullscreen() {
       if (!document.fullscreenElement) {
@@ -134,9 +179,9 @@ function VideoPlayer({ src, poster, controlsList, videoId, ct, progress }) {
       videoRef.current.volume = newVolume / 100;
    }
 
-   function handleVideoTime(e) {
+   function handleProgress(e) {
       const value = e.target.value;
-      setVideoTime(value);
+      setProgress(value);
       videoRef.current.currentTime = value;
    }
 
@@ -149,11 +194,12 @@ function VideoPlayer({ src, poster, controlsList, videoId, ct, progress }) {
          onClick={(e) => toggleControlsTouch(e)}
          onMouseEnter={(e) => toggleControlsMouse(e)}
          onMouseLeave={() => setControlsVisible(false)}
-         className={`relative flex justify-center w-auto max-h-[350px] rounded-xl shadow-zinc-800 shadow-xl`}
+         className={`relative flex justify-center min-w-[500px] max-h-[350px] rounded-xl shadow-zinc-800 shadow-xl`}
          style={{ background: poster }}
       >
          {controlsVisible && (
             <VideoControls
+               loaded={loadedPercentage}
                handleVideoUrl={() =>
                   handleVideoUrl({ src, videoId, progress, poster })
                }
@@ -162,8 +208,7 @@ function VideoPlayer({ src, poster, controlsList, videoId, ct, progress }) {
                handleVolumeChange={handleVolumeChange}
                progress={progress}
                volume={volume}
-               videoTime={videoTime}
-               handleVideoTime={handleVideoTime}
+               handleVideoTime={handleProgress}
                toggleFullscreen={toggleFullscreen}
             ></VideoControls>
          )}
@@ -172,7 +217,7 @@ function VideoPlayer({ src, poster, controlsList, videoId, ct, progress }) {
             ref={videoRef}
             poster={poster}
             src={src}
-            className={`videoPlayer object-contain rounded-xl`}
+            className={`object-contain rounded-xl`}
             controlsList={controlsList}
          />
       </div>

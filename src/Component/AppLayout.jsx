@@ -1,20 +1,26 @@
-import { Outlet } from "react-router";
 import Nav from "./Nav";
-import { useState } from "react";
+import Search from "./Search";
 import VideoPlayer from "./VideoPlayer";
+import MiniSpinner from "./MiniSpinner";
+import { Outlet } from "react-router";
+import { useState } from "react";
 import { useGlobalContext } from "../Hooks/context/globalContext";
 import { useEscapeClose } from "../Hooks/uiHooks/useEscapeClose";
-import Search from "./Search";
 import { useVideoControls } from "../Hooks/uiHooks/useVideoControls";
 
 function AppLayout() {
-   const { video, handleCloseNav } = useGlobalContext();
+   const { video, handleCloseNav, globalLoading } = useGlobalContext();
    const [progress, setProgress] = useState(0);
    useVideoControls(".videoPlayer", setProgress);
    useEscapeClose(handleCloseNav, true);
 
    return (
       <>
+         {globalLoading && (
+            <span className="fixed right-10 z-[100] text-zinc-100">
+               Uploading... <MiniSpinner />
+            </span>
+         )}
          <div
             className={`w-full min-h-[100vh] font-MPLUS font-semibold grid grid-rows-[auto_1fr] gap-3 relative bg-[rgba(0,0,0,0.93)] text-zinc-100 text-md scroll-smooth`}
          >

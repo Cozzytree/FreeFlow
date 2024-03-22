@@ -79,7 +79,7 @@ function VideoItems({
                      </h2>
                   )}
                   <span className="text-zinc-400">
-                     {v?.views} views - {time(v?.createdAt)}
+                     {v?.views} views - {v?.createdAt && time(v?.createdAt)}
                   </span>
                </div>
             </div>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { PER_PAGE } from "../utils/consts";
 
 /* eslint-disable no-useless-catch */
 class Video {
@@ -126,20 +127,22 @@ class Video {
       // }
    }
 
-   async recommends(videoId) {
-      try {
-         const response = await fetch(
-            `${import.meta.env.VITE_API_URL}/videos/recommends/${videoId}`
-         );
-         const data = await response.json();
-
-         if (data?.success === false) {
-            throw new Error(data?.message);
-         }
-         return data;
-      } catch (error) {
-         throw error;
-      }
+   async recommends(videoId, pageparam = 1) {
+      return await axios
+         .get(
+            `${
+               import.meta.env.VITE_API_URL
+            }/videos/recommends/${videoId}?page${pageparam}&limit=${PER_PAGE}`,
+            {
+               withCredentials: true,
+            }
+         )
+         .then((data) => data?.data)
+         .catch((err) => {
+            if (err) {
+               throw new Error(err?.response?.data?.message);
+            }
+         });
    }
 
    async searchVideo(q, type = "video", sortbY = "createdAt") {

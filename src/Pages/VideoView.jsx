@@ -20,65 +20,23 @@ import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
 
 function VideoView() {
-   const [isView, setIsView] = useState(false);
+   // const [isView, setIsView] = useState(false);
    const [extra, setExtra] = useState(false);
    const [isComments, setComments] = useState(false);
    const [isOptions, setIsOptions] = useState(null);
-   const [progress, setProgress] = useState(0);
+   // const [progress, setProgress] = useState(0);
    const navigate = useNavigate();
    const params = useParams();
    const { currentUser } = useCurrentUser();
    const { video, loadingVideo, refetchGetAvideo } = useGetaVideo();
    const { addToWatchHistory } = useUpdateWatchHistory();
    const { isLiking, likeVideo } = useVideoLike();
-   const { recommendV, isLoading, refetch } = useRecommend();
+   const { recommendV, isLoading } = useRecommend();
    const { videoAddView } = useAddView();
 
    useEffect(() => {
-      const videoElement = document.querySelector(".videoPlayer");
-      const handleTimeUpdate = () => {
-         const videoDuration = videoElement.duration;
-         const watchedPercentage =
-            (videoElement.currentTime / videoDuration) * 100;
-         setProgress(videoElement.currentTime);
-         if (watchedPercentage >= 15 && !isView) {
-            videoAddView(params?.videoId);
-            addToWatchHistory(params?.videoId);
-            setIsView(true);
-         }
-         if (
-            videoElement &&
-            videoElement?.currentTime === videoElement?.duration
-         ) {
-            navigate(`/v/${recommendV?.data?.[0]?._id}`);
-            videoElement.currentTime = 0;
-         }
-      };
-
-      if (videoElement)
-         videoElement.addEventListener("timeupdate", handleTimeUpdate);
-
-      return () => {
-         if (videoElement)
-            videoElement.removeEventListener("timeupdate", handleTimeUpdate);
-      };
-   }, [
-      params?.videoId,
-      isView,
-      addToWatchHistory,
-      videoAddView,
-      navigate,
-      recommendV,
-   ]);
-
-   useEffect(() => {
-      refetch();
       refetchGetAvideo();
-      const videoPlayerElement = document.querySelector(".videoPlayer");
-      if (videoPlayerElement) {
-         videoPlayerElement.scrollIntoView({ behavior: "smooth" });
-      }
-   }, [params?.videoId, refetch, refetchGetAvideo, navigate, recommendV]);
+   }, [params?.videoId, refetchGetAvideo, navigate]);
 
    function handleOption(index) {
       setIsOptions((option) => (index === option ? null : index));
@@ -94,7 +52,11 @@ function VideoView() {
          <div className="space-y-2">
             <div className="rounded-md">
                <VideoPlayer
-                  progress={progress}
+                  recommend={recommendV ? recommendV[0] : null}
+                  addViewHandler={videoAddView}
+                  addWatchHandler={addToWatchHistory}
+                  params={params}
+                  // progress={progress}
                   videoId={video?.data?._id}
                   controlsList="nodownload"
                   src={video?.data?.videoFile}
@@ -106,7 +68,7 @@ function VideoView() {
                <span>{video?.data?.views} views</span>
                {video?.data?.createdAt && (
                   <span className="text-xs">
-                     {time(video?.data?.createdAt)}
+                     {video?.data?.createdAt && time(video?.data?.createdAt)}
                   </span>
                )}
 
@@ -148,39 +110,40 @@ function VideoView() {
 
          <div className="flex flex-col items-center justify-start gap-1">
             {isLoading && <MiniSpinner />}
-            {recommendV?.data?.map((v, index) => (
-               <VideoItems
-                  v={v}
-                  key={v?._id}
-                  index={index}
-                  isOptions={isOptions}
-                  handleOption={handleOption}
-                  setIsOptions={setIsOptions}
-                  options={
-                     <>
-                        <VideoOptionsItem label="share" />
-                        {currentUser?.data?._id && (
-                           <ModalProvider>
-                              <ModalProvider.ModalOpen opens="playlistItem">
-                                 <VideoOptionsItem
-                                    label={"add to playlist"}
-                                    icon={
-                                       <MdOutlinePlaylistAdd className="w-[100%] absolute opacity-0" />
-                                    }
-                                 />
-                              </ModalProvider.ModalOpen>
-                              <ModalProvider.ModalWindow window="playlistItem">
-                                 <PlaylistItem
-                                    videoId={v?._id}
-                                    published={v?.isPublished}
-                                 />
-                              </ModalProvider.ModalWindow>
-                           </ModalProvider>
-                        )}
-                     </>
-                  }
-               />
-            ))}
+            {recommendV &&
+               recommendV[0]?.data?.videos.map((v, index) => (
+                  <VideoItems
+                     v={v}
+                     key={v?._id}
+                     index={index}
+                     isOptions={isOptions}
+                     handleOption={handleOption}
+                     setIsOptions={setIsOptions}
+                     options={
+                        <>
+                           <VideoOptionsItem label="share" />
+                           {currentUser?.data?._id && (
+                              <ModalProvider>
+                                 <ModalProvider.ModalOpen opens="playlistItem">
+                                    <VideoOptionsItem
+                                       label={"add to playlist"}
+                                       icon={
+                                          <MdOutlinePlaylistAdd className="w-[100%] absolute opacity-0" />
+                                       }
+                                    />
+                                 </ModalProvider.ModalOpen>
+                                 <ModalProvider.ModalWindow window="playlistItem">
+                                    <PlaylistItem
+                                       videoId={v?._id}
+                                       published={v?.isPublished}
+                                    />
+                                 </ModalProvider.ModalWindow>
+                              </ModalProvider>
+                           )}
+                        </>
+                     }
+                  />
+               ))}
          </div>
       </div>
    );
