@@ -74,7 +74,7 @@ function VideoControls({
                   onMouseLeave={() => {
                      setToggeleVol(false);
                   }}
-                  className="overflow-hidden grid grid-cols-[auto_1fr] items-center transition-all duration-200"
+                  className="overflow-hidden flex items-center transition-all duration-200"
                >
                   <FaVolumeUp
                      className="w-[20px] z-[1]"
@@ -83,10 +83,8 @@ function VideoControls({
 
                   <input
                      className={`${
-                        toggleVol
-                           ? "translate-x-0 w-[50px] md:w-[100px] opacity-100"
-                           : "translate-x-[-200px] w-[0px] opacity-0"
-                     } origin-right transition-all h-1 duration-200 w-[50px] md:w-[100px] cursor-pointer`}
+                        toggleVol ? "block" : "hidden"
+                     } origin-right w-[50px] transition-all h-1 duration-200 cursor-pointer`}
                      type="range"
                      max={100}
                      value={volume * 100}

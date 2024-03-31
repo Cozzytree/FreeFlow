@@ -21,6 +21,7 @@ function UserView({
    return (
       <div className="w-[80vw] grid grid-cols-[auto_1fr] items-center gap-3 relative">
          <img
+            loading="lazy"
             className="w-[80px] md:w-[150px] h-[80px] md:h-[150px] rounded-[100%] object-cover"
             src={avatar}
             alt=""

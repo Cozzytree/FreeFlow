@@ -14,12 +14,20 @@
 
 body::-webkit-scrollbar {
    width: 8px;
-
    border-radius: 10px;
+}
+
+* {
+   scrollbar-width: thin; /* "auto" or "thin" */
+   scrollbar-color: black transparent; /* thumb and track color */
 }
 
 body::-webkit-scrollbar-track {
    background: rgb(56, 56, 56);
+}
+
+body::-moz-progress-bar {
+   background: transparent;
 }
 
 body::-webkit-scrollbar-thumb {

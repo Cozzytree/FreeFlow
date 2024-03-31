@@ -1,17 +1,17 @@
-import { useNavigate } from "react-router";
 import VideoItems from "../Component/VideoItems";
 import Loader from "../Component/loader";
-import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
-import { useGetWatchHistory } from "../Hooks/authHooks/useGetWatchHistory";
-import { useDocumentTitle } from "../Hooks/uiHooks/useDocumentTitle";
 import Button from "../Component/Button";
-import { useClearWHistory } from "../Hooks/authHooks/useClearHistory";
-import { useState } from "react";
 import VideoOptionsItem from "../Component/VideoOptionsItem";
-import { MdPlaylistAdd } from "react-icons/md";
 import ModalProvider from "../Component/Modal";
 import PlaylistItem from "../Component/PlaylistItem";
 import Header from "../Component/Header";
+import { useNavigate } from "react-router";
+import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
+import { useGetWatchHistory } from "../Hooks/authHooks/useGetWatchHistory";
+import { useDocumentTitle } from "../Hooks/uiHooks/useDocumentTitle";
+import { useClearWHistory } from "../Hooks/authHooks/useClearHistory";
+import { useState } from "react";
+import { MdPlaylistAdd } from "react-icons/md";
 
 function WatchHistory() {
    const navigate = useNavigate();
@@ -42,7 +42,7 @@ function WatchHistory() {
             </Button>
          )}
 
-         <div className="w-[90vw] grid grid-cols-[1fr_1fr] gap-3 md:grid-cols-[1fr_1fr_1fr] justify-center">
+         <div className="w-[90vw] grid grid-cols-[1fr] sm:grid-cols-[1fr_1fr] gap-3 md:grid-cols-[1fr_1fr_1fr] justify-center">
             {loadingHistory && <Loader />}
 
             {userWatchHistory?.data?.map((v, i) => (

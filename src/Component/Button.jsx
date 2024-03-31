@@ -27,7 +27,7 @@ function Button({
          aria-label={ariaLabel}
          onClick={onClick}
          disabled={disabled}
-         className={`${styles} ${extrastyles} font-bold`}
+         className={`${styles} ${extrastyles} font-bold text-xs sm:text-sm md:text-md`}
       >
          {children}
       </button>

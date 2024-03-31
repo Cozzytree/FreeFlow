@@ -22,11 +22,11 @@ function AppLayout() {
             </span>
          )}
          <div
-            className={`w-full min-h-[100vh] font-MPLUS font-semibold grid grid-rows-[auto_1fr] gap-3 relative bg-[rgba(0,0,0,0.93)] text-zinc-100 text-md scroll-smooth`}
+            className={`w-full min-h-[100vh] font-MPLUS font-normal grid grid-rows-[auto_1fr] gap-3 relative bg-[rgb(0,0,0)] text-zinc-100 text-md`}
          >
             <Search />
             <Nav />
-            <main className="w-[95vw] z-10 flex flex-col items-center animate-slow p-2 pl-8 pb-[100px] main">
+            <main className="w-[95vw] z-10 flex flex-col items-center animate-slow p-2 pl-8 pb-[100px] main scroll-smooth">
                <Outlet />
             </main>
             {/* //Portable videoPlayer */}

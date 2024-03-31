@@ -5,7 +5,6 @@ import React, {
    useRef,
    useState,
 } from "react";
-import { createPortal } from "react-dom";
 import { useClickOutside } from "../Hooks/uiHooks/useClickOutside";
 import { useEscapeClose } from "../Hooks/uiHooks/useEscapeClose";
 import { AiOutlineClose } from "react-icons/ai";
@@ -47,8 +46,12 @@ function ModalWindow({ children, window, clickOutside = true, escape = true }) {
 
    if (isModal !== window) return;
 
-   return createPortal(
-      <div className="fixed inset-0 w-full h-full flex flex-col justify-center items-center backdrop-brightness-[0.4] z-20">
+   return (
+      <div
+         className={`${
+            isModal === window && "overflow-hidden"
+         } fixed inset-0 w-full h-full flex flex-col justify-center items-center backdrop-brightness-[0.4] z-[100]`}
+      >
          <div
             ref={ref}
             className={`modal min-h-[250px] max-w-[80vw] md:min-w-[40vw] p-6 rounded-xl h-auto flex flex-col justify-center items-center relative bg-radical font-MPLUS`}
@@ -63,8 +66,7 @@ function ModalWindow({ children, window, clickOutside = true, escape = true }) {
                className="absolute right-0 top-0 p-1"
             />
          </div>
-      </div>,
-      document.body
+      </div>
    );
 }
 

@@ -47,7 +47,7 @@ function UserTweets() {
 
    return (
       <>
-         {loadingUserTweets || (loadingCurrentUser && <MiniSpinner />)}
+         {(loadingUserTweets || loadingCurrentUser) && <MiniSpinner />}
          {userTweets?.data[0]?.data?.map((twee, index) => (
             <Items
                tweet={twee}

@@ -18,13 +18,12 @@ import { useVideoLike } from "../Hooks/likeHooks/useVideoLike";
 import { useRecommend } from "../Hooks/videoHooks/useRecommend";
 import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
+import { AiOutlineShareAlt, AiOutlineVideoCameraAdd } from "react-icons/ai";
 
 function VideoView() {
-   // const [isView, setIsView] = useState(false);
    const [extra, setExtra] = useState(false);
    const [isComments, setComments] = useState(false);
    const [isOptions, setIsOptions] = useState(null);
-   // const [progress, setProgress] = useState(0);
    const navigate = useNavigate();
    const params = useParams();
    const { currentUser } = useCurrentUser();
@@ -109,6 +108,7 @@ function VideoView() {
          </div>
 
          <div className="flex flex-col items-center justify-start gap-1">
+            Queue
             {isLoading && <MiniSpinner />}
             {recommendV &&
                recommendV[0]?.data?.videos.map((v, index) => (
@@ -121,14 +121,21 @@ function VideoView() {
                      setIsOptions={setIsOptions}
                      options={
                         <>
-                           <VideoOptionsItem label="share" />
+                           <VideoOptionsItem
+                              label="share"
+                              icon={<AiOutlineShareAlt />}
+                           />
+                           <VideoOptionsItem
+                              label="Add to Queue"
+                              icon={<AiOutlineVideoCameraAdd size={15} />}
+                           />
                            {currentUser?.data?._id && (
                               <ModalProvider>
                                  <ModalProvider.ModalOpen opens="playlistItem">
                                     <VideoOptionsItem
                                        label={"add to playlist"}
                                        icon={
-                                          <MdOutlinePlaylistAdd className="w-[100%] absolute opacity-0" />
+                                          <MdOutlinePlaylistAdd scale={20} />
                                        }
                                     />
                                  </ModalProvider.ModalOpen>

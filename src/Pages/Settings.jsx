@@ -18,9 +18,9 @@ import { MdAdd, MdDelete } from "react-icons/md";
 import { useAddLink } from "../Hooks/authHooks/useAddLink";
 import { useDelLink } from "../Hooks/authHooks/usedelLinkfromBio";
 import { useUpdateBioText } from "../Hooks/authHooks/useUpdateBioText";
-import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
 
 function Settings() {
+   const [isAbout, setAbout] = useState(false);
    const [isOptions, setOption] = useState(false);
    const navigate = useNavigate();
    const { handleSubmit, register, reset } = useForm();
@@ -61,17 +61,28 @@ function Settings() {
       if (userData?.data?.bio?.text === data?.text) return;
       userUpdateText(data, { onSuccess: () => handleOptions(false) });
    };
+
    if (userData?.data?._id)
       return (
-         <div className="w-full px-8 flex flex-col gap-4 items-center py-10">
+         <div className="w-full px-8 flex flex-col gap-4">
             {isLoading && <Loader />}
-            <div className="w-fit p-2 rounded-md flex items-end gap-2">
-               <img
-                  loading="lazy"
-                  src={userData?.data?.avatar}
-                  alt="avatar"
-                  className="w-[100px] h-[100px] object-fill rounded-[100%]"
-               />
+            <Header>Edit Profile</Header>
+            <div className="w-full p-4 rounded-lg flex flex-col md:flex-row items-start justify-between gap-5 bg-zinc-800/40">
+               <div className="flex items-end gap-4">
+                  <img
+                     loading="lazy"
+                     src={userData?.data?.avatar}
+                     alt="avatar"
+                     className="w-[80px] h-[80px] object-fill rounded-[100%]"
+                  />
+                  <div>
+                     <p className="text-md">{userData?.data?.username}</p>
+                     <p className="text-xs text-zinc-400">
+                        {userData?.data?.fullName}
+                     </p>
+                  </div>
+               </div>
+
                <label
                   htmlFor="avatar"
                   className="cursor-pointer text-xs flex items-center gap-1"
@@ -126,6 +137,7 @@ function Settings() {
                   </ModalProvider.ModalWindow>
                </ModalProvider>
             </div>
+
             <Convenience field="Username" name={userData?.data?.username} />
             <Convenience field="Fullname" name={userData?.data?.fullName} />
             <Convenience field="Email" name={userData?.data?.email} />
@@ -163,14 +175,14 @@ function Settings() {
                {userData?.data?.bio?.text}
             </p>
             <Header>Links</Header>
-            <ul className="flex flex-col items-center gap-2 text-sm">
+            <ul className="flex flex-col gap-2 text-sm">
                {userData?.data?.bio?.links.length === 0 ? (
                   <span className="text-xs text-zinc-300">empty</span>
                ) : (
                   userData?.data?.bio?.links?.map((link, index) => (
                      <li
                         key={link?._id}
-                        className="w-full grid grid-cols-[1fr_auto_auto] gap-2 items-center relative"
+                        className="w-fit grid grid-cols-[auto_1fr_auto] gap-2 relative"
                      >
                         <span className="text-sm text-zinc-300">
                            {link.name}

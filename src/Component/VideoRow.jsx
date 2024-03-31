@@ -52,7 +52,7 @@ function VideoRow({
             onClick={() => {
                handleOptions(index);
             }}
-            size={10}
+            size={15}
             className="z-10"
             cursor="pointer"
          />

@@ -26,21 +26,19 @@ function Items({
    }
 
    return (
-      <div
-         className={`space-y-5 w-[90vw] md:w-[90vw] py-5 flex flex-col items-center`}
-      >
+      <div className={`space-y-5 py-5 flex flex-col items-center`}>
          {tweet && (
-            <article className="grid grid-cols-[auto_1fr_auto] w-[80%] border-[1px] border-zinc-600/50 md:w-[80%] min-h-[125px] items-start gap-5 p-3 bg-zinc-700/30 rounded-md relative">
+            <article className="grid grid-cols-[auto_1fr_auto] w-[80%] h-fit border-[1px] border-zinc-600/50 md:w-[80%] items-start gap-2 p-3 bg-zinc-700/30 rounded-md relative">
                {tweet?.ownerInfo && (
                   <img
-                     className="w-[50px] border-[1px] border-zinc-400/50 transition-all duration-200 h-[50px] object-cover rounded-[100%] tweets"
+                     className="w-[45px] h-[45px] border-[1px] border-zinc-400/50 transition-all duration-200  object-cover rounded-[100%] tweets"
                      data-src={tweet?.ownerInfo?.avatar}
                      src=""
                      alt="avatar"
                   />
                )}
-               <section className="grid grid-rows-[auto_1fr] h-[100%] p-1 w-[100%]">
-                  <div className="flex flex-col gap-1 h-[50px]">
+               <section className="flex flex-col gap-3 p-1 w-full">
+                  <div className="flex flex-col gap-1 h-fit">
                      <span className="flex items-end gap-2">
                         {tweet?.ownerInfo && (
                            <h2

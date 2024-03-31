@@ -19,12 +19,14 @@ import { useEditPlayName } from "../Hooks/playlistHooks/useEditPlayName";
 import { useForm } from "react-hook-form";
 import { useEditDescription } from "../Hooks/playlistHooks/useEditDescription";
 import { useToggleIsPublic } from "../Hooks/playlistHooks/useToggleIsPublic";
+import { useCurrentUser } from "../Hooks/authHooks/useGetCurrentUser";
 
 function Playlist() {
    const [isOptions, setOptions] = useState(null);
    const [playlistOptions, setPlaylistOptions] = useState(null);
    const params = useParams();
    const navigate = useNavigate();
+   const { currentUser } = useCurrentUser();
    const { handleSubmit, register } = useForm();
    const { aPlaylist, loadingPlaylist, refetch } = useGetAplaylist();
    const { isDeleting, userDeletePlaylist } = useDeletePlaylist();
@@ -126,94 +128,104 @@ function Playlist() {
                   />
                   {playlistOptions === 0 && (
                      <VideoOptions setIsOptions={setPlaylistOptions}>
-                        {/* {edit playlist name } */}
-                        <ModalProvider>
-                           <ModalProvider.ModalOpen opens="editName">
-                              <VideoOptionsItem
-                                 label="Name"
-                                 icon={<MdEdit className="w-full" />}
-                              />
-                           </ModalProvider.ModalOpen>
-                           <ModalProvider.ModalWindow window="editName">
-                              <form
-                                 onSubmit={handleSubmit(handleEditName())}
-                                 className="modal grid grid-cols-1 grid-rows-2 gap-2 justify-items-center"
-                              >
-                                 <FormInput
-                                    type="text"
-                                    register={register}
-                                    required={true}
-                                    defaultValue={aPlaylist?.data[0]?.name}
-                                    id="name"
-                                    placeholder="playlist name..."
-                                 />
-                                 <Button
-                                    disabled={isEditing}
-                                    type="primary"
-                                    extrastyles="h-[25px] rounded-md"
-                                 >
-                                    Save
-                                 </Button>
-                              </form>
-                           </ModalProvider.ModalWindow>
-                        </ModalProvider>
+                        {currentUser?.data?._id ===
+                           aPlaylist?.data[0]?.createdBy?._id && (
+                           <>
+                              {/* {edit playlist name } */}
+                              <ModalProvider>
+                                 <ModalProvider.ModalOpen opens="editName">
+                                    <VideoOptionsItem
+                                       label="Name"
+                                       icon={<MdEdit className="w-full" />}
+                                    />
+                                 </ModalProvider.ModalOpen>
+                                 <ModalProvider.ModalWindow window="editName">
+                                    <form
+                                       onSubmit={handleSubmit(handleEditName())}
+                                       className="modal grid grid-cols-1 grid-rows-2 gap-2 justify-items-center"
+                                    >
+                                       <FormInput
+                                          type="text"
+                                          register={register}
+                                          required={true}
+                                          defaultValue={
+                                             aPlaylist?.data[0]?.name
+                                          }
+                                          id="name"
+                                          placeholder="playlist name..."
+                                       />
+                                       <Button
+                                          disabled={isEditing}
+                                          type="primary"
+                                          extrastyles="h-[25px] rounded-md"
+                                       >
+                                          Save
+                                       </Button>
+                                    </form>
+                                 </ModalProvider.ModalWindow>
+                              </ModalProvider>
 
-                        {/* {edit description} */}
-                        <ModalProvider>
-                           <ModalProvider.ModalOpen opens="editDescription">
-                              <VideoOptionsItem
-                                 label="Description"
-                                 icon={<MdEdit className="w-full" />}
-                              />
-                           </ModalProvider.ModalOpen>
-                           <ModalProvider.ModalWindow window="editDescription">
-                              <form
-                                 onSubmit={handleSubmit(
-                                    handleEditDescription()
-                                 )}
-                                 className="modal grid grid-cols-1 grid-rows-2 gap-2 justify-items-center"
-                              >
-                                 <FormTextArea
-                                    id="description"
-                                    register={register}
-                                    required={true}
-                                    defaultValue={
-                                       aPlaylist?.data[0]?.description
-                                    }
-                                    placeholder="description..."
-                                 />
-                                 <Button
-                                    disabled={isEditingDescrip}
-                                    type="primary"
-                                    extrastyles="rounded-md h-[25px]"
-                                 >
-                                    SAVE
-                                 </Button>
-                              </form>
-                           </ModalProvider.ModalWindow>
-                        </ModalProvider>
+                              {/* {edit description} */}
+                              <ModalProvider>
+                                 <ModalProvider.ModalOpen opens="editDescription">
+                                    <VideoOptionsItem
+                                       label="Description"
+                                       icon={<MdEdit className="w-full" />}
+                                    />
+                                 </ModalProvider.ModalOpen>
+                                 <ModalProvider.ModalWindow window="editDescription">
+                                    <form
+                                       onSubmit={handleSubmit(
+                                          handleEditDescription()
+                                       )}
+                                       className="modal grid grid-cols-1 grid-rows-2 gap-2 justify-items-center"
+                                    >
+                                       <FormTextArea
+                                          id="description"
+                                          register={register}
+                                          required={true}
+                                          defaultValue={
+                                             aPlaylist?.data[0]?.description
+                                          }
+                                          placeholder="description..."
+                                       />
+                                       <Button
+                                          disabled={isEditingDescrip}
+                                          type="primary"
+                                          extrastyles="rounded-md h-[25px]"
+                                       >
+                                          SAVE
+                                       </Button>
+                                    </form>
+                                 </ModalProvider.ModalWindow>
+                              </ModalProvider>
 
-                        {/* { delete playlist} */}
-                        <ModalProvider>
-                           <ModalProvider.ModalOpen opens="deletePlay">
-                              <VideoOptionsItem
-                                 label="Delete playlist"
-                                 icon={
-                                    <MdDelete className="w-full" fill="red" />
-                                 }
-                              />
-                           </ModalProvider.ModalOpen>
-                           <ModalProvider.ModalWindow window="deletePlay">
-                              <AreYouSure
-                                 label="Are you sure you want to delete the playlist?"
-                                 hadler={() =>
-                                    userDeletePlaylist(params?.playlistId)
-                                 }
-                                 confirm="CONFIRM"
-                                 loader={isDeleting}
-                              />
-                           </ModalProvider.ModalWindow>
-                        </ModalProvider>
+                              {/* { delete playlist} */}
+                              <ModalProvider>
+                                 <ModalProvider.ModalOpen opens="deletePlay">
+                                    <VideoOptionsItem
+                                       label="Delete playlist"
+                                       icon={
+                                          <MdDelete
+                                             className="w-full"
+                                             fill="red"
+                                          />
+                                       }
+                                    />
+                                 </ModalProvider.ModalOpen>
+                                 <ModalProvider.ModalWindow window="deletePlay">
+                                    <AreYouSure
+                                       label="Are you sure you want to delete the playlist?"
+                                       hadler={() =>
+                                          userDeletePlaylist(params?.playlistId)
+                                       }
+                                       confirm="CONFIRM"
+                                       loader={isDeleting}
+                                    />
+                                 </ModalProvider.ModalWindow>
+                              </ModalProvider>
+                           </>
+                        )}
 
                         <VideoOptionsItem
                            label="Share"
@@ -240,33 +252,36 @@ function Playlist() {
                         setOption={setOptions}
                         options={
                            <>
-                              <ModalProvider>
-                                 <ModalProvider.ModalOpen opens="playlist">
-                                    <VideoOptionsItem
-                                       onClick={open}
-                                       label="Remove"
-                                       icon={
-                                          <MdDelete
-                                             fill="red"
-                                             size={15}
-                                             className="w-[100%]"
-                                          />
-                                       }
-                                    />
-                                 </ModalProvider.ModalOpen>
-                                 <ModalProvider.ModalWindow window="playlist">
-                                    <AreYouSure
-                                       label="Are you sure you want to reomve fom playlist ?"
-                                       confirm="Yes"
-                                       hadler={() =>
-                                          handleRemoveV(
-                                             v?._id,
-                                             v?.playlistV?._id
-                                          )
-                                       }
-                                    ></AreYouSure>
-                                 </ModalProvider.ModalWindow>
-                              </ModalProvider>
+                              {currentUser?.data?._id ===
+                                 aPlaylist?.data[0]?.createdBy?._id && (
+                                 <ModalProvider>
+                                    <ModalProvider.ModalOpen opens="playlist">
+                                       <VideoOptionsItem
+                                          onClick={open}
+                                          label="Remove"
+                                          icon={
+                                             <MdDelete
+                                                fill="red"
+                                                size={15}
+                                                className="w-[100%]"
+                                             />
+                                          }
+                                       />
+                                    </ModalProvider.ModalOpen>
+                                    <ModalProvider.ModalWindow window="playlist">
+                                       <AreYouSure
+                                          label="Are you sure you want to reomve fom playlist ?"
+                                          confirm="Yes"
+                                          hadler={() =>
+                                             handleRemoveV(
+                                                v?._id,
+                                                v?.playlistV?._id
+                                             )
+                                          }
+                                       ></AreYouSure>
+                                    </ModalProvider.ModalWindow>
+                                 </ModalProvider>
+                              )}
 
                               <VideoOptionsItem label="Share" />
                            </>
